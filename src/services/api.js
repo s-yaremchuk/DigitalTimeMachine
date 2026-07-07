@@ -347,31 +347,131 @@ export const fetchRates = async (dateString) => {
 };
 
 // 2. SONGS (iTunes Search API - Free, Keyless, media=music)
-export const fetchSongs = async (year) => {
-  try {
-    const response = await fetch(`https://itunes.apple.com/search?term=${year}+hits&media=music&limit=6&entity=song`);
-    if (!response.ok) throw new Error('iTunes Search failed');
-    const data = await response.json();
+const CURATED_HITS = {
+  1950: [
+    { title: "Jailhouse Rock", artist: "Elvis Presley" },
+    { title: "Johnny B. Goode", artist: "Chuck Berry" },
+    { title: "Rock Around the Clock", artist: "Bill Haley & His Comets" },
+    { title: "What'd I Say", artist: "Ray Charles" }
+  ],
+  1960: [
+    { title: "Yesterday", artist: "The Beatles" },
+    { title: "Satisfaction", artist: "The Rolling Stones" },
+    { title: "Purple Haze", artist: "Jimi Hendrix" },
+    { title: "Respect", artist: "Aretha Franklin" }
+  ],
+  1970: [
+    { title: "Bohemian Rhapsody", artist: "Queen" },
+    { title: "Stayin' Alive", artist: "Bee Gees" },
+    { title: "Dancing Queen", artist: "ABBA" },
+    { title: "Hotel California", artist: "Eagles" }
+  ],
+  1980: [
+    { title: "Billie Jean", artist: "Michael Jackson" },
+    { title: "Like a Virgin", artist: "Madonna" },
+    { title: "Sweet Child O' Mine", artist: "Guns N' Roses" },
+    { title: "Take On Me", artist: "a-ha" }
+  ],
+  1990: [
+    { title: "Smells Like Teen Spirit", artist: "Nirvana" },
+    { title: "...Baby One More Time", artist: "Britney Spears" },
+    { title: "I Will Always Love You", artist: "Whitney Houston" },
+    { title: "Losing My Religion", artist: "R.E.M." }
+  ],
+  2000: [
+    { title: "Lose Yourself", artist: "Eminem" },
+    { title: "Hey Ya!", artist: "Outkast" },
+    { title: "Toxic", artist: "Britney Spears" },
+    { title: "In the End", artist: "Linkin Park" }
+  ],
+  2010: [
+    { title: "Rolling in the Deep", artist: "Adele" },
+    { title: "Uptown Funk", artist: "Mark Ronson ft. Bruno Mars" },
+    { title: "Shape of You", artist: "Ed Sheeran" },
+    { title: "Somebody That I Used to Know", artist: "Gotye" }
+  ],
+  2020: [
+    { title: "Blinding Lights", artist: "The Weeknd" },
+    { title: "Don't Start Now", artist: "Dua Lipa" },
+    { title: "Dynamite", artist: "BTS" }
+  ],
+  2021: [
+    { title: "Drivers License", artist: "Olivia Rodrigo" },
+    { title: "Stay", artist: "The Kid LAROI & Justin Bieber" },
+    { title: "Bad Habits", artist: "Ed Sheeran" }
+  ],
+  2022: [
+    { title: "As It Was", artist: "Harry Styles" },
+    { title: "Heat Waves", artist: "Glass Animals" },
+    { title: "Running Up That Hill", artist: "Kate Bush" }
+  ],
+  2023: [
+    { title: "Flowers", artist: "Miley Cyrus" },
+    { title: "Cruel Summer", artist: "Taylor Swift" },
+    { title: "Paint The Town Red", artist: "Doja Cat" }
+  ],
+  2024: [
+    { title: "Espresso", artist: "Sabrina Carpenter" },
+    { title: "Birds of a Feather", artist: "Billie Eilish" },
+    { title: "Too Sweet", artist: "Hozier" },
+    { title: "Not Like Us", artist: "Kendrick Lamar" }
+  ],
+  2025: [
+    { title: "Die With a Smile", artist: "Lady Gaga & Bruno Mars" },
+    { title: "Birds of a Feather", artist: "Billie Eilish" },
+    { title: "Espresso", artist: "Sabrina Carpenter" }
+  ],
+  2026: [
+    { title: "Beautiful Things", artist: "Benson Boone" },
+    { title: "Lose Control", artist: "Teddy Swims" },
+    { title: "A Bar Song (Tipsy)", artist: "Shaboozey" }
+  ]
+};
 
-    if (data.results && data.results.length > 0) {
-      return data.results.map((track, index) => ({
-        id: track.trackId || index,
-        title: track.trackName,
-        artist: track.artistName,
-        album: track.collectionName,
-        artwork: track.artworkUrl100?.replace('100x100bb', '400x400bb') || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=500',
-        previewUrl: track.previewUrl
-      }));
-    }
-    throw new Error('No results from iTunes music search');
-  } catch (error) {
-    console.error('iTunes Music error, using fallback:', error);
-    return [
-      { id: 1, title: "Bohemian Rhapsody", artist: "Queen", album: "A Night at the Opera", artwork: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500" },
-      { id: 2, title: "Stayin' Alive", artist: "Bee Gees", album: "Saturday Night Fever", artwork: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500" },
-      { id: 3, title: "Smells Like Teen Spirit", artist: "Nirvana", album: "Nevermind", artwork: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=500" }
-    ];
-  }
+const getCuratedSongsList = (year) => {
+  const years = Object.keys(CURATED_HITS).map(Number).sort((a,b) => b-a);
+  if (CURATED_HITS[year]) return CURATED_HITS[year];
+  const nearest = years.find(y => y <= year);
+  return CURATED_HITS[nearest] || CURATED_HITS[years[years.length - 1]];
+};
+
+export const fetchSongs = async (year) => {
+  const songsList = getCuratedSongsList(year);
+  
+  const songsWithMedia = await Promise.all(
+    songsList.map(async (song, index) => {
+      try {
+        const query = `${song.artist} ${song.title}`;
+        const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&limit=1&entity=song`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.results && data.results.length > 0) {
+            const track = data.results[0];
+            return {
+              id: track.trackId || `${year}-song-${index}`,
+              title: track.trackName || song.title,
+              artist: track.artistName || song.artist,
+              album: track.collectionName || "Top Hits",
+              artwork: track.artworkUrl100?.replace('100x100bb', '300x300bb') || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500',
+              previewUrl: track.previewUrl
+            };
+          }
+        }
+      } catch (e) {
+        console.warn(`Failed to fetch media for song ${song.title}:`, e);
+      }
+      return {
+        id: `${year}-song-${index}`,
+        title: song.title,
+        artist: song.artist,
+        album: "Top Hits",
+        artwork: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500',
+        previewUrl: null
+      };
+    })
+  );
+  
+  return songsWithMedia;
 };
 
 // 3. MOVIES (Curated Local Database with Live Poster Art from iTunes)
@@ -422,10 +522,10 @@ export const fetchNews = async (dateString, targetYear) => {
       
       const sortedEvents = pastEvents
         .map(event => ({
-          title: event.text,
+          title: event.pages && event.pages[0] ? event.pages[0].titles.normalized : "ПОДІЯ В ІСТОРІЇ",
           year: event.year,
           date: `${day} ${new Date(targetYear, month - 1, day).toLocaleString('uk-UA', { month: 'short' })} ${event.year} р.`,
-          desc: event.pages && event.pages[0] ? `Детальніше: ${event.pages[0].titles.normalized}` : 'Історична подія дня.',
+          desc: event.text,
           link: event.pages && event.pages[0] ? event.pages[0].content_urls.desktop.page : `https://en.wikipedia.org/wiki/${month}_${day}`
         }))
         .sort((a, b) => b.year - a.year);

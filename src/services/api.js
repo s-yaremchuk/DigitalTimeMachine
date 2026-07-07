@@ -1,19 +1,4 @@
-const STORAGE_KEYS = {
-  TMDB: 'dtm_tmdb_key',
-  GUARDIAN: 'dtm_guardian_key'
-};
-
-export const getApiKeys = () => {
-  return {
-    tmdb: localStorage.getItem(STORAGE_KEYS.TMDB) || '',
-    guardian: localStorage.getItem(STORAGE_KEYS.GUARDIAN) || ''
-  };
-};
-
-export const saveApiKeys = (keys) => {
-  if (keys.tmdb !== undefined) localStorage.setItem(STORAGE_KEYS.TMDB, keys.tmdb);
-  if (keys.guardian !== undefined) localStorage.setItem(STORAGE_KEYS.GUARDIAN, keys.guardian);
-};
+// API endpoints and logic
 
 // -----------------------------------------------------------------------------
 // CURATED HISTORICAL DATABASES (Movies, Memes, YouTube)

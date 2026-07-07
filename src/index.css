@@ -1029,3 +1029,33 @@ input {
   }
 }
 
+/* Interactive Text Pressure Hover Animations */
+.main-title, 
+.card-title, 
+.btn-time-warp, 
+.btn-back,
+.led-label {
+  display: inline-block;
+  transition: font-weight 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+              letter-spacing 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+              transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+              text-shadow 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.main-title:hover {
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  transform: scaleY(1.12);
+  text-shadow: 2px 2px 0px var(--accent-yellow);
+}
+
+.card-title:hover {
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  transform: scaleY(1.1);
+}
+
+.btn-time-warp:hover {
+  letter-spacing: 0.08em;
+  font-weight: 900;
+}

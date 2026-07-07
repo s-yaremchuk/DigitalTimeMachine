@@ -358,9 +358,36 @@ export const fetchSongs = async (year) => {
   }
 };
 
-// 3. MOVIES (Curated Local Database for Absolute Stability & Image Load)
-export const fetchMovies = (year) => {
-  return getCuratedItem(HISTORICAL_MOVIES, year);
+// 3. MOVIES (Curated Local Database with Live Poster Art from iTunes)
+export const fetchMovies = async (year) => {
+  const curatedMovies = getCuratedItem(HISTORICAL_MOVIES, year);
+
+  // Fetch actual artwork dynamically from iTunes Search for each movie title
+  const moviesWithPosters = await Promise.all(
+    curatedMovies.map(async (movie) => {
+      try {
+        const query = movie.title.split(' (')[0];
+        const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&limit=1`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.results && data.results.length > 0) {
+            const artwork = data.results[0].artworkUrl100?.replace('100x100bb', '600x600bb');
+            if (artwork) {
+              return {
+                ...movie,
+                poster: artwork
+              };
+            }
+          }
+        }
+      } catch (e) {
+        console.warn(`Failed to fetch live artwork for ${movie.title}:`, e);
+      }
+      return movie;
+    })
+  );
+
+  return moviesWithPosters;
 };
 
 // 4. TOP HISTORICAL EVENTS (Wikimedia "On This Day" API - Free, Keyless)
@@ -430,7 +457,7 @@ export const fetchAllTimeMachineData = async (dateString) => {
     fetchNews(dateString, year)
   ]);
 
-  const moviesData = fetchMovies(year);
+  const moviesData = await fetchMovies(year);
   const memesData = fetchMemes(year);
   const youtubeData = fetchYoutube(year);
 

@@ -521,14 +521,25 @@ export const fetchNews = async (dateString, targetYear) => {
       const pastEvents = data.events.filter(event => event.year <= targetYear);
       
       const sortedEvents = pastEvents
-        .map(event => ({
-          title: event.pages && event.pages[0] ? event.pages[0].titles.normalized : "ПОДІЯ В ІСТОРІЇ",
-          year: event.year,
-          date: `${day} ${new Date(targetYear, month - 1, day).toLocaleString('uk-UA', { month: 'short' })} ${event.year} р.`,
-          desc: event.text,
-          link: event.pages && event.pages[0] ? event.pages[0].content_urls.desktop.page : `https://en.wikipedia.org/wiki/${month}_${day}`
-        }))
-        .sort((a, b) => b.year - a.year);
+        .map(event => {
+          const isCurrentYear = event.year === targetYear;
+          return {
+            title: event.pages && event.pages[0] ? event.pages[0].titles.normalized : "ПОДІЯ В ІСТОРІЇ",
+            year: event.year,
+            date: isCurrentYear
+              ? `${day} ${new Date(targetYear, month - 1, day).toLocaleString('uk-UA', { month: 'short' })} ${targetYear} р.`
+              : `Цього дня в історії (${event.year} р.):`,
+            desc: event.text,
+            link: event.pages && event.pages[0] ? event.pages[0].content_urls.desktop.page : `https://en.wikipedia.org/wiki/${month}_${day}`
+          };
+        })
+        .sort((a, b) => {
+          // Prioritize exact year matches
+          if (a.year === targetYear && b.year !== targetYear) return -1;
+          if (b.year === targetYear && a.year !== targetYear) return 1;
+          // Otherwise, sort descending (most recent first)
+          return b.year - a.year;
+        });
 
       return sortedEvents.slice(0, 4);
     }

@@ -190,7 +190,7 @@ body::before {
   font-weight: 400;
   font-size: 0.95rem;
   line-height: 1.5;
-  text-align: justify;
+  text-align: left;
   hyphens: auto;
   color: #2a2a2a; /* Muted for contrast against titles */
   letter-spacing: -0.02em;

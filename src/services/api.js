@@ -256,46 +256,74 @@ const HISTORICAL_MEMES = {
 
 const HISTORICAL_YOUTUBE = {
   2005: [
-    { title: "Me at the zoo", channel: "jawed", views: "310M", id: "jNQXAC9IVRw", desc: "The very first video uploaded to YouTube on April 23, 2005." }
+    { title: "Me at the zoo", channel: "jawed", views: "310M", id: "jNQXAC9IVRw", desc: "The very first video uploaded to YouTube on April 23, 2005." },
+    { title: "Ronaldinho: Touch of Gold", channel: "Nike Football", views: "100M", id: "KNw8T_0O18c", desc: "The first video to reach one million views on YouTube, featuring the soccer legend hitting the crossbar repeatedly." },
+    { title: "Canon Rock", channel: "funtwo", views: "90M", id: "QjA5faZF1A8", desc: "One of the earliest viral music videos, featuring a shred guitar arrangement of Pachelbel's Canon." }
   ],
   2007: [
-    { title: "Charlie bit my finger - again !", channel: "HDCYT", views: "900M", id: "_OBlgSz8sSM", desc: "One of the most famous early viral video clips in web history." }
+    { title: "Charlie bit my finger - again !", channel: "HDCYT", views: "900M", id: "_OBlgSz8sSM", desc: "One of the most famous early viral video clips in web history." },
+    { title: "The Evolution of Dance", channel: "Judson Laipply", views: "310M", id: "dMH0bHeiRNg", desc: "One of the first viral comedy skits demonstrating popular dances throughout the decades." },
+    { title: "Chocolate Rain", channel: "TayZonday", views: "135M", id: "EwTZ2xpQwpA", desc: "The legendary viral song with deep vocals and quirky keyboard playing." }
   ],
   2009: [
-    { title: "David After Dentist", channel: "Booba", views: "145M", id: "txqiwrbYGrs", desc: "Is this real life? Kid's reaction after a dental appointment." }
+    { title: "David After Dentist", channel: "Booba", views: "145M", id: "txqiwrbYGrs", desc: "Is this real life? Kid's reaction after a dental appointment." },
+    { title: "Lady Gaga - Bad Romance", channel: "LadyGagaVEVO", views: "1.8B", id: "qrO4fZqfqCY", desc: "The mega-viral music video that dominated early YouTube rankings." },
+    { title: "Susan Boyle - Britain's Got Talent", channel: "BGT", views: "250M", id: "RxPZh4AnWyk", desc: "The viral singing performance that shocked the judges and went worldwide." }
   ],
   2010: [
-    { title: "Bed Intruder Song", channel: "Schmoyoho", views: "155M", id: "hMtZfW2z9dw", desc: "Classic auto-tuned news remix that went completely viral." }
+    { title: "Bed Intruder Song", channel: "Schmoyoho", views: "155M", id: "hMtZfW2z9dw", desc: "Classic auto-tuned news remix that went completely viral." },
+    { title: "Eminem - Love The Way You Lie ft. Rihanna", channel: "EminemVEVO", views: "2.7B", id: "uelHwf8o7_U", desc: "One of the most-viewed music videos of 2010 worldwide." },
+    { title: "The Annoying Orange", channel: "Daneboe", views: "230M", id: "ZN5PoW7Yj54", desc: "A classic web series about an orange that pestered other kitchen ingredients." }
   ],
   2012: [
-    { title: "PSY - GANGNAM STYLE M/V", channel: "officialpsy", views: "5.1B", id: "9bZkp7q19f0", desc: "The record-shattering K-Pop phenomenon that broke YouTube's counter." }
+    { title: "PSY - GANGNAM STYLE M/V", channel: "officialpsy", views: "5.1B", id: "9bZkp7q19f0", desc: "The record-shattering K-Pop phenomenon that broke YouTube's counter." },
+    { title: "Gotye - Somebody That I Used to Know", channel: "gotyemusic", views: "2.3B", id: "8WYHDf5PHCg", desc: "The global indie-pop sensation with an iconic body paint art video." },
+    { title: "KONY 2012", channel: "Invisible Children", views: "120M", id: "Y4MnpzRxGCU", desc: "A short documentary that became the fastest-growing viral campaign of its time." }
   ],
   2013: [
-    { title: "Ylvis - The Fox (What Does The Fox Say?)", channel: "tvnorge", views: "1.1B", id: "jofNR_WkoCE", desc: "The electronic dance sensation that asked the ultimate animal question." }
+    { title: "Ylvis - The Fox (What Does The Fox Say?)", channel: "tvnorge", views: "1.1B", id: "jofNR_WkoCE", desc: "The electronic dance sensation that asked the ultimate animal question." },
+    { title: "Miley Cyrus - Wrecking Ball", channel: "MileyCyrusVEVO", views: "1.2B", id: "My2FRPA3Gf8", desc: "The controversial and visually striking pop music video that broke view records." },
+    { title: "Harlem Shake (Official Army Edition)", channel: "USArmy", views: "115M", id: "8f7wj_RcoYk", desc: "The viral meme of 2013 showing sudden chaotic dancing to Baauer's hit." }
   ],
   2016: [
-    { title: "PPAP (Pen-Pineapple-Apple-Pen)", channel: "PIKOTARO", views: "450M", id: "Ct6BUPvE2sM", desc: "Viral hit song that holds a Guinness World Record." }
+    { title: "PPAP (Pen-Pineapple-Apple-Pen)", channel: "PIKOTARO", views: "450M", id: "Ct6BUPvE2sM", desc: "Viral hit song that holds a Guinness World Record." },
+    { title: "Adele - Hello Carpool Karaoke", channel: "The Late Late Show", views: "260M", id: "Nck6BZGA7TQ", desc: "The hit talk show segment featuring Adele singing along in the passenger seat." },
+    { title: "Alan Walker - Faded", channel: "Alan Walker", views: "3.5B", id: "60ItHLz5WEA", desc: "The atmospheric music video that launched the DJ into global stardom." }
   ],
   2017: [
-    { title: "Luis Fonsi - Despacito ft. Daddy Yankee", channel: "LuisFonsiVEVO", views: "8.5B", id: "kJQP7kiw5Fk", desc: "The absolute summer anthem that topped charts worldwide." }
+    { title: "Luis Fonsi - Despacito ft. Daddy Yankee", channel: "LuisFonsiVEVO", views: "8.5B", id: "kJQP7kiw5Fk", desc: "The absolute summer anthem that topped charts worldwide." },
+    { title: "Ed Sheeran - Shape of You", channel: "Ed Sheeran", views: "6.2B", id: "JGwWNGJdvx8", desc: "One of the most popular music videos in internet history." },
+    { title: "Taylor Swift - Look What You Made Me Do", channel: "TaylorSwiftVEVO", views: "1.5B", id: "3tmd-ClpJxA", desc: "The dramatic, record-breaking music video announcing Taylor's reputation era." }
   ],
   2018: [
-    { title: "Childish Gambino - This Is America", channel: "Donald Glover", views: "910M", id: "VYOjWnS4cMY", desc: "The visual masterpiece and political commentary that swept the internet." }
+    { title: "Childish Gambino - This Is America", channel: "Donald Glover", views: "910M", id: "VYOjWnS4cMY", desc: "The visual masterpiece and political commentary that swept the internet." },
+    { title: "Drake - God's Plan", channel: "DrakeVEVO", views: "1.5B", id: "xpVfcZ0ZcFM", desc: "Drake gives away his production budget to strangers in a viral good-will music video." },
+    { title: "Maroon 5 - Girls Like You ft. Cardi B", channel: "Maroon5VEVO", views: "3.5B", id: "aJOTlE1K90k", desc: "A star-studded video tribute to powerful women featuring cameos from celebrities." }
   ],
   2020: [
-    { title: "BTS - Dynamite Official M/V", channel: "HYBE LABELS", views: "1.8B", id: "gdZLi9oWNZg", desc: "BTS breaks the 24-hour YouTube viewing record." }
+    { title: "BTS - Dynamite Official M/V", channel: "HYBE LABELS", views: "1.8B", id: "gdZLi9oWNZg", desc: "BTS breaks the 24-hour YouTube viewing record." },
+    { title: "The Weeknd - Blinding Lights", channel: "The Weeknd", views: "800M", id: "4NRXx6U8ABQ", desc: "The cinematic and synth-wave hit that became a global defining anthem." },
+    { title: "Future - Life Is Good ft. Drake", channel: "FutureVEVO", views: "2.1B", id: "l0U7SxXHkPY", desc: "A lighthearted music video showcasing Drake and Future working various blue-collar jobs." }
   ],
   2023: [
-    { title: "Minecraft Trial Chamber Reveal", channel: "Minecraft", views: "25M", id: "eJz39eFvC2w", desc: "Huge announcement video for the major trial chambers update." }
+    { title: "Minecraft Trial Chamber Reveal", channel: "Minecraft", views: "25M", id: "eJz39eFvC2w", desc: "Huge announcement video for the major trial chambers update." },
+    { title: "Miley Cyrus - Flowers", channel: "MileyCyrusVEVO", views: "750M", id: "G7KNmW9a75Y", desc: "The record-shattering self-love anthem of 2023." },
+    { title: "Linkin Park - Lost M/V", channel: "Linkin Park", views: "80M", id: "7OBqH_15d10", desc: "A beautifully animated anime-style music video releasing a legendary vault track." }
   ],
   2024: [
+    { title: "Inside Out 2 - Official Teaser", channel: "Pixar", views: "80M", id: "LEjhYnP8pKA", desc: "First trailer for Disney Pixar's smash-hit animated sequel Inside Out 2." },
+    { title: "Sabrina Carpenter - Espresso", channel: "Sabrina Carpenter", views: "150M", id: "eptjcXZHCp4", desc: "The viral beachside retro music video that became the song of the summer." },
     { title: "GTA VI - Official Trailer 1", channel: "Rockstar Games", views: "210M", id: "QdBZY2fkU-0", desc: "The highly anticipated first trailer for Grand Theft Auto VI, breaking records upon release." }
   ],
   2025: [
-    { title: "Apple Vision Pro Review - A Look at the Future", channel: "Marques Brownlee", views: "45M", id: "TX9qSaDxIyg", desc: "MKBHD goes in-depth on Apple's spatial computer headset and its impact on tech." }
+    { title: "Minecraft Movie - Teaser Trailer", channel: "Warner Bros.", views: "40M", id: "wJO-2Wf-A8g", desc: "Official first teaser trailer for the live-action Minecraft movie." },
+    { title: "Lady Gaga, Bruno Mars - Die With A Smile", channel: "Lady Gaga", views: "90M", id: "kPa7bsKwL-c", desc: "The retro studio-duet music video featuring two legendary vocalists." },
+    { title: "Captain America: Brave New World Trailer", channel: "Marvel", views: "30M", id: "1pHDWnP-YsY", desc: "Official action trailer showcasing Sam Wilson's flight in the new shield armor." }
   ],
   2026: [
-    { title: "SpaceX Starship Flight 5 - Rocket Booster Catch", channel: "SpaceX", views: "18M", id: "uTC2_K-p1d8", desc: "The historic engineering test where the giant mechanical Mechazilla chopsticks caught Starship's heavy booster." }
+    { title: "Wicked - Official Trailer", channel: "Universal Pictures", views: "35M", id: "pg1pB6Psn84", desc: "Official trailer for the cinematic musical event adaptation of Wicked." },
+    { title: "The Mandalorian Season 3 - Official Trailer", channel: "Star Wars", views: "20M", id: "Znsa4Deavgg", desc: "The official epic promotional video previewing Din Djarin's flight to Mandalore." },
+    { title: "Billie Eilish - Birds of a Feather", channel: "Billie Eilish", views: "120M", id: "d5gpCSBw3S0", desc: "Official music video showcase of Billie Eilish's hit single from Hit Me Hard and Soft." }
   ]
 };
 

@@ -1,16 +1,115 @@
-# React + Vite
+# Digital Time Machine
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Клієнтський SPA у вигляді газети-хроніки: користувач вводить довільну дату, застосунок збирає для неї курси валют, топ-пісні, фільми, історичні події, меми та відеотренд і рендерить усе як розворот часопису. Власного бекенду немає, дані отримуються напряму з браузера з трьох зовнішніх безключевих API та з локальної кураторської бази даних для категорій, де стабільного публічного API з історичними вибірками немає.
 
-Currently, two official plugins are available:
+## Технологічний стек
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+| Компонент             | Технологія                          | Версія  |
+|------------------------|---------------------------------------|---------|
+| UI                     | React                                | ^19.2.7 |
+| DOM-рендерінг          | React DOM                            | ^19.2.7 |
+| Складальник            | Vite                                  | ^8.1.1  |
+| Vite-плагін для React  | @vitejs/plugin-react                  | ^6.0.3  |
+| Анімації               | Framer Motion                         | ^12.42.2 |
+| Іконки                 | Lucide React                          | ^1.23.0 |
+| Лінтер                 | Oxlint (з плагінами react, oxc)       | ^1.71.0 |
+| Стилізація             | Vanilla CSS (CSS Custom Properties)   | —       |
+| Зберігання             | Web Storage API (localStorage)        | —       |
+| Курси валют            | Frankfurter API                       | —       |
+| Пісні / обкладинки     | iTunes Search API                     | —       |
+| Історичні події        | Wikimedia "On This Day" REST API      | —       |
 
-## React Compiler
+CI/CD-конфігурації в репозиторії немає.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Архітектура
 
-## Expanding the Oxlint configuration
+### Структура репозиторію
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+```
+DigitalTimeMachine/
+├── .agents/skills/                — внутрішня документація для AI-агента розробки
+│   ├── digital_time_machine_apis/ — специфікація джерел даних і фолбеків
+│   └── ui_ux_pro_max/             — гайдлайни UI/UX, використані при побудові інтерфейсу
+├── public/favicon.svg, icons.svg
+├── src/
+│   ├── components/
+│   │   ├── Portal.jsx             — екран вибору дати (день/місяць/рік)
+│   │   ├── Dashboard.jsx          — розворот часопису з 6 рубриками
+│   │   └── NewspaperArticle.jsx   — обгортка рубрики (заголовок + контент)
+│   ├── services/api.js            — вся інтеграція з зовнішніми API та кураторські дані
+│   ├── App.jsx                    — стан застосунку, перемикання Portal/Dashboard
+│   ├── index.css                  — дизайн-система, текстура паперу, друкарські стилі
+│   └── main.jsx
+├── index.html
+└── vite.config.js
+```
+
+### Шари застосунку
+
+**Presentation** — `Portal.jsx`, `Dashboard.jsx`, `NewspaperArticle.jsx`. `Portal` містить власний компонент `Typewriter` (посимвольна анімація тексту через `setTimeout`) і валідацію введеної дати (день 1–31, рік 1900–2026) до виклику `onLaunch`. `Dashboard` — суто презентаційний, отримує вже завантажені дані через props і не звертається до `api.js` напряму.
+
+**Business logic / orchestration** — `App.jsx` (113 рядків). Тримає стан `selectedDate`, `loading`, `timeMachineData`, `error`, перемикає екрани через `AnimatePresence` з `mode="wait"`. Єдина точка виклику завантаження даних — `handleLaunch`, який делегує все `fetchAllTimeMachineData`.
+
+**Data access** — `services/api.js` (472 рядки). Найбільший і найважливіший файл проєкту: інкапсулює шість функцій отримання даних (`fetchRates`, `fetchSongs`, `fetchMovies`, `fetchNews`, `fetchMemes`, `fetchYoutube`) і одну кураторську базу даних (списки фільмів по роках з 1970 по 2024, мемів по роках з 1998 по 2024, знакових відео YouTube по роках з 2005 по 2023).
+
+### Стратегія отримання даних
+
+Категорії поділяються на дві групи за принципово різним підходом:
+
+- **Живі дані з API, з фолбеком**: курси валют (Frankfurter, з математичним фолбеком через `Math.sin`/`Math.cos` від року при недоступності API), пісні (iTunes Search, з фолбеком на три захардкоджені треки), історичні події (Wikimedia "On This Day" — вибірка сортується за близькістю року події до обраного, беруться 4 найближчі; фолбек — одне узагальнене повідомлення).
+- **Кураторські локальні дані, без звернення до стороннього API історичних вибірок**: фільми, меми, YouTube-тренди. Для фільмів текстовий опис береться з локальної бази, а обкладинка — з живого запиту до iTunes Search за назвою фільму (`fetchMovies` робить `Promise.all` із запитом на кожен тайтл), із фолбеком на попередньо прописаний URL зображення Unsplash.
+
+Функція `getCuratedItem` реалізує пошук найближчого попереднього року в кураторській базі: якщо точного року немає, береться найближчий менший рік з ключів об'єкта.
+
+Примітка щодо документації: файл `.agents/skills/digital_time_machine_apis/SKILL.md` описує TMDB і The Guardian як джерела для фільмів і новин з підтримкою користувацьких API-ключів. У реалізованому коді ці два API не використовуються — фільми беруться з кураторської бази + iTunes-обкладинки, новини — з Wikimedia. Функції `getApiKeys`/`saveApiKeys` для збереження ключів у `localStorage` визначені в `api.js`, але ніде в компонентах не викликаються.
+
+### Потік даних
+
+```
+Portal → onLaunch(dateString)
+  → App.handleLaunch → fetchAllTimeMachineData(dateString)
+      ├── Promise.all: fetchRates, fetchSongs(year), fetchNews(dateString, year)
+      ├── fetchMovies(year)       — послідовно після Promise.all, сам робить внутрішній Promise.all по обкладинках
+      ├── fetchMemes(year)        — синхронний виклик, без мережі
+      └── fetchYoutube(year)      — синхронний виклик, без мережі
+  → setTimeMachineData(data) → рендер Dashboard
+```
+
+### Дизайн
+
+Дизайн-токени в `index.css`: кремовий фон `#f7f4eb`, вугільний текст `#1a1a1a`, акцентний червоний `#9e1a1a`, три шрифтові стеки (serif — Playfair Display, sans — Space Grotesk, mono — Share Tech Mono). Текстура паперу на `body::before` побудована шаруванням шести CSS-фонів: SVG-шум через `feTurbulence` (зернистість), радіальний віньєт, три діагональні `linear-gradient` під різними кутами (імітація згинів), два радіальні градієнти для нерівномірного освітлення — усе з `mix-blend-mode: multiply`, `z-index: -1` і `pointer-events: none`, щоб не впливати на контрастність тексту й клікабельність елементів.
+
+## Функціонал
+
+- Введення довільної дати (день/місяць/рік) з валідацією діапазону (рік 1900–2026) і повідомленням про помилку.
+- Курси USD до EUR, GBP, JPY, CAD, CHF на обрану дату (Frankfurter, історичні дані від 4 січня 1999 року — до цієї межі дата обрізається автоматично).
+- До 4 історичних подій дня, відсортованих за близькістю року до обраного, з посиланням на Wikipedia.
+- 3 фільми, актуальні для року (кураторська вибірка з живими обкладинками з iTunes).
+- Пісні-хіти року (iTunes Search) з інлайн-прослуховуванням 30-секундного прев'ю; при відтворенні одного трека інші автоматично ставляться на паузу.
+- 3 меми, характерні для року (кураторська база 1998–2024).
+- Одне знакове відео на YouTube для року, вбудоване як iframe (кураторська база 2005–2023; для дат до 2005 — повідомлення "YouTube ще не існував").
+- Анімовані переходи між екранами вибору дати й дашборда (Framer Motion, `AnimatePresence`), stagger-анімація появи рубрик.
+- Динамічний номер випуску і поточна дата в шапці, розраховані на льоту.
+
+## Встановлення та запуск
+
+Node.js >= 20.
+
+```
+npm install
+npm run dev       # Vite dev-сервер
+npm run build     # артефакти в ./dist
+npm run lint      # oxlint
+```
+
+Зовнішні API, що використовуються (Frankfurter, iTunes Search, Wikimedia REST), не потребують ключів чи реєстрації — застосунок працює одразу після встановлення залежностей.
+
+Готового workflow для CI/CD чи деплою в репозиторії немає.
+
+## Тестування
+
+Тестів немає. Лінт-конфігурація (`.oxlintrc.json`) вмикає `react/rules-of-hooks` як помилку та `react/only-export-components` як попередження; у CI не інтегровано через відсутність самого CI.
+
+## Обмеження
+
+Фолбек курсів валют при недоступності Frankfurter генерує значення математичною функцією від року (`Math.sin`/`Math.cos`), а не реальними історичними даними — у разі збою API показані цифри є правдоподібними, але вигаданими, без будь-якого попередження в інтерфейсі про це. `fetchMovies` робить окремий мережевий запит до iTunes на кожен фільм у вибірці — для 3 фільмів це 3 послідовно ініційованих запити без кешування, при повторному відкритті того самого року обкладинки запитуються заново. Кураторські бази фільмів, мемів і відео обмежені конкретними роками (фільми — 1970–2024, меми — 1998–2024, YouTube — 2005–2023); для дат поза цим діапазоном `getCuratedItem` повертає дані найближчого меншого року без позначення в інтерфейсі, що це не точний рік. Функціонал збереження користувацьких API-ключів (`getApiKeys`/`saveApiKeys`) присутній у коді, але не підключений до жодного UI-компонента — мертвий код. Внутрішня документація для AI-агента (`.agents/skills/digital_time_machine_apis/SKILL.md`) описує інтеграцію з TMDB і The Guardian, яка в реалізованому коді відсутня — специфікація і фактична реалізація розійшлися.

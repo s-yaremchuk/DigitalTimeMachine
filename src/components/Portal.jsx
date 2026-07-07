@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ShieldAlert } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const MONTHS_UK = [
   { val: '01', name: 'СІЧНЯ // JAN' },
@@ -15,6 +16,24 @@ const MONTHS_UK = [
   { val: '11', name: 'ЛИСТОПАДА // NOV' },
   { val: '12', name: 'ГРУДНЯ // DEC' }
 ];
+
+// Simple Typewriter component
+function Typewriter({ text, delay = 80 }) {
+  const [currentText, setCurrentText] = useState('');
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (index < text.length) {
+      const timeout = setTimeout(() => {
+        setCurrentText((prev) => prev + text[index]);
+        setIndex((prev) => prev + 1);
+      }, delay);
+      return () => clearTimeout(timeout);
+    }
+  }, [text, index, delay]);
+
+  return <span className="typewriter-cursor">{currentText}</span>;
+}
 
 export default function Portal({ onLaunch }) {
   const [day, setDay] = useState('12');
@@ -45,11 +64,18 @@ export default function Portal({ onLaunch }) {
 
   return (
     <div className="portal-container">
-      <div className="console-panel brutalist-border brutalist-shadow-pink">
+      <motion.div 
+        initial={{ scale: 0.98, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+        className="console-panel brutalist-border"
+      >
         
         {/* Header */}
         <div className="console-header">
-          <span className="console-header-title">ОБЕРІТЬ ДАТУ ПЕРЕХОДУ // TIMELINE SELECTOR</span>
+          <span className="console-header-title">
+            <Typewriter text="ОБЕРІТЬ ВИТЯГ З АРХІВУ // TIMELINE SELECTOR" delay={40} />
+          </span>
         </div>
 
         {/* Input Form */}
@@ -112,12 +138,17 @@ export default function Portal({ onLaunch }) {
           )}
 
           {/* Trigger Button */}
-          <button type="submit" className="btn-time-warp">
-            ЗАПУСТИТИ МАШИНУ ЧАСУ // LAUNCH TIME MACHINE
-          </button>
+          <motion.button 
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.99 }}
+            type="submit" 
+            className="btn-time-warp"
+          >
+            ВІДКРИТИ ВИПУСК // LAUNCH EDITION
+          </motion.button>
         </form>
 
-      </div>
+      </motion.div>
     </div>
   );
 }

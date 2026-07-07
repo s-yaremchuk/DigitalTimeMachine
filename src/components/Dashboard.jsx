@@ -1,10 +1,35 @@
 import React, { useRef } from 'react';
-import { Newspaper, Coins, Film, Music, Tv, Smile, ArrowLeft, Volume2, Video } from 'lucide-react';
+import { Newspaper, Coins, Film, Music, Tv, Smile, ArrowLeft, Volume2 } from 'lucide-react';
 import BrutalistCard from './BrutalistCard';
+import { motion } from 'framer-motion';
+
+// Container variants for stagger animation
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.07,
+      delayChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { 
+      type: 'spring', 
+      stiffness: 90, 
+      damping: 14 
+    } 
+  }
+};
 
 export default function Dashboard({ date, data, onBack }) {
   const audioRefs = useRef({});
-  const videoRefs = useRef({});
 
   const formatDate = (dateStr) => {
     const d = new Date(dateStr);
@@ -18,15 +43,12 @@ export default function Dashboard({ date, data, onBack }) {
   const handlePlayPreview = (songId, previewUrl) => {
     if (!previewUrl) return;
     
-    // Pause all other audio/video
+    // Pause all other audio
     Object.values(audioRefs.current).forEach(audio => {
       if (audio && audio !== audioRefs.current[songId]) {
         audio.pause();
         audio.currentTime = 0;
       }
-    });
-    Object.values(videoRefs.current).forEach(video => {
-      if (video) video.pause();
     });
 
     const audio = audioRefs.current[songId];
@@ -45,25 +67,35 @@ export default function Dashboard({ date, data, onBack }) {
     <div className="dashboard-container">
       
       {/* Dashboard Top Navigation bar */}
-      <div className="dashboard-nav brutalist-border brutalist-shadow-yellow">
-        <button className="btn-back" onClick={onBack}>
+      <div className="dashboard-nav">
+        <motion.button 
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="btn-back" 
+          onClick={onBack}
+        >
           <ArrowLeft size={16} />
           <span>НАЗАД // GO BACK</span>
-        </button>
-        <div className="nav-title font-mono-data">
-          ОГЛЯД ДАТИ: <span className="highlight-text">{formatDate(date)}</span>
+        </motion.button>
+        <div className="nav-title">
+          ВИПУСК: <span className="highlight-text">{formatDate(date)}</span>
         </div>
         <div className="nav-coordinates font-mono-data">
-          АРХІВНА ХРОНІКА
+          АРХІВНА ХРОНІКА // ARCHIVE REPORT
         </div>
       </div>
 
-      {/* Grid Content Layout */}
-      <div className="dashboard-grid">
+      {/* Grid Content Layout with Stagger Animations */}
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+        className="dashboard-grid"
+      >
         
         {/* WIDGET 1: NEWS */}
-        <div className="grid-span-4">
-          <BrutalistCard title="Архів Подій // Historical Events" icon={<Newspaper size={18} />} accent="green">
+        <motion.div variants={itemVariants} className="grid-span-4">
+          <BrutalistCard title="ГОЛОВНІ ПОДІЇ // HISTORICAL EVENTS" icon={<Newspaper size={18} />} accent="green">
             <div className="news-list">
               {news && news.length > 0 ? (
                 news.map((item, idx) => (
@@ -72,7 +104,7 @@ export default function Dashboard({ date, data, onBack }) {
                     href={item.link || "#"} 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="news-item brutalist-border"
+                    className="news-item"
                   >
                     <div className="news-date font-mono-data">{item.date || "HISTORICAL"}</div>
                     <div className="news-headline">{item.title}</div>
@@ -80,120 +112,109 @@ export default function Dashboard({ date, data, onBack }) {
                   </a>
                 ))
               ) : (
-                <div className="empty-message font-mono-data">NO ARCHIVE RECORDS FOUND.</div>
+                <div className="empty-message font-mono-data">АРХІВНІ ЗАПИСИ ВІДСУТНІ.</div>
               )}
             </div>
           </BrutalistCard>
-        </div>
+        </motion.div>
 
-        {/* WIDGET 2: EXCHANGE RATES */}
-        <div className="grid-span-4">
-          <BrutalistCard title="Курс Валют // Currency Rates" icon={<Coins size={18} />} accent="yellow">
-            <div className="rates-container">
-              <div className="rates-header font-mono-data">
-                <span>CURRENCY</span>
-                <span>VALUE (USD BASE)</span>
+        {/* WIDGET 2: RATES */}
+        <motion.div variants={itemVariants} className="grid-span-4">
+          <BrutalistCard title="КУРС ВАЛЮТ // EXCHANGE RATES" icon={<Coins size={18} />} accent="yellow">
+            <div className="rates-grid">
+              <div className="rate-row">
+                <span className="rate-pair">USD / EUR</span>
+                <span className="rate-value font-mono-data">{rates.rates?.EUR?.toFixed(4) || 'N/A'} EUR</span>
               </div>
-              <div className="rates-list">
-                {rates && rates.rates ? (
-                  Object.entries(rates.rates).map(([sym, val]) => (
-                    <div key={sym} className="rate-row brutalist-border font-mono-data">
-                      <span className="rate-symbol">{sym}</span>
-                      <span className="rate-value">{val.toFixed(4)}</span>
-                    </div>
-                  ))
-                ) : (
-                  <div className="empty-message font-mono-data">EXCHANGE SERVER OFFLINE.</div>
-                )}
+              <div className="rate-row">
+                <span className="rate-pair">USD / GBP</span>
+                <span className="rate-value font-mono-data">{rates.rates?.GBP?.toFixed(4) || 'N/A'} GBP</span>
               </div>
-              <div className="rates-footer font-mono-data">
-                BASE: USD // SOURCE: FRANKFURTER API
+              <div className="rate-row">
+                <span className="rate-pair">USD / JPY</span>
+                <span className="rate-value font-mono-data">{rates.rates?.JPY?.toFixed(2) || 'N/A'} JPY</span>
+              </div>
+              <div className="rate-row">
+                <span className="rate-pair">USD / CAD</span>
+                <span className="rate-value font-mono-data">{rates.rates?.CAD?.toFixed(4) || 'N/A'} CAD</span>
+              </div>
+              <div className="rate-row">
+                <span className="rate-pair">USD / CHF</span>
+                <span className="rate-value font-mono-data">{rates.rates?.CHF?.toFixed(4) || 'N/A'} CHF</span>
               </div>
             </div>
           </BrutalistCard>
-        </div>
+        </motion.div>
 
         {/* WIDGET 3: MOVIES */}
-        <div className="grid-span-4">
-          <BrutalistCard title="Популярні Фільми // Popular Movies" icon={<Film size={18} />} accent="orange">
+        <motion.div variants={itemVariants} className="grid-span-4">
+          <BrutalistCard title="КІНОХІТИ РОКУ // POPULAR MOVIES" icon={<Film size={18} />} accent="orange">
             <div className="movies-list">
               {movies && movies.length > 0 ? (
                 movies.slice(0, 4).map((movie, idx) => (
-                  <div key={idx} className="movie-item brutalist-border">
+                  <div key={idx} className="movie-item">
                     <div className="movie-poster-wrap">
                       <img src={movie.poster} alt={movie.title} className="movie-poster" />
                       <div className="movie-header-info">
                         <span className="movie-title">{movie.title}</span>
-                        <span className="movie-rating font-mono-data">{movie.rating}</span>
+                        <span className="movie-rating font-mono-data">★ {movie.rating}</span>
                       </div>
                     </div>
                     <div className="movie-details">
                       <p className="movie-overview">{movie.overview}</p>
-                      {movie.previewUrl && (
-                        <div className="movie-video-wrap">
-                          <video 
-                            ref={el => videoRefs.current[idx] = el}
-                            src={movie.previewUrl} 
-                            controls 
-                            className="movie-video brutalist-border"
-                            preload="none"
-                            poster={movie.poster}
-                            onPlay={() => {
-                              // Pause all audio previews when playing video
-                              Object.values(audioRefs.current).forEach(audio => {
-                                if (audio) audio.pause();
-                              });
-                            }}
-                          />
-                        </div>
-                      )}
                     </div>
                   </div>
                 ))
               ) : (
-                <div className="empty-message font-mono-data">NO FILM ARCHIVES AVAILABLE.</div>
+                <div className="empty-message font-mono-data">КІНОАРХІВИ ОНОВЛЮЮТЬСЯ.</div>
               )}
             </div>
           </BrutalistCard>
-        </div>
+        </motion.div>
 
-        {/* WIDGET 4: POPULAR SONGS */}
-        <div className="grid-span-4">
-          <BrutalistCard title="Популярні Пісні // Popular Songs" icon={<Music size={18} />} accent="pink">
+        {/* WIDGET 4: MUSIC (Songs) */}
+        <motion.div variants={itemVariants} className="grid-span-4">
+          <BrutalistCard title="ПОПУЛЯРНІ ПІСНІ // HIT SONGS" icon={<Music size={18} />} accent="pink">
             <div className="songs-list">
               {songs && songs.length > 0 ? (
-                songs.slice(0, 3).map((song) => (
-                  <div key={song.id} className="song-item brutalist-border">
-                    <img src={song.artwork} alt={song.title} className="song-artwork" />
-                    <div className="song-details">
-                      <span className="song-title">{song.title}</span>
-                      <span className="song-artist">{song.artist}</span>
-                      {song.previewUrl && (
+                songs.map((song) => (
+                  <div key={song.id} className="song-item">
+                    <div className="song-left">
+                      <img src={song.artwork} alt={song.title} className="song-artwork" />
+                      <div className="song-meta">
+                        <span className="song-title">{song.title}</span>
+                        <span className="song-artist">{song.artist}</span>
+                      </div>
+                    </div>
+                    
+                    {song.previewUrl && (
+                      <div className="song-right">
                         <button 
-                          className="btn-play-preview font-mono-data"
                           onClick={() => handlePlayPreview(song.id, song.previewUrl)}
+                          className="btn-play-preview"
+                          title="Послухати прев'ю"
                         >
-                          <Volume2 size={12} className="inline mr-1" /> PLAY PREVIEW
+                          <Volume2 size={14} />
                           <audio 
-                            ref={el => audioRefs.current[song.id] = el} 
-                            src={song.previewUrl} 
+                            ref={el => audioRefs.current[song.id] = el}
+                            src={song.previewUrl}
                             preload="none"
                           />
                         </button>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
                 ))
               ) : (
-                <div className="empty-message font-mono-data">AUDIO SERVER OFFLINE.</div>
+                <div className="empty-message font-mono-data">АУДІОАРХІВ ТИМЧАСОВО ОФЛАЙН.</div>
               )}
             </div>
           </BrutalistCard>
-        </div>
+        </motion.div>
 
         {/* WIDGET 5: MEMES */}
-        <div className="grid-span-4">
-          <BrutalistCard title="Популярні Меми // Trending Memes" icon={<Smile size={18} />} accent="cyan">
+        <motion.div variants={itemVariants} className="grid-span-4">
+          <BrutalistCard title="КУЛЬТОВІ МЕМИ // POPULAR MEMES" icon={<Smile size={18} />} accent="cyan">
             <div className="meme-text-list">
               {memes && memes.length > 0 ? (
                 memes.map((meme, idx) => (
@@ -207,22 +228,22 @@ export default function Dashboard({ date, data, onBack }) {
               )}
             </div>
           </BrutalistCard>
-        </div>
+        </motion.div>
 
         {/* WIDGET 6: YOUTUBE TRENDS */}
-        <div className="grid-span-4">
-          <BrutalistCard title="Вірусні Відео // YouTube Legends" icon={<Tv size={18} />} accent="orange">
+        <motion.div variants={itemVariants} className="grid-span-4">
+          <BrutalistCard title="ВІДЕОЛЕГЕНДИ // YOUTUBE TRENDS" icon={<Tv size={18} />} accent="orange">
             <div className="youtube-display">
               {youtube && youtube.length > 0 ? (
                 youtube.slice(0, 1).map((video, idx) => (
                   <div key={idx} className="yt-content">
                     <div className="yt-header-title">{video.title}</div>
                     <div className="yt-meta font-mono-data">
-                      <span>CHANNEL: {video.channel.toUpperCase()}</span>
-                      <span>VIEWS: {video.views}</span>
+                      <span>КАНАЛ: {video.channel.toUpperCase()}</span>
+                      <span>ПЕРЕГЛЯДИ: {video.views}</span>
                     </div>
                     {video.id ? (
-                      <div className="yt-embed-wrap brutalist-border">
+                      <div className="yt-embed-wrap">
                         <iframe
                           title={video.title}
                           src={`https://www.youtube.com/embed/${video.id}`}
@@ -233,19 +254,19 @@ export default function Dashboard({ date, data, onBack }) {
                         ></iframe>
                       </div>
                     ) : (
-                      <div className="yt-no-video font-mono-data">NO VIDEO SOURCE FOUND.</div>
+                      <div className="yt-no-video font-mono-data">ВІДЕО НЕ ЗНАЙДЕНО.</div>
                     )}
                     <p className="yt-desc mt-2">{video.desc}</p>
                   </div>
                 ))
               ) : (
-                <div className="empty-message font-mono-data">STREAMING NODE OFFLINE.</div>
+                <div className="empty-message font-mono-data">ВІДЕОАРХІВ НЕ ДОСТУПНИЙ.</div>
               )}
             </div>
           </BrutalistCard>
-        </div>
+        </motion.div>
 
-      </div>
+      </motion.div>
     </div>
   );
 }

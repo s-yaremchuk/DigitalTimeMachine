@@ -3,6 +3,7 @@ import Portal from './components/Portal';
 import Dashboard from './components/Dashboard';
 import { fetchAllTimeMachineData } from './services/api';
 import { Radio } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function App() {
   const [selectedDate, setSelectedDate] = useState('');
@@ -36,18 +37,18 @@ export default function App() {
       {/* Texture grain filter */}
       <div className="noise-overlay" />
 
-      {/* Main Header */}
-      <header className="main-header brutalist-border brutalist-shadow-yellow">
-        <div className="header-brand">
-          <h1 className="main-title">DIGITAL TIME MACHINE</h1>
-        </div>
+      {/* Main Newspaper Header Banner */}
+      <header className="main-header">
+        <h1 className="main-title">CHRONO POST</h1>
         <div className="header-tagline font-mono-data">
-          SWISS BRUTALISM EDITION // ХРОНОЛОГІЧНИЙ АРХІВ
+          <span>№ {new Date().getDate() * 3 + 12} // ЧАСОПИС</span>
+          <span>КИЇВ, {new Date().toLocaleDateString('uk-UA', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+          <span>АРХІВ ВАРП-ПЕРЕХОДІВ</span>
         </div>
       </header>
 
       {/* Main Page Area */}
-      <main className="main-content-area">
+      <main className="main-content-area" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         {error && (
           <div className="error-alert brutalist-border brutalist-shadow-pink font-mono-data">
             <Radio size={20} className="inline mr-2 animate-bounce" /> {error}
@@ -55,33 +56,58 @@ export default function App() {
           </div>
         )}
 
-        {loading ? (
-          /* Smooth, minimalist loading state without shaking */
-          <div className="loader-container brutalist-border brutalist-shadow-cyan">
-            <div className="loader-spinner"></div>
-            <h2 className="loader-title">ЗАВАНТАЖЕННЯ ДАНИХ // RETRIEVING ARCHIVES</h2>
-            <p className="loader-desc font-mono-data">Будь ласка, зачекайте. Формується медіа-карта обраного року...</p>
-          </div>
-        ) : !selectedDate ? (
-          /* Date selector screen */
-          <Portal onLaunch={handleLaunch} />
-        ) : (
-          /* Time Travel Dashboard */
-          <Dashboard 
-            date={selectedDate} 
-            data={timeMachineData} 
-            onBack={handleBack} 
-          />
-        )}
+        <AnimatePresence mode="wait">
+          {loading ? (
+            /* Smooth, minimalist loading state with fade */
+            <motion.div 
+              key="loader"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="loader-container"
+            >
+              <div className="loader-spinner"></div>
+              <h2 className="loader-title">ПІДГОТОВКА ВИПУСКУ</h2>
+              <p className="loader-desc font-mono-data">Завантажуємо події, пісні, фільми та курси валют для вашої хроніки...</p>
+            </motion.div>
+          ) : !selectedDate ? (
+            /* Date selector screen */
+            <motion.div
+              key="portal"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+              style={{ display: 'flex', flex: 1, flexDirection: 'column' }}
+            >
+              <Portal onLaunch={handleLaunch} />
+            </motion.div>
+          ) : (
+            /* Time Travel Dashboard */
+            <motion.div
+              key="dashboard"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <Dashboard 
+                date={selectedDate} 
+                data={timeMachineData} 
+                onBack={handleBack} 
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
 
       {/* Main Footer */}
-      <footer className="main-footer brutalist-border brutalist-shadow-green font-mono-data">
+      <footer className="main-footer font-mono-data">
         <div className="footer-left">
           © {new Date().getFullYear()} DIGITAL TIME MACHINE
         </div>
         <div className="footer-right">
-          CHRONO INDEX // STABLE VERSION
+          CHRONO INDEX // SWISS NEWSPRINT EDITION
         </div>
       </footer>
     </div>

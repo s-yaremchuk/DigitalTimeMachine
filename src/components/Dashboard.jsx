@@ -1,27 +1,27 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { ArrowLeft, Volume2, Radio } from 'lucide-react';
 import NewspaperArticle from './NewspaperArticle';
 import PageStains from './PageStains';
 import { motion } from 'framer-motion';
 
-// Container variants for staggered entrance (slower stagger for a more obvious sequence)
+// Container variants for staggered entrance
 const containerVariants = {
   hidden: { opacity: 1 },
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.28,
-      delayChildren: 0.1
+      staggerChildren: 0.15,
+      delayChildren: 0.05
     }
   }
 };
 
-// Ink Drying effect: starts very blurry and lower down, focuses slowly
+// Ink Drying effect: starts blurred & hidden, transitions to sharp and fully visible
 const inkFocusVariants = {
   hidden: { 
     opacity: 0, 
-    filter: 'blur(10px)',
-    y: 28
+    filter: 'blur(8px)',
+    y: 20
   },
   show: { 
     opacity: 1, 
@@ -29,34 +29,64 @@ const inkFocusVariants = {
     y: 0,
     transition: { 
       type: 'easeOut',
-      duration: 0.85
+      duration: 0.65
     } 
   }
 };
 
-// Jitter/Vibration effect for big headlines (more intense shake representing press stamping)
+// Jitter/Vibration effect for big headlines (simulates mechanical press vibration)
 const headlineJitterVariants = {
   hidden: { 
     opacity: 0, 
-    filter: 'blur(12px)',
-    y: 35
+    filter: 'blur(10px)',
+    y: 25
   },
   show: {
     opacity: 1,
     filter: 'blur(0px)',
-    y: [35, 0, -6, 5, -3, 2, -1, 0],
+    y: [25, 0, -4, 3, -2, 1, -0.5, 0],
     transition: {
       y: {
         type: 'keyframes',
-        duration: 0.8,
+        duration: 0.7,
         times: [0, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
         ease: 'easeInOut'
       },
-      opacity: { duration: 0.6 },
-      filter: { duration: 0.6 }
+      opacity: { duration: 0.5 },
+      filter: { duration: 0.5 }
     }
   }
 };
+
+// Performant Typewriter component that updates text substring in DOM
+function TypewriterText({ text, speed = 20, delay = 0 }) {
+  const [displayedText, setDisplayedText] = useState('');
+
+  useEffect(() => {
+    if (!text) return;
+    
+    let timer;
+    const startTimeout = setTimeout(() => {
+      let i = 0;
+      timer = setInterval(() => {
+        if (i < text.length) {
+          setDisplayedText(text.substring(0, i + 1));
+          i++;
+        } else {
+          clearInterval(timer);
+        }
+      }, speed);
+    }, delay);
+
+    return () => {
+      clearTimeout(startTimeout);
+      if (timer) clearInterval(timer);
+    };
+  }, [text, speed, delay]);
+
+  if (!text) return null;
+  return <>{displayedText}</>;
+}
 
 export default function Dashboard({ date, data, onBack }) {
   const audioRefs = useRef({});
@@ -138,17 +168,18 @@ export default function Dashboard({ date, data, onBack }) {
               {news && news.length > 0 ? (
                 news.map((item, idx) => (
                   <div key={idx} className="news-item">
-                    {/* Applying jitter to the news headlines on load */}
                     <motion.h3 
                       variants={headlineJitterVariants} 
                       className="news-headline font-serif-title"
                     >
                       <a href={item.link || "#"} target="_blank" rel="noopener noreferrer">
-                        {item.title}
+                        <TypewriterText text={item.title} speed={25} delay={idx * 350} />
                       </a>
                     </motion.h3>
                     <div className="news-date font-sans-meta">— {item.date || "ІСТОРИЧНЕ ДЖЕРЕЛО"}</div>
-                    <p className="news-desc font-serif-body">{item.desc}</p>
+                    <p className="news-desc font-serif-body">
+                      <TypewriterText text={item.desc} speed={12} delay={idx * 350 + 150} />
+                    </p>
                   </div>
                 ))
               ) : (
@@ -172,12 +203,14 @@ export default function Dashboard({ date, data, onBack }) {
                           variants={headlineJitterVariants}
                           className="movie-title font-serif-title"
                         >
-                          {movie.title}
+                          <TypewriterText text={movie.title} speed={25} delay={idx * 300 + 100} />
                         </motion.h4>
                         <span className="movie-rating font-sans-meta">★ {movie.rating}</span>
                       </div>
                     </div>
-                    <p className="movie-overview font-serif-body">{movie.overview}</p>
+                    <p className="movie-overview font-serif-body">
+                      <TypewriterText text={movie.overview} speed={12} delay={idx * 300 + 200} />
+                    </p>
                   </div>
                 ))
               ) : (
@@ -192,7 +225,7 @@ export default function Dashboard({ date, data, onBack }) {
           <NewspaperArticle rubric="МУЗИКА">
             <div className="songs-list">
               {songs && songs.length > 0 ? (
-                songs.map((song) => (
+                songs.map((song, idx) => (
                   <div key={song.id} className="song-item">
                     <div className="song-left">
                       <img src={song.artwork} alt={song.title} className="song-artwork" />
@@ -201,9 +234,11 @@ export default function Dashboard({ date, data, onBack }) {
                           variants={headlineJitterVariants}
                           className="song-title font-serif-title"
                         >
-                          {song.title}
+                          <TypewriterText text={song.title} speed={25} delay={idx * 200 + 100} />
                         </motion.h4>
-                        <span className="song-artist font-sans-meta">{song.artist}</span>
+                        <span className="song-artist font-sans-meta">
+                          <TypewriterText text={song.artist} speed={20} delay={idx * 200 + 200} />
+                        </span>
                       </div>
                     </div>
                     
@@ -246,7 +281,7 @@ export default function Dashboard({ date, data, onBack }) {
                       variants={headlineJitterVariants}
                       className="yt-header-title font-serif-title"
                     >
-                      {video.title}
+                      <TypewriterText text={video.title} speed={25} delay={100} />
                     </motion.h3>
                     
                     {video.id ? (
@@ -264,7 +299,7 @@ export default function Dashboard({ date, data, onBack }) {
                       <div className="yt-no-video font-sans-meta">ВІДЕО НЕ ЗНАЙДЕНО.</div>
                     )}
                     <p className="yt-caption font-serif-caption">
-                      Матеріал з каналу {video.channel.toUpperCase()} (Переглядів: {video.views}). {video.desc}
+                      Матеріал з каналу {video.channel.toUpperCase()} (Переглядів: {video.views}). <TypewriterText text={video.desc} speed={12} delay={300} />
                     </p>
                   </div>
                 ))
@@ -286,9 +321,11 @@ export default function Dashboard({ date, data, onBack }) {
                       variants={headlineJitterVariants}
                       className="meme-text-title font-serif-title"
                     >
-                      {meme.title}
+                      <TypewriterText text={meme.title} speed={25} delay={idx * 250 + 100} />
                     </motion.h4>
-                    <p className="meme-text-desc font-serif-body">{meme.desc}</p>
+                    <p className="meme-text-desc font-serif-body">
+                      <TypewriterText text={meme.desc} speed={12} delay={idx * 250 + 200} />
+                    </p>
                   </div>
                 ))
               ) : (
@@ -303,7 +340,9 @@ export default function Dashboard({ date, data, onBack }) {
           <NewspaperArticle rubric="ЕКОНОМІКА">
             <div className="rates-container flex-col-stretch">
               <div className="rates-grid">
-                <p className="rates-lead font-serif-body mb-3">Офіційний фінансовий звіт за обрану дату. Курси вказані щодо долара США.</p>
+                <p className="rates-lead font-serif-body mb-3">
+                  <TypewriterText text="Офіційний фінансовий звіт за обрану дату. Курси вказані щодо долара США." speed={12} delay={100} />
+                </p>
                 <div className="rate-row">
                   <span className="rate-pair font-sans-meta">USD / EUR</span>
                   <span className="rate-value font-serif-body">{rates.rates?.EUR?.toFixed(4) || 'N/A'}</span>

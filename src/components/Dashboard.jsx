@@ -123,7 +123,7 @@ export default function Dashboard({ date, data, onBack }) {
           <NewspaperArticle rubric="КІНЕМАТОГРАФ">
             <div className="movies-list">
               {movies && movies.length > 0 ? (
-                movies.slice(0, 4).map((movie, idx) => (
+                movies.slice(0, 3).map((movie, idx) => (
                   <div key={idx} className="movie-item">
                     <div className="movie-poster-wrap">
                       <img src={movie.poster} alt={movie.title} className="movie-poster" />
@@ -225,7 +225,7 @@ export default function Dashboard({ date, data, onBack }) {
           <NewspaperArticle rubric="КУЛЬТУРА">
             <div className="meme-text-list">
               {memes && memes.length > 0 ? (
-                memes.map((meme, idx) => (
+                memes.slice(0, 3).map((meme, idx) => (
                   <div key={idx} className="meme-text-item">
                     <h4 className="meme-text-title font-serif-title">{meme.title}</h4>
                     <p className="meme-text-desc font-serif-body">{meme.desc}</p>

@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
-import { Newspaper, Coins, Film, Music, Tv, Smile, ArrowLeft, Volume2 } from 'lucide-react';
-import BrutalistCard from './BrutalistCard';
+import { ArrowLeft, Volume2 } from 'lucide-react';
+import NewspaperArticle from './NewspaperArticle';
 import { motion } from 'framer-motion';
 
 // Container variants for stagger animation
@@ -9,21 +9,21 @@ const containerVariants = {
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.07,
+      staggerChildren: 0.08,
       delayChildren: 0.1
     }
   }
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 15 },
   show: { 
     opacity: 1, 
     y: 0, 
     transition: { 
       type: 'spring', 
-      stiffness: 90, 
-      damping: 14 
+      stiffness: 100, 
+      damping: 15 
     } 
   }
 };
@@ -66,89 +66,61 @@ export default function Dashboard({ date, data, onBack }) {
   return (
     <div className="dashboard-container">
       
-      {/* Dashboard Top Navigation bar */}
+      {/* Dashboard Top Navigation bar (Sub-Masthead) */}
       <div className="dashboard-nav">
         <motion.button 
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="btn-back" 
+          className="btn-back font-sans-meta" 
           onClick={onBack}
         >
           <ArrowLeft size={16} />
-          <span>НАЗАД // GO BACK</span>
+          <span>НАЗАД ДО АРХІВУ</span>
         </motion.button>
-        <div className="nav-title">
-          ВИПУСК: <span className="highlight-text">{formatDate(date)}</span>
+        <div className="nav-title font-serif">
+          ВИПУСК: {formatDate(date)}
         </div>
-        <div className="nav-coordinates font-mono-data">
-          АРХІВНА ХРОНІКА // ARCHIVE REPORT
+        <div className="nav-coordinates font-sans-meta">
+          АРХІВНА ХРОНІКА
         </div>
       </div>
+
+      <div className="thick-rule"></div>
 
       {/* Grid Content Layout with Stagger Animations */}
       <motion.div 
         variants={containerVariants}
         initial="hidden"
         animate="show"
-        className="dashboard-grid"
+        className="newspaper-grid"
       >
         
-        {/* WIDGET 1: NEWS */}
-        <motion.div variants={itemVariants} className="grid-span-4">
-          <BrutalistCard title="ГОЛОВНІ ПОДІЇ // HISTORICAL EVENTS" icon={<Newspaper size={18} />} accent="green">
-            <div className="news-list">
+        {/* WIDGET 1: NEWS (Spans 2 columns, multi-column text flow) */}
+        <motion.div variants={itemVariants} className="grid-span-2 article-border-right">
+          <NewspaperArticle rubric="ГОЛОВНІ ПОДІЇ // В СВІТІ ТА СУСПІЛЬСТВІ">
+            <div className="news-list multi-column-text drop-cap">
               {news && news.length > 0 ? (
                 news.map((item, idx) => (
-                  <a 
-                    key={idx} 
-                    href={item.link || "#"} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="news-item"
-                  >
-                    <div className="news-date font-mono-data">{item.date || "HISTORICAL"}</div>
-                    <div className="news-headline">{item.title}</div>
-                    <div className="news-desc">{item.desc}</div>
-                  </a>
+                  <div key={idx} className="news-item">
+                    <h3 className="news-headline font-serif-title">
+                      <a href={item.link || "#"} target="_blank" rel="noopener noreferrer">
+                        {item.title}
+                      </a>
+                    </h3>
+                    <div className="news-date font-sans-meta">— {item.date || "ІСТОРИЧНЕ ДЖЕРЕЛО"}</div>
+                    <p className="news-desc font-serif-body">{item.desc}</p>
+                  </div>
                 ))
               ) : (
-                <div className="empty-message font-mono-data">АРХІВНІ ЗАПИСИ ВІДСУТНІ.</div>
+                <p className="empty-message font-serif-body">Архіви за цей день не збереглися.</p>
               )}
             </div>
-          </BrutalistCard>
+          </NewspaperArticle>
         </motion.div>
 
-        {/* WIDGET 2: RATES */}
-        <motion.div variants={itemVariants} className="grid-span-4">
-          <BrutalistCard title="КУРС ВАЛЮТ // EXCHANGE RATES" icon={<Coins size={18} />} accent="yellow">
-            <div className="rates-grid">
-              <div className="rate-row">
-                <span className="rate-pair">USD / EUR</span>
-                <span className="rate-value font-mono-data">{rates.rates?.EUR?.toFixed(4) || 'N/A'} EUR</span>
-              </div>
-              <div className="rate-row">
-                <span className="rate-pair">USD / GBP</span>
-                <span className="rate-value font-mono-data">{rates.rates?.GBP?.toFixed(4) || 'N/A'} GBP</span>
-              </div>
-              <div className="rate-row">
-                <span className="rate-pair">USD / JPY</span>
-                <span className="rate-value font-mono-data">{rates.rates?.JPY?.toFixed(2) || 'N/A'} JPY</span>
-              </div>
-              <div className="rate-row">
-                <span className="rate-pair">USD / CAD</span>
-                <span className="rate-value font-mono-data">{rates.rates?.CAD?.toFixed(4) || 'N/A'} CAD</span>
-              </div>
-              <div className="rate-row">
-                <span className="rate-pair">USD / CHF</span>
-                <span className="rate-value font-mono-data">{rates.rates?.CHF?.toFixed(4) || 'N/A'} CHF</span>
-              </div>
-            </div>
-          </BrutalistCard>
-        </motion.div>
-
-        {/* WIDGET 3: MOVIES */}
-        <motion.div variants={itemVariants} className="grid-span-4">
-          <BrutalistCard title="КІНОХІТИ РОКУ // POPULAR MOVIES" icon={<Film size={18} />} accent="orange">
+        {/* WIDGET 3: MOVIES (Spans 1 column) */}
+        <motion.div variants={itemVariants} className="grid-span-1 article-border-right">
+          <NewspaperArticle rubric="КІНЕМАТОГРАФ // ПОПУЛЯРНІ СТРІЧКИ">
             <div className="movies-list">
               {movies && movies.length > 0 ? (
                 movies.slice(0, 4).map((movie, idx) => (
@@ -156,25 +128,23 @@ export default function Dashboard({ date, data, onBack }) {
                     <div className="movie-poster-wrap">
                       <img src={movie.poster} alt={movie.title} className="movie-poster" />
                       <div className="movie-header-info">
-                        <span className="movie-title">{movie.title}</span>
-                        <span className="movie-rating font-mono-data">★ {movie.rating}</span>
+                        <h4 className="movie-title font-serif-title">{movie.title}</h4>
+                        <span className="movie-rating font-sans-meta">★ {movie.rating}</span>
                       </div>
                     </div>
-                    <div className="movie-details">
-                      <p className="movie-overview">{movie.overview}</p>
-                    </div>
+                    <p className="movie-overview font-serif-body">{movie.overview}</p>
                   </div>
                 ))
               ) : (
-                <div className="empty-message font-mono-data">КІНОАРХІВИ ОНОВЛЮЮТЬСЯ.</div>
+                <p className="empty-message font-serif-body">Кіноархіви оновлюються.</p>
               )}
             </div>
-          </BrutalistCard>
+          </NewspaperArticle>
         </motion.div>
 
-        {/* WIDGET 4: MUSIC (Songs) */}
-        <motion.div variants={itemVariants} className="grid-span-4">
-          <BrutalistCard title="ПОПУЛЯРНІ ПІСНІ // HIT SONGS" icon={<Music size={18} />} accent="pink">
+        {/* WIDGET 4: MUSIC (Spans 1 column) */}
+        <motion.div variants={itemVariants} className="grid-span-1">
+          <NewspaperArticle rubric="МУЗИКА // ХІТ-ПАРАД">
             <div className="songs-list">
               {songs && songs.length > 0 ? (
                 songs.map((song) => (
@@ -182,8 +152,8 @@ export default function Dashboard({ date, data, onBack }) {
                     <div className="song-left">
                       <img src={song.artwork} alt={song.title} className="song-artwork" />
                       <div className="song-meta">
-                        <span className="song-title">{song.title}</span>
-                        <span className="song-artist">{song.artist}</span>
+                        <span className="song-title font-serif-title">{song.title}</span>
+                        <span className="song-artist font-sans-meta">{song.artist}</span>
                       </div>
                     </div>
                     
@@ -206,42 +176,24 @@ export default function Dashboard({ date, data, onBack }) {
                   </div>
                 ))
               ) : (
-                <div className="empty-message font-mono-data">АУДІОАРХІВ ТИМЧАСОВО ОФЛАЙН.</div>
+                <p className="empty-message font-serif-body">Аудіоархів тимчасово офлайн.</p>
               )}
             </div>
-          </BrutalistCard>
+          </NewspaperArticle>
         </motion.div>
 
-        {/* WIDGET 5: MEMES */}
-        <motion.div variants={itemVariants} className="grid-span-4">
-          <BrutalistCard title="КУЛЬТОВІ МЕМИ // POPULAR MEMES" icon={<Smile size={18} />} accent="cyan">
-            <div className="meme-text-list">
-              {memes && memes.length > 0 ? (
-                memes.map((meme, idx) => (
-                  <div key={idx} className="meme-text-item brutalist-border">
-                    <div className="meme-text-title">{meme.title}</div>
-                    <p className="meme-text-desc">{meme.desc}</p>
-                  </div>
-                ))
-              ) : (
-                <div className="empty-message font-mono-data">АРХІВ МЕМІВ ПОРОЖНІЙ.</div>
-              )}
-            </div>
-          </BrutalistCard>
-        </motion.div>
+        {/* SECOND ROW LINE DIVIDER */}
+        <div className="grid-rule-horizontal"></div>
 
-        {/* WIDGET 6: YOUTUBE TRENDS */}
-        <motion.div variants={itemVariants} className="grid-span-4">
-          <BrutalistCard title="ВІДЕОЛЕГЕНДИ // YOUTUBE TRENDS" icon={<Tv size={18} />} accent="orange">
+        {/* WIDGET 6: YOUTUBE TRENDS (Spans 2 columns, photo layout) */}
+        <motion.div variants={itemVariants} className="grid-span-2 article-border-right">
+          <NewspaperArticle rubric="ВІДЕОАРХІВ // YOUTUBE ТРЕНДИ">
             <div className="youtube-display">
               {youtube && youtube.length > 0 ? (
                 youtube.slice(0, 1).map((video, idx) => (
                   <div key={idx} className="yt-content">
-                    <div className="yt-header-title">{video.title}</div>
-                    <div className="yt-meta font-mono-data">
-                      <span>КАНАЛ: {video.channel.toUpperCase()}</span>
-                      <span>ПЕРЕГЛЯДИ: {video.views}</span>
-                    </div>
+                    <h3 className="yt-header-title font-serif-title">{video.title}</h3>
+                    
                     {video.id ? (
                       <div className="yt-embed-wrap">
                         <iframe
@@ -254,19 +206,77 @@ export default function Dashboard({ date, data, onBack }) {
                         ></iframe>
                       </div>
                     ) : (
-                      <div className="yt-no-video font-mono-data">ВІДЕО НЕ ЗНАЙДЕНО.</div>
+                      <div className="yt-no-video font-sans-meta">ВІДЕО НЕ ЗНАЙДЕНО.</div>
                     )}
-                    <p className="yt-desc mt-2">{video.desc}</p>
+                    <p className="yt-caption font-serif-caption">
+                      Матеріал з каналу {video.channel.toUpperCase()} (Переглядів: {video.views}). {video.desc}
+                    </p>
                   </div>
                 ))
               ) : (
-                <div className="empty-message font-mono-data">ВІДЕОАРХІВ НЕ ДОСТУПНИЙ.</div>
+                <p className="empty-message font-serif-body">Відеоархів недоступний.</p>
               )}
             </div>
-          </BrutalistCard>
+          </NewspaperArticle>
+        </motion.div>
+
+        {/* WIDGET 5: MEMES (Spans 1 column) */}
+        <motion.div variants={itemVariants} className="grid-span-1 article-border-right">
+          <NewspaperArticle rubric="КУЛЬТУРА // ПОПУЛЯРНІ МЕМИ">
+            <div className="meme-text-list">
+              {memes && memes.length > 0 ? (
+                memes.map((meme, idx) => (
+                  <div key={idx} className="meme-text-item">
+                    <h4 className="meme-text-title font-serif-title">{meme.title}</h4>
+                    <p className="meme-text-desc font-serif-body">{meme.desc}</p>
+                  </div>
+                ))
+              ) : (
+                <p className="empty-message font-serif-body">Архів мемів порожній.</p>
+              )}
+            </div>
+          </NewspaperArticle>
+        </motion.div>
+
+        {/* WIDGET 2: RATES (Spans 1 column) */}
+        <motion.div variants={itemVariants} className="grid-span-1">
+          <NewspaperArticle rubric="ЕКОНОМІКА // КУРСИ ВАЛЮТ">
+            <div className="rates-grid">
+              <p className="rates-lead font-serif-body mb-2">Офіційний фінансовий звіт за обрану дату. Курси вказані щодо долара США.</p>
+              <div className="rate-row">
+                <span className="rate-pair font-sans-meta">USD / EUR</span>
+                <span className="rate-value font-serif-body">{rates.rates?.EUR?.toFixed(4) || 'N/A'}</span>
+              </div>
+              <div className="rate-row">
+                <span className="rate-pair font-sans-meta">USD / GBP</span>
+                <span className="rate-value font-serif-body">{rates.rates?.GBP?.toFixed(4) || 'N/A'}</span>
+              </div>
+              <div className="rate-row">
+                <span className="rate-pair font-sans-meta">USD / JPY</span>
+                <span className="rate-value font-serif-body">{rates.rates?.JPY?.toFixed(2) || 'N/A'}</span>
+              </div>
+              <div className="rate-row">
+                <span className="rate-pair font-sans-meta">USD / CAD</span>
+                <span className="rate-value font-serif-body">{rates.rates?.CAD?.toFixed(4) || 'N/A'}</span>
+              </div>
+              <div className="rate-row">
+                <span className="rate-pair font-sans-meta">USD / CHF</span>
+                <span className="rate-value font-serif-body">{rates.rates?.CHF?.toFixed(4) || 'N/A'}</span>
+              </div>
+            </div>
+          </NewspaperArticle>
         </motion.div>
 
       </motion.div>
+
+      <div className="thick-rule"></div>
+      
+      {/* Folio Line */}
+      <div className="folio-line font-sans-meta">
+        <span>СТОР. 1</span>
+        <span>DIGITAL TIME MACHINE // АРХІВ</span>
+      </div>
+
     </div>
   );
 }

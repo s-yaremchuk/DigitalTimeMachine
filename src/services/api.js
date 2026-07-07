@@ -94,6 +94,18 @@ const HISTORICAL_MOVIES = {
     { title: "Inside Out 2 (2024)", rating: "7.7", overview: "Joy, Sadness, Anger, Fear and Disgust, who've been running a successful operation, don't know how to feel when Anxiety shows up.", poster: "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=500" },
     { title: "Furiosa (2024)", rating: "7.6", overview: "The origin story of renegade warrior Furiosa before her encounter and alliance with Mad Max.", poster: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=500" },
     { title: "Civil War (2024)", rating: "7.1", overview: "A journey across a dystopian future America, following a team of military-embedded journalists as they race to reach DC before rebel factions descend.", poster: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=500" }
+  ],
+  2025: [
+    { title: "Superman (2025)", rating: "8.1", overview: "The Man of Steel balances his Kryptonian heritage with his human upbringing, guiding humanity with truth and justice.", poster: "https://images.unsplash.com/photo-1569003339405-ea396a5a8a90?w=500" },
+    { title: "Avatar: Fire and Ash (2025)", rating: "7.9", overview: "Jake Sully and Neytiri face a new aggressive clan of Na'vi, the Ash People, who challenge the peace on Pandora.", poster: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500" },
+    { title: "Minecraft (2025)", rating: "6.9", overview: "A live-action adaptation of the sandbox game featuring Jack Black as Steve on an adventure in the Overworld.", poster: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=500" },
+    { title: "Captain America: Brave New World (2025)", rating: "7.2", overview: "Sam Wilson takes up the shield as Captain America in a global conspiracy involving a newly elected US President.", poster: "https://images.unsplash.com/photo-1569003339405-ea396a5a8a90?w=500" }
+  ],
+  2026: [
+    { title: "Avengers: Doomsday (2026)", rating: "8.8", overview: "Doctor Doom emerges from the multiverse as a major threat, forcing the Avengers to assemble once again.", poster: "https://images.unsplash.com/photo-1569003339405-ea396a5a8a90?w=500" },
+    { title: "The Mandalorian & Grogu (2026)", rating: "8.0", overview: "Din Djarin and his apprentice Grogu embark on a new cinematic Star Wars adventure across the outer rim.", poster: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500" },
+    { title: "Toy Story 5 (2026)", rating: "7.9", overview: "Woody, Buzz and the gang return to deal with a new threat: kids being obsessed with electronic screens.", poster: "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=500" },
+    { title: "Shrek 5 (2026)", rating: "8.2", overview: "Shrek, Fiona, Donkey and Puss in Boots return for a brand new adventure in the Kingdom of Far Far Away.", poster: "https://images.unsplash.com/photo-1594744803329-e58b31de215f?w=500" }
   ]
 };
 
@@ -229,6 +241,16 @@ const HISTORICAL_MEMES = {
     { title: "Chill Guy (2024)", desc: "Намальований пес у светрі, що уособлює повний спокій та незворушність перед будь-якими життєвими негараздами." },
     { title: "Demure & Mindful (2024)", desc: "Іронічний тренд про те, як поводитися скромно, охайно та з повагою в повсякденному житті." },
     { title: "Hawk Tuah (2024)", desc: "Фраза дівчини з вірусного вуличного інтерв'ю, яка миттєво розлетілася на тисячі звукових доріжок та мемів." }
+  ],
+  2025: [
+    { title: "Moo Deng (2025)", desc: "Маленьке гіперактивне дитинча карликового бегемота з Таїланду, яке підкорило соцмережі своєю милою агресією та непосидючістю." },
+    { title: "Pesto the Penguin (2025)", desc: "Гігантське пухнасте пінгвінятко королівського пінгвіна з Австралії, яке своєю величезною вагою затьмарило обох батьків." },
+    { title: "AI Voice Mode Calls (2025)", desc: "Користувачі масово спілкуються, закохуються та сперечаються з реалістичними AI-голосами, які вміють ідеально зітхати та жартувати." }
+  ],
+  2026: [
+    { title: "Apple Vision Pro in Public (2026)", desc: "Відео людей, які гуляють містом, водять машини чи їдять у ресторанах, дивно «щипаючи» повітря пальцями перед собою." },
+    { title: "Sora / AI Video Fails (2026)", desc: "Абсурдні та смішні згенеровані штучним інтелектом ролики, де коти мають вісім лап, а люди їдять макарони крізь власні щоки." },
+    { title: "Starship Catch (2026)", desc: "Інженерний тріумф і тисячі мемів про величезні металеві «палички для їжі» (Chopsticks), що ловлять гігантську ракету в повітрі." }
   ]
 };
 
@@ -265,6 +287,15 @@ const HISTORICAL_YOUTUBE = {
   ],
   2023: [
     { title: "Minecraft Trial Chamber Reveal", channel: "Minecraft", views: "25M", id: "eJz39eFvC2w", desc: "Huge announcement video for the major trial chambers update." }
+  ],
+  2024: [
+    { title: "GTA VI - Official Trailer 1", channel: "Rockstar Games", views: "210M", id: "QdBZY2fkU-0", desc: "The highly anticipated first trailer for Grand Theft Auto VI, breaking records upon release." }
+  ],
+  2025: [
+    { title: "Apple Vision Pro Review - A Look at the Future", channel: "Marques Brownlee", views: "45M", id: "TX9qSaDxIyg", desc: "MKBHD goes in-depth on Apple's spatial computer headset and its impact on tech." }
+  ],
+  2026: [
+    { title: "SpaceX Starship Flight 5 - Rocket Booster Catch", channel: "SpaceX", views: "18M", id: "uTC2_K-p1d8", desc: "The historic engineering test where the giant mechanical Mechazilla chopsticks caught Starship's heavy booster." }
   ]
 };
 

@@ -435,7 +435,57 @@ const getCuratedSongsList = (year) => {
   return CURATED_HITS[nearest] || CURATED_HITS[years[years.length - 1]];
 };
 
+const cleanTracks = (tracks) => {
+  const excludelist = ['tribute', 'karaoke', 'cover', 'tribute band', 'instrumental', 'originally performed by', 'tribute to', 'tribute band', 'karaoke version'];
+  return tracks.filter(track => {
+    const artist = (track.artistName || '').toLowerCase();
+    const title = (track.trackName || '').toLowerCase();
+    const album = (track.collectionName || '').toLowerCase();
+    return !excludelist.some(word => artist.includes(word) || title.includes(word) || album.includes(word));
+  });
+};
+
 export const fetchSongs = async (year) => {
+  const queryiTunes = async (term) => {
+    try {
+      const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(term)}&media=music&entity=song&limit=35`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.results && data.results.length > 0) {
+          return cleanTracks(data.results);
+        }
+      }
+    } catch (e) {
+      console.warn(`Failed to query iTunes for term "${term}":`, e);
+    }
+    return [];
+  };
+
+  // 1. Try Billboard Hot 100 query if year is after Billboard chart inception (1958)
+  let tracks = [];
+  if (year >= 1958) {
+    tracks = await queryiTunes(`Billboard Hot 100 ${year}`);
+  }
+
+  // 2. If no tracks found or too few, try "[year] hits" search
+  if (tracks.length < 4) {
+    const hitsTracks = await queryiTunes(`${year} hits`);
+    tracks = hitsTracks.length > 0 ? hitsTracks : tracks;
+  }
+
+  // 3. If we found enough tracks, format and return them
+  if (tracks.length >= 4) {
+    return tracks.slice(0, 6).map((track, index) => ({
+      id: track.trackId || `${year}-song-${index}`,
+      title: track.trackName,
+      artist: track.artistName,
+      album: track.collectionName || "Top Hits",
+      artwork: track.artworkUrl100?.replace('100x100bb', '300x300bb') || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500',
+      previewUrl: track.previewUrl
+    }));
+  }
+
+  // 4. Ultimate fallback: Use the high-quality curated hits database if API fails or returns no results
   const songsList = getCuratedSongsList(year);
   
   const songsWithMedia = await Promise.all(
@@ -458,7 +508,7 @@ export const fetchSongs = async (year) => {
           }
         }
       } catch (e) {
-        console.warn(`Failed to fetch media for song ${song.title}:`, e);
+        console.warn(`Failed to fetch media for curated song ${song.title}:`, e);
       }
       return {
         id: `${year}-song-${index}`,

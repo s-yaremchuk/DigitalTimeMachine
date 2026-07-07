@@ -333,17 +333,6 @@ body::before {
   .led-display-container { flex-direction: column; }
 }
 
-/* Custom Cursor Hiding on text */
-.font-serif-body, .font-serif-title, .news-headline, .news-desc, 
-.movie-title, .movie-overview, .song-title, .song-artist, 
-.meme-text-title, .meme-text-desc, p, h1, h2, h3, h4, h5, h6 {
-  cursor: none;
-}
-/* Restore cursor for interactive items */
-a, button, select, input, .btn-play-preview, .btn-back, [role="button"],
-a *, button *, select *, input *, .btn-play-preview *, .btn-back * {
-  cursor: pointer !important;
-}
 
 /* Kiosk Layout */
 .kiosk-container {
@@ -597,22 +586,6 @@ a *, button *, select *, input *, .btn-play-preview *, .btn-back * {
   text-transform: uppercase;
 }
 
-/* Sound Controller Switch */
-.sound-toggle-btn {
-  background: transparent;
-  border: 1px solid var(--border-color);
-  width: 30px;
-  height: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.sound-toggle-btn:hover {
-  background: var(--text-primary);
-  color: var(--bg-color);
-}
 
 /* Interactive navigation bar additions */
 .dashboard-nav-actions {

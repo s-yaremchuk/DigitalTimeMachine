@@ -1,8 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { ArrowLeft, Volume2, VolumeX, Radio } from 'lucide-react';
+import React, { useRef } from 'react';
+import { ArrowLeft, Volume2, Radio } from 'lucide-react';
 import NewspaperArticle from './NewspaperArticle';
 import PageStains from './PageStains';
-import { printingPressSound } from '../services/PrintingPressSound';
 import { motion } from 'framer-motion';
 
 // Container variants for staggered entrance
@@ -61,18 +60,6 @@ const headlineJitterVariants = {
 
 export default function Dashboard({ date, data, onBack }) {
   const audioRefs = useRef({});
-  const [isMuted, setIsMuted] = useState(() => {
-    const saved = localStorage.getItem('dtm_sound_muted');
-    return saved !== null ? JSON.parse(saved) : true;
-  });
-
-  // Handle printing press sound toggle
-  useEffect(() => {
-    printingPressSound.setMute(isMuted);
-    return () => {
-      printingPressSound.stop();
-    };
-  }, [isMuted]);
 
   const formatDate = (dateStr) => {
     const d = new Date(dateStr);
@@ -128,21 +115,6 @@ export default function Dashboard({ date, data, onBack }) {
         </div>
         
         <div className="dashboard-nav-actions">
-          {/* Printing Press Sound Toggle */}
-          <button
-            onClick={() => {
-              setIsMuted(prev => {
-                const next = !prev;
-                localStorage.setItem('dtm_sound_muted', JSON.stringify(next));
-                return next;
-              });
-            }}
-            className="sound-toggle-btn font-sans-meta"
-            title={isMuted ? "Увімкнути звук верстата" : "Вимкнути звук верстата"}
-          >
-            {isMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
-          </button>
-
           <div className="nav-coordinates font-sans-meta">
             АРХІВНА ХРОНІКА
           </div>

@@ -43,7 +43,7 @@ body::after {
   background: radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 0.04) 100%);
 }
 
-/* Paper Grain Texture with subtle animation */
+/* Paper Grain & Crumple Texture with subtle animation */
 .noise-overlay {
   position: fixed;
   top: -2%;
@@ -52,9 +52,11 @@ body::after {
   height: 104%;
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.04;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  animation: noiseFlicker 4s steps(4) infinite;
+  opacity: 0.18; /* Increased to make crumpled texture explicit */
+  mix-blend-mode: multiply; /* Blends nicely with the cream background */
+  /* Lower baseFrequency (0.015) creates folds/crumples instead of just static noise */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.015' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  animation: noiseFlicker 6s steps(3) infinite;
 }
 
 @keyframes noiseFlicker {

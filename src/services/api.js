@@ -397,12 +397,12 @@ export const fetchNews = async (dateString, targetYear) => {
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
 
-    const response = await fetch(`https://en.wikipedia.org/api/rest_v1/feed/onthisday/selected/${month}/${day}`);
+    const response = await fetch(`https://en.wikipedia.org/api/rest_v1/feed/onthisday/events/${month}/${day}`);
     if (!response.ok) throw new Error('Wikimedia request failed');
     const data = await response.json();
 
-    if (data.selected && data.selected.length > 0) {
-      const sortedEvents = data.selected
+    if (data.events && data.events.length > 0) {
+      const sortedEvents = data.events
         .map(event => ({
           title: event.text,
           year: event.year,
@@ -414,7 +414,7 @@ export const fetchNews = async (dateString, targetYear) => {
 
       return sortedEvents.slice(0, 4);
     }
-    throw new Error('No Wikimedia selected events');
+    throw new Error('No Wikimedia events found');
   } catch (error) {
     console.error('Wikimedia API error, using fallback:', error);
     return [

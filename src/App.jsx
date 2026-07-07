@@ -78,7 +78,7 @@ export default function App() {
       {/* Main Footer */}
       <footer className="main-footer brutalist-border brutalist-shadow-green font-mono-data">
         <div className="footer-left">
-          © {new Date().getFullYear()} DIGITAL TIME MACHINE // DESIGN: SWISS BRUTALISM
+          © {new Date().getFullYear()} DIGITAL TIME MACHINE
         </div>
         <div className="footer-right">
           CHRONO INDEX // STABLE VERSION

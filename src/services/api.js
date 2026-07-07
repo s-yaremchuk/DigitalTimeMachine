@@ -57,7 +57,7 @@ const HISTORICAL_MOVIES = {
     { title: "Star Wars: The Force Awakens (2015)", rating: "7.8", overview: "As a new threat to the galaxy rises, Rey, a desert scavenger, and Finn, a runaway stormtrooper, must search for the missing Luke Skywalker.", poster: "https://images.unsplash.com/photo-1593085512500-5d55148d6f0d?w=500" }
   ],
   2016: [
-    { title: "Deadpool (2016)", rating: "8.0", overview: "A former Special Forces operative turned mercenary is subjected to a rogue experiment that leaves him with accelerated healing powers.", poster: "https://images.unsplash.com/photo-1608889175123-8ec330b86f84?w=500" },
+    { title: "Deadpool (2016)", rating: "8.0", overview: "A former Special Forces operative turned mercenary is subjected to a rogue experiment that leaves him with accelerated healing powers.", poster: "https://images.unsplash.com/photo-1509281373149-e957c6296406?w=500" },
     { title: "La La Land (2016)", rating: "8.0", overview: "While navigating their careers in Los Angeles, a jazz pianist and an aspiring actress fall in love while attempting to reconcile their aspirations.", poster: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500" },
     { title: "Captain America: Civil War (2016)", rating: "7.8", overview: "Political pressure mounts to install a system of accountability when the actions of the Avengers lead to collateral damage.", poster: "https://images.unsplash.com/photo-1569003339405-ea396a5a8a90?w=500" },
     { title: "Zootopia (2016)", rating: "8.0", overview: "In a city of anthropomorphic animals, a rookie bunny cop and a cynical con artist fox must work together to uncover a conspiracy.", poster: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500" }
@@ -114,49 +114,71 @@ const HISTORICAL_MOVIES = {
 
 const HISTORICAL_MEMES = {
   1998: [
-    { title: "Dancing Baby (1998)", desc: "One of the oldest viral 3D animations, rendered as a loop.", image: "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=600&q=80" }
+    { title: "Dancing Baby (1998)", desc: "Один із перших вірусних 3D-роликів в історії інтернету — кумедне немовля, що танцює ча-ча-ча." },
+    { title: "Hampster Dance (1998)", desc: "Веб-сторінка з нескінченними рядами миготливих GIF-хом'яків, які танцюють під прискорений трек." }
   ],
   2000: [
-    { title: "All Your Base Are Belong To Us (2000)", desc: "Classic early internet gaming flash translation error meme.", image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&q=80" }
+    { title: "All Your Base Are Belong To Us (2000)", desc: "Культовий геймерський мем на основі невдалого англійського перекладу з японської гри Zero Wing." },
+    { title: "Peanut Butter Jelly Time (2000)", desc: "Ретро-флеш анімація банана, що танцює під однойменну пісню." }
   ],
   2005: [
-    { title: "Chuck Norris Facts (2005)", desc: "Satirical factoids about the legendary martial artist.", image: "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?w=600&q=80" }
+    { title: "Chuck Norris Facts (2005)", desc: "Сатиричні факти про надлюдську силу та непереможність легендарного Чака Норріса." },
+    { title: "Leeroy Jenkins (2005)", desc: "Гравець World of Warcraft зриває тактичний план гільдії, раптово вбігаючи в кімнату з криком власного імені." }
   ],
   2007: [
-    { title: "Rickroll (2007)", desc: "Rick Astley's 'Never Gonna Give You Up' bait-and-switch viral link.", image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&q=80" }
+    { title: "Rickroll (2007)", desc: "Розіграш, коли користувач переходить за цікавим посиланням, а там відкривається кліп Ріка Естлі 'Never Gonna Give You Up'." },
+    { title: "Chocolate Rain (2007)", desc: "Вірусне басове виконання пісні Тея Зондея, де він відхиляється від мікрофона, щоб зробити вдих." },
+    { title: "I Can Has Cheezburger? (2007)", desc: "Кумедне фото сірого кота із граматично неправильним написом, що започаткувало культуру лолкотів (lolcats)." }
   ],
   2010: [
-    { title: "Double Rainbow (2010)", desc: "What does it mean? A man's emotional response to a double rainbow.", image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&q=80" }
+    { title: "Double Rainbow (2010)", desc: "Емоційне відео чоловіка, який плаче від захвату, споглядаючи подвійну веселку в національному парку Йосеміті." },
+    { title: "Bed Intruder Song (2010)", desc: "Автотюнений ремікс новинного інтерв'ю Антуана Додсона, який попереджав про зловмисника." },
+    { title: "Sad Keanu (2010)", desc: "Фото Кіану Рівза, який самотньо сидить на лавці в парку та їсть сендвіч." }
   ],
   2011: [
-    { title: "Nyan Cat (2011)", desc: "Pop-Tart cat flying through space leaving a rainbow trail.", image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&q=80" }
+    { title: "Nyan Cat (2011)", desc: "Піксельний котик з тілом печива Pop-Tart, який летить у космосі та залишає за собою веселковий шлейф." },
+    { title: "Trollface (2011)", desc: "Графічний символ інтернет-тролінгу, що став обличчям епохи лютих коміксів (Rage Comics)." },
+    { title: "Friday - Rebecca Black (2011)", desc: "Музичний кліп 13-річної співачки, який охрестили 'найгіршою піснею у світі', що викликав лавину пародій." }
   ],
   2012: [
-    { title: "Gangnam Style (2012)", desc: "PSY's dance breaks YouTube's view counter.", image: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=600&q=80" }
+    { title: "Gangnam Style (2012)", desc: "Південнокорейський хіт від PSY із характерним танцем вершника, що зламав лічильник переглядів YouTube." },
+    { title: "Grumpy Cat (2012)", desc: "Кішка Соус Тардар з постійно незадоволеним виразом мордочки через вроджений неправильний прикус." },
+    { title: "Overly Attached Girlfriend (2012)", desc: "Стоп-кадр з дівчиною з шаленим поглядом, що стала символом надмірних ревнощів у стосунках." }
   ],
   2013: [
-    { title: "Doge (2013)", desc: "Much wow, so noble, very doge. The iconic Shiba Inu.", image: "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=600&q=80" }
+    { title: "Doge (2013)", desc: "Мемний собака породи сіба-іну, який виражає думки на ламаній англійській шрифтом Comic Sans." },
+    { title: "Harlem Shake (2013)", desc: "Короткі відео, де під трек Baauer одна людина танцює в шоломі, а після басового дропу всі присутні починають божеволіти." }
   ],
   2015: [
-    { title: "The Dress (2015)", desc: "Is it White & Gold or Blue & Black? The debate that divided the internet.", image: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600&q=80" }
+    { title: "The Dress (2015)", desc: "Фото сукні, колір якої викликав глобальні суперечки в мережі: одні бачили її біло-золотою, інші — синьо-чорною." },
+    { title: "Left Shark (2015)", desc: "Танцюрист у костюмі акули на виступі Кеті Перрі, який повністю забув хореографію, але танцював з усім серцем." }
   ],
   2016: [
-    { title: "Harambe (2016)", desc: "A tribute to the gorilla whose memory lived on in millions of memes.", image: "https://images.unsplash.com/photo-1534567153574-2b12153a87f0?w=600&q=80" }
+    { title: "Harambe (2016)", desc: "Глобальний меморіал та мільйони мемів на честь горили Харамбе із зоопарку Цинциннаті." },
+    { title: "Pen-Pineapple-Apple-Pen (PPAP) (2016)", desc: "Короткий та абсурдний музичний вірус від японського коміка ПікоТаро про ручку та яблуко-ананас." },
+    { title: "Evil Kermit (2016)", desc: "Темний Керміт у каптурі переконує звичайного Керміта здійснити якусь дурість." },
+    { title: "Arthur's Fist (2016)", desc: "Стиснутий кулак мультяшного героя Артура, який використовують для вираження глибокого внутрішнього гніву." }
   ],
   2017: [
-    { title: "Distracted Boyfriend (2017)", desc: "Stock photo of a guy looking at another girl while his girlfriend looks mad.", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&q=80" }
+    { title: "Distracted Boyfriend (2017)", desc: "Стокове фото, на якому хлопець заглядається на іншу дівчину, поки його партнерка дивиться на нього з обуренням." },
+    { title: "Roll Safe (2017)", desc: "Персонаж вказує пальцем на скроню, пропонуючи абсурдні, але логічні рішення життєвих проблем." },
+    { title: "Salt Bae (2017)", desc: "Турецький шеф-кухар Нусрет Гьокче, який артистично сипле сіль на м'ясо через лікоть." }
   ],
   2019: [
-    { title: "Stonks (2019)", desc: "Meme Man showing absolute financial genius in front of rising charts.", image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=600&q=80" }
+    { title: "Stonks (2019)", desc: "3D-модель голови Meme Man на тлі фінансового графіка, що іронізує над невдалими інвестиціями." },
+    { title: "Woman Yelling at a Cat (2019)", desc: "Колаж із розлюченою жінкою з реаліті-шоу та спантеличеним білим котом за обіднім столом." }
   ],
   2020: [
-    { title: "Coffin Dance (2020)", desc: "Ghanaian pallbearers dancing joyfully while carrying a coffin.", image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&q=80" }
+    { title: "Coffin Dance (2020)", desc: "Танцюючі носії труни з Гани, які стали головним символом невдач під час пандемії." },
+    { title: "Among Us (Sus) (2020)", desc: "Популяризація гри та мемів про пошук зрадників серед членів екіпажу космічного корабля." }
   ],
   2023: [
-    { title: "Barbenheimer (2023)", desc: "The ultimate double feature cultural event of Barbie and Oppenheimer.", image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=600&q=80" }
+    { title: "Barbenheimer (2023)", desc: "Культурний феномен об'єднання двох абсолютно контрастних прем'єр фільмів 'Барбі' та 'Оппенгеймер'." },
+    { title: "Grimace Shake (2023)", desc: "Тренд у TikTok, де користувачі п'ють святковий коктейль від McDonald's та інсценують власну смерть у жахливих декораціях." }
   ],
   2024: [
-    { title: "Chill Guy (2024)", desc: "Just a chill guy who doesn't care about anything.", image: "https://images.unsplash.com/photo-1583511655826-05700d52f4d9?w=600&q=80" }
+    { title: "Chill Guy (2024)", desc: "Намальований пес у светрі, що уособлює повний спокій та незворушність перед будь-якими життєвими негараздами." },
+    { title: "Demure & Mindful (2024)", desc: "Іронічний тренд про те, як поводитися скромно, охайно та з повагою в повсякденному житті." }
   ]
 };
 

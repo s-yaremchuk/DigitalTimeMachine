@@ -193,22 +193,17 @@ export default function Dashboard({ date, data, onBack }) {
 
         {/* WIDGET 5: MEMES */}
         <div className="grid-span-4">
-          <BrutalistCard title="Культурні Меми // Cultural Memes" icon={<Smile size={18} />} accent="cyan">
-            <div className="meme-display">
+          <BrutalistCard title="Популярні Меми // Trending Memes" icon={<Smile size={18} />} accent="cyan">
+            <div className="meme-text-list">
               {memes && memes.length > 0 ? (
-                memes.slice(0, 1).map((meme, idx) => (
-                  <div key={idx} className="meme-content">
-                    <div className="meme-image-wrap brutalist-border">
-                      <img src={meme.image} alt={meme.title} className="meme-image" />
-                    </div>
-                    <div className="meme-info mt-2">
-                      <div className="meme-title">{meme.title}</div>
-                      <p className="meme-desc">{meme.desc}</p>
-                    </div>
+                memes.map((meme, idx) => (
+                  <div key={idx} className="meme-text-item brutalist-border">
+                    <div className="meme-text-title">{meme.title}</div>
+                    <p className="meme-text-desc">{meme.desc}</p>
                   </div>
                 ))
               ) : (
-                <div className="empty-message font-mono-data">MEME REPOSITORY UNREACHABLE.</div>
+                <div className="empty-message font-mono-data">АРХІВ МЕМІВ ПОРОЖНІЙ.</div>
               )}
             </div>
           </BrutalistCard>

@@ -4,24 +4,24 @@ import NewspaperArticle from './NewspaperArticle';
 import PageStains from './PageStains';
 import { motion } from 'framer-motion';
 
-// Container variants for staggered entrance
+// Container variants for staggered entrance (slower stagger for a more obvious sequence)
 const containerVariants = {
   hidden: { opacity: 1 },
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.05
+      staggerChildren: 0.28,
+      delayChildren: 0.1
     }
   }
 };
 
-// Ink Drying effect: starts blurred & hidden, transitions to sharp and fully visible
+// Ink Drying effect: starts very blurry and lower down, focuses slowly
 const inkFocusVariants = {
   hidden: { 
     opacity: 0, 
-    filter: 'blur(5px)',
-    y: 12
+    filter: 'blur(10px)',
+    y: 28
   },
   show: { 
     opacity: 1, 
@@ -29,31 +29,31 @@ const inkFocusVariants = {
     y: 0,
     transition: { 
       type: 'easeOut',
-      duration: 0.45
+      duration: 0.85
     } 
   }
 };
 
-// Jitter/Vibration effect for big headlines (simulates mechanical press vibration)
+// Jitter/Vibration effect for big headlines (more intense shake representing press stamping)
 const headlineJitterVariants = {
   hidden: { 
     opacity: 0, 
-    filter: 'blur(6px)',
-    y: 15
+    filter: 'blur(12px)',
+    y: 35
   },
   show: {
     opacity: 1,
     filter: 'blur(0px)',
-    y: [15, 0, -2, 2, -1, 1, -0.5, 0],
+    y: [35, 0, -6, 5, -3, 2, -1, 0],
     transition: {
       y: {
         type: 'keyframes',
-        duration: 0.6,
+        duration: 0.8,
         times: [0, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
         ease: 'easeInOut'
       },
-      opacity: { duration: 0.35 },
-      filter: { duration: 0.35 }
+      opacity: { duration: 0.6 },
+      filter: { duration: 0.6 }
     }
   }
 };

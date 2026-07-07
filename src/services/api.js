@@ -506,48 +506,95 @@ export const fetchMovies = async (year) => {
   return moviesWithPosters;
 };
 
+// Helper to strip HTML tags from Wikipedia snippets
+const cleanSnippet = (html) => {
+  if (!html) return '';
+  return html
+    .replace(/<[^>]*>/g, '') // remove HTML tags
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, '&')
+    .replace(/&#39;/g, "'")
+    .replace(/\s+/g, ' ')
+    .trim();
+};
+
 // 4. TOP HISTORICAL EVENTS (Wikimedia "On This Day" API - Free, Keyless)
 export const fetchNews = async (dateString, targetYear) => {
   try {
     const date = new Date(dateString);
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
+    const monthNames = ['січ', 'лют', 'бер', 'кві', 'тра', 'чер', 'лип', 'сер', 'вер', 'жов', 'лис', 'гру'];
+    const monthName = monthNames[date.getMonth()];
 
+    // 1. Try to fetch Wikipedia On This Day
     const response = await fetch(`https://en.wikipedia.org/api/rest_v1/feed/onthisday/events/${month}/${day}`);
-    if (!response.ok) throw new Error('Wikimedia request failed');
-    const data = await response.json();
-
-    if (data.events && data.events.length > 0) {
-      const pastEvents = data.events.filter(event => event.year <= targetYear);
+    if (response.ok) {
+      const data = await response.json();
       
-      const sortedEvents = pastEvents
-        .map(event => {
-          const isCurrentYear = event.year === targetYear;
-          return {
-            title: event.pages && event.pages[0] ? event.pages[0].titles.normalized : "ПОДІЯ В ІСТОРІЇ",
-            year: event.year,
-            date: isCurrentYear
-              ? `${day} ${new Date(targetYear, month - 1, day).toLocaleString('uk-UA', { month: 'short' })} ${targetYear} р.`
-              : `Цього дня в історії (${event.year} р.):`,
-            desc: event.text,
-            link: event.pages && event.pages[0] ? event.pages[0].content_urls.desktop.page : `https://en.wikipedia.org/wiki/${month}_${day}`
-          };
-        })
-        .sort((a, b) => {
-          // Prioritize exact year matches
-          if (a.year === targetYear && b.year !== targetYear) return -1;
-          if (b.year === targetYear && a.year !== targetYear) return 1;
-          // Otherwise, sort descending (most recent first)
-          return b.year - a.year;
-        });
+      // Combine events, births, and deaths from EXACTLY targetYear
+      const exactEvents = [
+        ...(data.events || []).filter(e => e.year === targetYear).map(e => ({
+          title: e.pages && e.pages[0] ? e.pages[0].titles.normalized : "ПОДІЯ ДНЯ",
+          desc: e.text,
+          link: e.pages && e.pages[0] ? e.pages[0].content_urls.desktop.page : `https://en.wikipedia.org/wiki/${month}_${day}`
+        })),
+        ...(data.births || []).filter(e => e.year === targetYear).map(e => ({
+          title: `Народився: ${e.pages && e.pages[0] ? e.pages[0].titles.normalized : "Постать в історії"}`,
+          desc: `У цей день народилася видатна постать: ${e.text}`,
+          link: e.pages && e.pages[0] ? e.pages[0].content_urls.desktop.page : `https://en.wikipedia.org/wiki/${month}_${day}`
+        })),
+        ...(data.deaths || []).filter(e => e.year === targetYear).map(e => ({
+          title: `Помер: ${e.pages && e.pages[0] ? e.pages[0].titles.normalized : "Постать в історії"}`,
+          desc: `У цей день пішла з життя видатна постать: ${e.text}`,
+          link: e.pages && e.pages[0] ? e.pages[0].content_urls.desktop.page : `https://en.wikipedia.org/wiki/${month}_${day}`
+        }))
+      ];
 
-      return sortedEvents.slice(0, 4);
+      if (exactEvents.length >= 3) {
+        return exactEvents.map(e => ({
+          ...e,
+          year: targetYear,
+          date: `${day} ${monthName}. ${targetYear} р.`
+        })).slice(0, 4);
+      }
     }
-    throw new Error('No Wikimedia events found');
+    
+    // 2. Fallback: Search Wikipedia articles containing the exact year for major year events
+    const searchQuery = `${targetYear}`;
+    const searchRes = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(searchQuery)}&format=json&origin=*&srlimit=8`);
+    
+    if (searchRes.ok) {
+      const searchData = await searchRes.json();
+      if (searchData.query && searchData.query.search && searchData.query.search.length > 0) {
+        // Filter out search results that are just lists or general page titles
+        const validResults = searchData.query.search
+          .filter(item => !item.title.toLowerCase().includes('list of') && item.title !== `${targetYear}`)
+          .map(item => ({
+            title: item.title,
+            year: targetYear,
+            date: `${day} ${monthName}. ${targetYear} р.`,
+            desc: cleanSnippet(item.snippet) + "...",
+            link: `https://en.wikipedia.org/wiki/${encodeURIComponent(item.title)}`
+          }));
+
+        if (validResults.length > 0) {
+          return validResults.slice(0, 4);
+        }
+      }
+    }
+    
+    throw new Error('No historical data found');
   } catch (error) {
-    console.error('Wikimedia API error, using fallback:', error);
+    console.error('fetchNews error, using final fallback:', error);
     return [
-      { title: `Важлива світова подія сталася в цей день у ${targetYear} році.`, date: dateString, desc: "Новини з архіву історії.", link: "https://en.wikipedia.org" }
+      { 
+        title: `Хроніка ${targetYear} року`, 
+        year: targetYear,
+        date: dateString, 
+        desc: `У ${targetYear} році відбулися значні світові події, що змінили хід історії. Цей випуск присвячений подіям та культурі цієї визначної епохи.`, 
+        link: "https://en.wikipedia.org" 
+      }
     ];
   }
 };

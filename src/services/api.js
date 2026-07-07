@@ -387,7 +387,9 @@ export const fetchNews = async (dateString, targetYear) => {
     const data = await response.json();
 
     if (data.events && data.events.length > 0) {
-      const sortedEvents = data.events
+      const pastEvents = data.events.filter(event => event.year <= targetYear);
+      
+      const sortedEvents = pastEvents
         .map(event => ({
           title: event.text,
           year: event.year,
@@ -395,7 +397,7 @@ export const fetchNews = async (dateString, targetYear) => {
           desc: event.pages && event.pages[0] ? `Детальніше: ${event.pages[0].titles.normalized}` : 'Історична подія дня.',
           link: event.pages && event.pages[0] ? event.pages[0].content_urls.desktop.page : `https://en.wikipedia.org/wiki/${month}_${day}`
         }))
-        .sort((a, b) => Math.abs(a.year - targetYear) - Math.abs(b.year - targetYear));
+        .sort((a, b) => b.year - a.year);
 
       return sortedEvents.slice(0, 4);
     }

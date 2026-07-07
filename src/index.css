@@ -8,9 +8,9 @@
   --accent-red: #9e1a1a;
   
   /* Authentic Typography Stacks */
-  --font-serif: 'Playfair Display', 'Times New Roman', Georgia, serif;
-  --font-sans: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
-  --font-mono: 'Share Tech Mono', monospace;
+  --font-serif: 'PT Serif', 'Times New Roman', Georgia, serif;
+  --font-sans: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'Roboto Mono', monospace;
 }
 
 /* Base resets */
@@ -193,6 +193,8 @@ body::before {
   text-align: justify;
   hyphens: auto;
   color: #2a2a2a; /* Muted for contrast against titles */
+  letter-spacing: -0.02em;
+  word-spacing: -0.05em;
 }
 
 .font-serif-caption {

@@ -216,25 +216,31 @@ export default function Dashboard({ date, data, onBack }) {
 
         {/* WIDGET 6: YOUTUBE TRENDS */}
         <div className="grid-span-4">
-          <BrutalistCard title="Популярні Відео // YouTube Trends" icon={<Tv size={18} />} accent="orange">
+          <BrutalistCard title="Вірусні Відео // YouTube Legends" icon={<Tv size={18} />} accent="orange">
             <div className="youtube-display">
               {youtube && youtube.length > 0 ? (
-                youtube.slice(0, 2).map((video, idx) => (
-                  <div key={idx} className="yt-content brutalist-border p-3 bg-[#161616] mb-3 last:mb-0">
+                youtube.slice(0, 1).map((video, idx) => (
+                  <div key={idx} className="yt-content">
                     <div className="yt-header-title">{video.title}</div>
                     <div className="yt-meta font-mono-data">
-                      <span>CHANNEL: {video.channel}</span>
+                      <span>CHANNEL: {video.channel.toUpperCase()}</span>
                       <span>VIEWS: {video.views}</span>
                     </div>
+                    {video.id ? (
+                      <div className="yt-embed-wrap brutalist-border">
+                        <iframe
+                          title={video.title}
+                          src={`https://www.youtube.com/embed/${video.id}`}
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          className="yt-iframe"
+                        ></iframe>
+                      </div>
+                    ) : (
+                      <div className="yt-no-video font-mono-data">NO VIDEO SOURCE FOUND.</div>
+                    )}
                     <p className="yt-desc mt-2">{video.desc}</p>
-                    <a 
-                      href={video.link} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="btn-watch-yt brutalist-border font-heading text-center"
-                    >
-                      WATCH VIDEO ON YOUTUBE // ДИВИТИСЬ
-                    </a>
                   </div>
                 ))
               ) : (

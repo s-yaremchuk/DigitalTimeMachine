@@ -84,7 +84,7 @@ const HISTORICAL_MOVIES = {
     { title: "Tenet (2020)", rating: "7.3", overview: "Armed with only one word, Tenet, and fighting for the survival of the entire world, a Protagonist journeys through a twilight world.", poster: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500" },
     { title: "Soul (2020)", rating: "8.0", overview: "After a gig performing jazz music goes wrong, a middle school music teacher finds his soul projected into the Great Before.", poster: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500" },
     { title: "Another Round (2020)", rating: "7.7", overview: "Four high school teachers consume alcohol on a daily basis to see how it affects their social and professional lives.", poster: "https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=500" },
-    { title: "The Trial of Chicago 7 (2020)", rating: "7.7", overview: "The story of 7 people on trial arising from various charges surrounding the uprising at the 1968 Democratic National Convention.", poster: "https://images.unsplash.com/photo-1505664194779-8bebcb95c557?w=500" }
+    { title: "The Trial of Chicago 7 (2020)", rating: "7.7", overview: "The story of 7 people on trial arising from various charges surrounding the uprising at the 1968 Democratic National Convention.", poster: "https://images.unsplash.com/photo-150566419477-8bebcb95c557?w=500" }
   ],
   2021: [
     { title: "Dune (2021)", rating: "8.0", overview: "Paul Atreides, a brilliant and gifted young man born into a great destiny, must travel to the most dangerous planet in the universe.", poster: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500" },
@@ -114,51 +114,49 @@ const HISTORICAL_MOVIES = {
 
 const HISTORICAL_MEMES = {
   1998: [
-    { title: "Dancing Baby (1998)", desc: "One of the oldest viral 3D animations, rendered as a loop.", image: "https://i.giphy.com/3o7TKSjRrfIPjei1fG.gif" }
+    { title: "Dancing Baby (1998)", desc: "One of the oldest viral 3D animations, rendered as a loop.", image: "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=600&q=80" }
   ],
   2000: [
-    { title: "All Your Base Are Belong To Us (2000)", desc: "Classic early internet gaming flash translation error meme.", image: "https://i.giphy.com/l3vQYm0jWewxgqV8s.gif" }
+    { title: "All Your Base Are Belong To Us (2000)", desc: "Classic early internet gaming flash translation error meme.", image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&q=80" }
   ],
   2005: [
-    { title: "Chuck Norris Facts (2005)", desc: "Satirical factoids about the legendary martial artist.", image: "https://i.giphy.com/BIuuwHRNKs15C.gif" }
+    { title: "Chuck Norris Facts (2005)", desc: "Satirical factoids about the legendary martial artist.", image: "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?w=600&q=80" }
   ],
   2007: [
-    { title: "Rickroll (2007)", desc: "Rick Astley's 'Never Gonna Give You Up' bait-and-switch viral link.", image: "https://i.giphy.com/Ju7l5y9osyymQ.gif" }
+    { title: "Rickroll (2007)", desc: "Rick Astley's 'Never Gonna Give You Up' bait-and-switch viral link.", image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&q=80" }
   ],
   2010: [
-    { title: "Double Rainbow (2010)", desc: "What does it mean? A man's emotional response to a double rainbow.", image: "https://i.giphy.com/hrGoC4C09Rc2c.gif" }
+    { title: "Double Rainbow (2010)", desc: "What does it mean? A man's emotional response to a double rainbow.", image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&q=80" }
   ],
   2011: [
-    { title: "Nyan Cat (2011)", desc: "Pop-Tart cat flying through space leaving a rainbow trail.", image: "https://i.giphy.com/sIIhZliB2McAo.gif" },
-    { title: "Trollface (2011)", desc: "The defining face of internet trolling and rage comics.", image: "https://i.giphy.com/GDp7LycxkT3CE.gif" }
+    { title: "Nyan Cat (2011)", desc: "Pop-Tart cat flying through space leaving a rainbow trail.", image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&q=80" }
   ],
   2012: [
-    { title: "Gangnam Style (2012)", desc: "PSY's dance breaks YouTube's view counter.", image: "https://i.giphy.com/134DVXcD94s3YI.gif" }
+    { title: "Gangnam Style (2012)", desc: "PSY's dance breaks YouTube's view counter.", image: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=600&q=80" }
   ],
   2013: [
-    { title: "Doge (2013)", desc: "Much wow, so noble, very doge. The iconic Shiba Inu.", image: "https://i.giphy.com/oBQZfQYZA8APc7dBag.gif" }
+    { title: "Doge (2013)", desc: "Much wow, so noble, very doge. The iconic Shiba Inu.", image: "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=600&q=80" }
   ],
   2015: [
-    { title: "The Dress (2015)", desc: "Is it White & Gold or Blue & Black? The debate that divided the internet.", image: "https://i.giphy.com/8vQZ3p4L5dcoE.gif" }
+    { title: "The Dress (2015)", desc: "Is it White & Gold or Blue & Black? The debate that divided the internet.", image: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600&q=80" }
   ],
   2016: [
-    { title: "Harambe (2016)", desc: "A tribute to the gorilla whose memory lived on in millions of memes.", image: "https://i.giphy.com/26TIAY8yL371K6s36.gif" },
-    { title: "Pen Pineapple Apple Pen (2016)", desc: "PicoTaro's short, catchy performance.", image: "https://i.giphy.com/vYkkabxSqOUGk.gif" }
+    { title: "Harambe (2016)", desc: "A tribute to the gorilla whose memory lived on in millions of memes.", image: "https://images.unsplash.com/photo-1534567153574-2b12153a87f0?w=600&q=80" }
   ],
   2017: [
-    { title: "Distracted Boyfriend (2017)", desc: "Stock photo of a guy looking at another girl while his girlfriend looks mad.", image: "https://i.giphy.com/3o7527pa7qs9kCG78A.gif" }
+    { title: "Distracted Boyfriend (2017)", desc: "Stock photo of a guy looking at another girl while his girlfriend looks mad.", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&q=80" }
   ],
   2019: [
-    { title: "Stonks (2019)", desc: "Meme Man showing absolute financial genius in front of rising charts.", image: "https://i.giphy.com/YnkMcHg0EGnWJHJHIK.gif" }
+    { title: "Stonks (2019)", desc: "Meme Man showing absolute financial genius in front of rising charts.", image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=600&q=80" }
   ],
   2020: [
-    { title: "Coffin Dance (2020)", desc: "Ghanaian pallbearers dancing joyfully while carrying a coffin.", image: "https://i.giphy.com/j6uK9aoDSWZ5q3mgW6.gif" }
+    { title: "Coffin Dance (2020)", desc: "Ghanaian pallbearers dancing joyfully while carrying a coffin.", image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&q=80" }
   ],
   2023: [
-    { title: "Barbenheimer (2023)", desc: "The ultimate double feature cultural event of Barbie and Oppenheimer.", image: "https://i.giphy.com/j3h1C3O5E0QpVEF3d6.gif" }
+    { title: "Barbenheimer (2023)", desc: "The ultimate double feature cultural event of Barbie and Oppenheimer.", image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=600&q=80" }
   ],
   2024: [
-    { title: "Chill Guy (2024)", desc: "Just a chill guy who doesn't care about anything.", image: "https://i.giphy.com/Z9K5O3MXcUXwBc7Q14.gif" }
+    { title: "Chill Guy (2024)", desc: "Just a chill guy who doesn't care about anything.", image: "https://images.unsplash.com/photo-1583511655826-05700d52f4d9?w=600&q=80" }
   ]
 };
 
@@ -311,7 +309,7 @@ export const fetchNews = async (dateString, targetYear) => {
   }
 };
 
-// 5. MEMES (Curated Local Database for 100% stable GIFs)
+// 5. MEMES (Curated Local Database for 100% stable Unsplash Images)
 export const fetchMemes = (year) => {
   return getCuratedItem(HISTORICAL_MEMES, year);
 };

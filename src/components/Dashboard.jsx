@@ -48,13 +48,13 @@ export default function Dashboard({ date, data, onBack }) {
       <div className="dashboard-nav brutalist-border brutalist-shadow-yellow">
         <button className="btn-back" onClick={onBack}>
           <ArrowLeft size={16} />
-          <span>ABORT / ПОВЕРНУТИСЬ</span>
+          <span>НАЗАД // GO BACK</span>
         </button>
         <div className="nav-title font-mono-data">
-          DESTINATION: <span className="highlight-text">{formatDate(date)}</span>
+          ОГЛЯД ДАТИ: <span className="highlight-text">{formatDate(date)}</span>
         </div>
         <div className="nav-coordinates font-mono-data">
-          CHRONOS CONNECTION: 100% SECURE
+          АРХІВНА ХРОНІКА
         </div>
       </div>
 
@@ -193,7 +193,7 @@ export default function Dashboard({ date, data, onBack }) {
 
         {/* WIDGET 5: MEMES */}
         <div className="grid-span-4">
-          <BrutalistCard title="Вірусні Гіфки // Trending Memes" icon={<Smile size={18} />} accent="cyan">
+          <BrutalistCard title="Культурні Меми // Cultural Memes" icon={<Smile size={18} />} accent="cyan">
             <div className="meme-display">
               {memes && memes.length > 0 ? (
                 memes.slice(0, 1).map((meme, idx) => (

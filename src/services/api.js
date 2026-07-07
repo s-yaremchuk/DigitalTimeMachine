@@ -1,12 +1,10 @@
-// Digital Time Machine API Integration Service
+const GIPHY_PUBLIC_KEY = 'dc6zaTOxFJmzC';
 
-// LocalStorage keys for optional user keys
 const STORAGE_KEYS = {
   TMDB: 'dtm_tmdb_key',
   GUARDIAN: 'dtm_guardian_key'
 };
 
-// Retrieve API keys
 export const getApiKeys = () => {
   return {
     tmdb: localStorage.getItem(STORAGE_KEYS.TMDB) || '',
@@ -20,144 +18,12 @@ export const saveApiKeys = (keys) => {
 };
 
 // -------------------------------------------------------------
-// HISTORICAL CURATED DATA FOR ACCURATE FALLBACKS
-// -------------------------------------------------------------
-
-const HISTORICAL_MEMES = {
-  2000: [
-    { title: "All Your Base Are Belong To Us", desc: "Classic early internet gaming flash meme.", image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500&auto=format&fit=crop&q=60" },
-    { title: "Dancing Baby", desc: "One of the oldest viral 3D animations.", image: "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=500&auto=format&fit=crop&q=60" }
-  ],
-  2005: [
-    { title: "Chuck Norris Facts", desc: "Satirical factoids about the legendary martial artist.", image: "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?w=500&auto=format&fit=crop&q=60" },
-    { title: "Badger Badger Badger", desc: "Mushroom, mushroom! The viral flash loop.", image: "https://images.unsplash.com/photo-1503066211613-c17ebc9daef0?w=500&auto=format&fit=crop&q=60" }
-  ],
-  2007: [
-    { title: "Rickroll", desc: "Rick Astley's 'Never Gonna Give You Up' bait-and-switch.", image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=60" },
-    { title: "Chocolate Rain", desc: "Tay Zonday's deep voice and original song take over YouTube.", image: "https://images.unsplash.com/photo-1515621061946-eff1c2a352bd?w=500&auto=format&fit=crop&q=60" }
-  ],
-  2010: [
-    { title: "Bed Intruder Song", desc: "Hide yo kids, hide yo wife! Auto-tuned news.", image: "https://images.unsplash.com/photo-1516280440614-37939bbacd6a?w=500&auto=format&fit=crop&q=60" },
-    { title: "Double Rainbow", desc: "What does it mean? A man's emotional response to a double rainbow.", image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500&auto=format&fit=crop&q=60" }
-  ],
-  2011: [
-    { title: "Nyan Cat", desc: "Pop-Tart cat flying through space leaving a rainbow trail.", image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500&auto=format&fit=crop&q=60" },
-    { title: "Trollface", desc: "The defining face of internet trolling and rage comics.", image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=60" }
-  ],
-  2012: [
-    { title: "Gangnam Style", desc: "PSY's horse-riding dance breaks YouTube's view counter.", image: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=500&auto=format&fit=crop&q=60" },
-    { title: "Overly Attached Girlfriend", desc: "Laina Morris's parody video becomes the face of relationship intensity.", image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&auto=format&fit=crop&q=60" }
-  ],
-  2013: [
-    { title: "Doge", desc: "Much wow, so noble, very doge. The iconic Shiba Inu.", image: "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=500&auto=format&fit=crop&q=60" },
-    { title: "Harlem Shake", desc: "Short video dance craze featuring wild costumes.", image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=500&auto=format&fit=crop&q=60" }
-  ],
-  2014: [
-    { title: "Ice Bucket Challenge", desc: "Pouring freezing water over heads for ALS awareness.", image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=500&auto=format&fit=crop&q=60" },
-    { title: "The Dress", desc: "Is it White & Gold or Blue & Black? The debate that divided the internet.", image: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=500&auto=format&fit=crop&q=60" }
-  ],
-  2016: [
-    { title: "Harimbe", desc: "A tribute to the gorilla whose memory lived on in millions of memes.", image: "https://images.unsplash.com/photo-1534567153574-2b12153a87f0?w=500&auto=format&fit=crop&q=60" },
-    { title: "Pen Pineapple Apple Pen", desc: "PicoTaro's short, catchy, pineapple-stabbing performance.", image: "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?w=500&auto=format&fit=crop&q=60" },
-    { title: "Arthur's Fist", desc: "A screenshot of Arthur Read's clenched fist symbolizing anger.", image: "https://images.unsplash.com/photo-1584949091598-c31daaea4de6?w=500&auto=format&fit=crop&q=60" }
-  ],
-  2017: [
-    { title: "Distracted Boyfriend", desc: "Stock photo of a guy looking at another girl while his girlfriend looks mad.", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=60" },
-    { title: "Fidget Spinners", desc: "The low-friction physical spinner that dominated school classrooms.", image: "https://images.unsplash.com/photo-1596460612719-7b3b3bb98d49?w=500&auto=format&fit=crop&q=60" }
-  ],
-  2019: [
-    { title: "Stonks", desc: "Meme Man showing absolute financial genius in front of rising charts.", image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=500&auto=format&fit=crop&q=60" },
-    { title: "Woman Yelling at a Cat", desc: "Real Housewives star shouting at Smudge the cat sitting at a dinner plate.", image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500&auto=format&fit=crop&q=60" }
-  ],
-  2020: [
-    { title: "Coffin Dance", desc: "Ghanaian pallbearers dancing joyfully while carrying a coffin.", image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=500&auto=format&fit=crop&q=60" },
-    { title: "Nature is Healing", desc: "Satirical observations of clear waters and wildlife during global lockdown.", image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=500&auto=format&fit=crop&q=60" }
-  ],
-  2023: [
-    { title: "Barbenheimer", desc: "The ultimate double feature cultural event of Barbie and Oppenheimer.", image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500&auto=format&fit=crop&q=60" },
-    { title: "Grimace Shake", desc: "TikTokers filming horror style reactions after drinking McDonald's purple shake.", image: "https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=500&auto=format&fit=crop&q=60" }
-  ]
-};
-
-const HISTORICAL_YOUTUBE = {
-  2005: [{ title: "Me at the zoo", channel: "jawed", views: "310M", link: "https://www.youtube.com/watch?v=jNQXAC9IVRw", desc: "The very first video uploaded to YouTube." }],
-  2007: [{ title: "Charlie bit my finger - again !", channel: "HDCYT", views: "900M", link: "https://www.youtube.com/watch?v=_OBlgSz8sSM", desc: "Two British brothers capture the hearts of the early web." }],
-  2010: [{ title: "Bed Intruder Song", channel: "Schmoyoho", views: "150M", link: "https://www.youtube.com/watch?v=hMtZfW2z9dw", desc: "Auto-tuned news remix that went completely viral." }],
-  2012: [{ title: "PSY - GANGNAM STYLE (강남스타ール) M/V", channel: "officialpsy", views: "5.1B", link: "https://www.youtube.com/watch?v=9bZkp7q19f0", desc: "The record-shattering K-Pop phenomenon." }],
-  2015: [{ title: "Star Wars: The Force Awakens Official Teaser 2", channel: "Star Wars", views: "120M", link: "https://www.youtube.com/watch?v=ngElkyQ6Rhs", desc: "Chewie, we're home. The massive hype return of Star Wars." }],
-  2016: [{ title: "PPAP (Pen-Pineapple-Apple-Pen)", channel: "PIKOTARO", views: "450M", link: "https://www.youtube.com/watch?v=Ct6BUPvE2sM", desc: "Viral hit song that holds a Guinness World Record." }],
-  2017: [{ title: "Luis Fonsi - Despacito ft. Daddy Yankee", channel: "LuisFonsiVEVO", views: "8.5B", link: "https://www.youtube.com/watch?v=kJQP7kiw5Fk", desc: "The summer anthem that topped charts worldwide." }],
-  2020: [{ title: "Dynamite Official M/V", channel: "HYBE LABELS", views: "1.8B", link: "https://www.youtube.com/watch?v=gdZLi9oWNZg", desc: "BTS breaks the 24-hour YouTube viewing record." }]
-};
-
-const HISTORICAL_NEWS = {
-  2001: [
-    { title: "Wikipedia is Launched", date: "Jan 15", desc: "A new collaborative encyclopedia project goes live online." },
-    { title: "Terror Attacks Strike US Targets", date: "Sep 11", desc: "World Trade Center towers and Pentagon struck in unprecedented hijackings." }
-  ],
-  2004: [
-    { title: "Facebook Founded at Harvard", date: "Feb 4", desc: "Mark Zuckerberg launches 'Thefacebook' room directory site." },
-    { title: "Massive Indian Ocean Earthquake", date: "Dec 26", desc: "9.1 magnitude quake triggers deadly tsunamis affecting 14 countries." }
-  ],
-  2007: [
-    { title: "Apple Unveils the iPhone", date: "Jan 9", desc: "Steve Jobs showcases three products combined into one: a phone, an iPod, and an internet device." }
-  ],
-  2008: [
-    { title: "Barack Obama Wins US Presidency", date: "Nov 4", desc: "Democratic Senator makes history as first African American elected president." }
-  ],
-  2012: [
-    { title: "Curiosity Rover Lands on Mars", date: "Aug 6", desc: "NASA landing crew celebrates as the rover successfully touches down inside Gale Crater." },
-    { title: "CERN Discovers Higgs Boson Particle", date: "Jul 4", desc: "Physicists announce discovery of new boson consistent with the 'God particle'." }
-  ],
-  2016: [
-    { title: "UK Votes to Leave the European Union", date: "Jun 23", desc: "Historically dubbed 'Brexit', British voters narrow election 51.9% to exit EU." },
-    { title: "Donald Trump Elected 45th US President", date: "Nov 8", desc: "Republican nominee wins Electoral College victory over Hillary Clinton." }
-  ],
-  2020: [
-    { title: "WHO Declares Global COVID-19 Pandemic", date: "Mar 11", desc: "Coronavirus outbreak labeled global health pandemic as cases surge outside China." }
-  ]
-};
-
-const HISTORICAL_MOVIES = {
-  2001: [
-    { title: "Harry Potter and the Sorcerer's Stone", rating: "8.1", overview: "An orphaned boy enrolls in a school of wizardry, where he learns the truth about himself.", poster: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=500" },
-    { title: "The Lord of the Rings: The Fellowship of the Ring", rating: "8.9", overview: "A meek Hobbit and eight companions set out on a journey to destroy the powerful One Ring.", poster: "https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=500" }
-  ],
-  2008: [
-    { title: "The Dark Knight", rating: "9.0", overview: "When the menace known as the Joker wreaks havoc on Gotham, Batman must accept his greatest psychological test.", poster: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=500" },
-    { title: "Iron Man", rating: "7.9", overview: "After being held captive in an Afghan cave, billionaire engineer Tony Stark creates a unique weaponized suit of armor.", poster: "https://images.unsplash.com/photo-1608889175123-8ec330b86f84?w=500" }
-  ],
-  2009: [
-    { title: "Avatar", rating: "7.9", overview: "A paraplegic Marine dispatched to the moon Pandora on a unique mission becomes torn between following his orders and protecting the world.", poster: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500" }
-  ],
-  2016: [
-    { title: "Deadpool", rating: "8.0", overview: "A former Special Forces operative turned mercenary is subjected to a rogue experiment that leaves him with accelerated healing powers.", poster: "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?w=500" },
-    { title: "Captain America: Civil War", rating: "7.8", overview: "Political pressure mounts to install a system of accountability when the actions of the Avengers lead to collateral damage.", poster: "https://images.unsplash.com/photo-1569003339405-ea396a5a8a90?w=500" }
-  ],
-  2023: [
-    { title: "Oppenheimer", rating: "8.4", overview: "The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb.", poster: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=500" },
-    { title: "Barbie", rating: "7.2", overview: "Barbie and Ken are having the time of their lives in the colorful and seemingly perfect world of Barbie Land.", poster: "https://images.unsplash.com/photo-1594744803329-e58b31de215f?w=500" }
-  ]
-};
-
-// Helper to get nearest decade or year fallback
-const getCuratedItem = (dataset, year) => {
-  const years = Object.keys(dataset).map(Number).sort((a,b) => b-a); // desc
-  // Find exact match
-  if (dataset[year]) return dataset[year];
-  // Find nearest earlier year
-  const nearest = years.find(y => y <= year);
-  return dataset[nearest] || dataset[years[years.length - 1]]; // fallback to oldest if none
-};
-
-// -------------------------------------------------------------
 // API FETCH HANDLERS
 // -------------------------------------------------------------
 
-// 1. EXCHANGE RATES (Frankfurter API - Free)
+// 1. EXCHANGE RATES (Frankfurter API - Free, Keyless)
 export const fetchRates = async (dateString) => {
   try {
-    // Frankfurter works for dates >= 1999-01-04
     const dateObj = new Date(dateString);
     const minDate = new Date('1999-01-04');
     let targetDate = dateString;
@@ -176,7 +42,6 @@ export const fetchRates = async (dateString) => {
     };
   } catch (error) {
     console.error('Frankfurter API error, using fallback:', error);
-    // Mock Exchange Rates
     return {
       date: dateString,
       base: 'USD',
@@ -191,10 +56,9 @@ export const fetchRates = async (dateString) => {
   }
 };
 
-// 2. SONGS (iTunes Search API - Free)
+// 2. SONGS (iTunes Search API - Free, Keyless, media=music)
 export const fetchSongs = async (year) => {
   try {
-    // Search top songs of that year
     const response = await fetch(`https://itunes.apple.com/search?term=${year}+hits&media=music&limit=6&entity=song`);
     if (!response.ok) throw new Error('iTunes Search failed');
     const data = await response.json();
@@ -209,92 +73,205 @@ export const fetchSongs = async (year) => {
         previewUrl: track.previewUrl
       }));
     }
-    throw new Error('No results from iTunes');
+    throw new Error('No results from iTunes music search');
   } catch (error) {
-    console.error('iTunes API error, using fallback:', error);
-    // Fallback period popular tracks
+    console.error('iTunes Music error, using fallback:', error);
     return [
       { id: 1, title: "Bohemian Rhapsody", artist: "Queen", album: "A Night at the Opera", artwork: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500" },
       { id: 2, title: "Stayin' Alive", artist: "Bee Gees", album: "Saturday Night Fever", artwork: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500" },
-      { id: 3, title: "Smells Like Teen Spirit", artist: "Nirvana", album: "Nevermind", artwork: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=500" },
-      { id: 4, title: "Billie Jean", artist: "Michael Jackson", album: "Thriller", artwork: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500" }
+      { id: 3, title: "Smells Like Teen Spirit", artist: "Nirvana", album: "Nevermind", artwork: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=500" }
     ];
   }
 };
 
-// 3. MOVIES (TMDB API - Key Optional)
-export const fetchMovies = async (dateString, year) => {
+// 3. MOVIES (iTunes Search API - Free, Keyless, media=movie / Overrides to TMDB if key provided)
+export const fetchMovies = async (year, dateString = '') => {
   const { tmdb: apiKey } = getApiKeys();
-  if (!apiKey) {
-    // Generate high quality mock TMDB results
-    return getCuratedItem(HISTORICAL_MOVIES, year);
+  if (apiKey) {
+    try {
+      const dateGTEObj = new Date(dateString || `${year}-01-01`);
+      dateGTEObj.setDate(dateGTEObj.getDate() - 60);
+      const dateGTE = dateGTEObj.toISOString().split('T')[0];
+      const dateLTE = dateString || `${year}-12-31`;
+
+      const url = `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&primary_release_date.gte=${dateGTE}&primary_release_date.lte=${dateLTE}&sort_by=popularity.desc&page=1`;
+      const response = await fetch(url);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.results && data.results.length > 0) {
+          return data.results.slice(0, 3).map(movie => ({
+            title: movie.title,
+            rating: movie.vote_average ? `★ ${movie.vote_average.toFixed(1)}` : 'PG-13',
+            overview: movie.overview || 'Опис фільму відсутній.',
+            poster: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500',
+            previewUrl: '' 
+          }));
+        }
+      }
+    } catch (e) {
+      console.warn("TMDB fetch failed, falling back to iTunes:", e);
+    }
   }
 
+  // Keyless iTunes fallback
   try {
-    const date = new Date(dateString);
-    const dateLTE = dateString;
-    // Get release dates up to 60 days before the target date
-    const dateGTEObj = new Date(date);
-    dateGTEObj.setDate(dateGTEObj.getDate() - 60);
-    const dateGTE = dateGTEObj.toISOString().split('T')[0];
-
-    const url = `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&primary_release_date.gte=${dateGTE}&primary_release_date.lte=${dateLTE}&sort_by=popularity.desc&page=1`;
-    const response = await fetch(url);
-    if (!response.ok) throw new Error('TMDB request failed');
+    const response = await fetch(`https://itunes.apple.com/search?term=${year}&media=movie&limit=5`);
+    if (!response.ok) throw new Error('iTunes Movie Search failed');
     const data = await response.json();
 
     if (data.results && data.results.length > 0) {
-      return data.results.slice(0, 4).map(movie => ({
-        title: movie.title,
-        rating: movie.vote_average.toFixed(1),
-        overview: movie.overview,
-        poster: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500'
-      }));
+      return data.results.slice(0, 3).map((movie, index) => {
+        const rating = movie.contentAdvisoryRating || 'PG-13';
+        return {
+          title: movie.trackName,
+          rating: rating,
+          overview: movie.longDescription || movie.shortDescription || 'Опис фільму відсутній.',
+          poster: movie.artworkUrl100?.replace('100x100bb', '600x600bb') || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500',
+          previewUrl: movie.previewUrl 
+        };
+      });
     }
-    return getCuratedItem(HISTORICAL_MOVIES, year);
+    throw new Error('No movies found on iTunes');
   } catch (error) {
-    console.error('TMDB API error, using fallback:', error);
-    return getCuratedItem(HISTORICAL_MOVIES, year);
+    console.error('iTunes Movie error, using fallback:', error);
+    return [
+      { title: `Epic Film of ${year}`, rating: "R", overview: `The greatest hit of ${year} that defined a generation. Blockbuster release that swept the box offices global charts.`, poster: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=500" }
+    ];
   }
 };
 
-// 4. NEWS (The Guardian - Key Optional)
-export const fetchNews = async (dateString, year) => {
+// 4. TOP HISTORICAL EVENTS (Wikimedia "On This Day" API - Free, Keyless / Overrides to Guardian if key provided)
+export const fetchNews = async (dateString, targetYear) => {
   const { guardian: apiKey } = getApiKeys();
-  if (!apiKey) {
-    // Generate high quality mock news events
-    return getCuratedItem(HISTORICAL_NEWS, year);
+  if (apiKey) {
+    try {
+      const url = `https://content.guardianapis.com/search?api-key=${apiKey}&from-date=${dateString}&to-date=${dateString}&page-size=5`;
+      const response = await fetch(url);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.response?.results && data.response.results.length > 0) {
+          return data.response.results.map(article => ({
+            title: article.webTitle,
+            date: new Date(article.webPublicationDate).toLocaleDateString('uk-UA', { day: 'numeric', month: 'short' }),
+            desc: `Розділ: ${article.sectionName.toUpperCase()}`,
+            link: article.webUrl
+          }));
+        }
+      }
+    } catch (e) {
+      console.warn("Guardian fetch failed, falling back to Wikimedia:", e);
+    }
   }
 
+  // Keyless Wikimedia fallback
   try {
-    const url = `https://content.guardianapis.com/search?api-key=${apiKey}&from-date=${dateString}&to-date=${dateString}&page-size=5`;
-    const response = await fetch(url);
-    if (!response.ok) throw new Error('Guardian request failed');
+    const date = new Date(dateString);
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    const response = await fetch(`https://en.wikipedia.org/api/rest_v1/feed/onthisday/selected/${month}/${day}`);
+    if (!response.ok) throw new Error('Wikimedia request failed');
     const data = await response.json();
 
-    if (data.response?.results && data.response.results.length > 0) {
-      return data.response.results.map(article => ({
-        title: article.webTitle,
-        date: new Date(article.webPublicationDate).toLocaleDateString('uk-UA', { day: 'numeric', month: 'short' }),
-        desc: `Розділ: ${article.sectionName.toUpperCase()}`,
-        link: article.webUrl
-      }));
+    if (data.selected && data.selected.length > 0) {
+      const sortedEvents = data.selected
+        .map(event => ({
+          title: event.text,
+          year: event.year,
+          date: `${day} ${new Date(targetYear, month - 1, day).toLocaleString('uk-UA', { month: 'short' })} ${event.year} р.`,
+          desc: event.pages && event.pages[0] ? `Детальніше: ${event.pages[0].titles.normalized}` : 'Історична подія дня.',
+          link: event.pages && event.pages[0] ? event.pages[0].content_urls.desktop.page : `https://en.wikipedia.org/wiki/${month}_${day}`
+        }))
+        .sort((a, b) => Math.abs(a.year - targetYear) - Math.abs(b.year - targetYear));
+
+      return sortedEvents.slice(0, 4);
     }
-    return getCuratedItem(HISTORICAL_NEWS, year);
+    throw new Error('No Wikimedia selected events');
   } catch (error) {
-    console.error('Guardian API error, using fallback:', error);
-    return getCuratedItem(HISTORICAL_NEWS, year);
+    console.error('Wikimedia API error, using fallback:', error);
+    return [
+      { title: `Важлива світова подія сталася в цей день у ${targetYear} році.`, date: dateString, desc: "Новини з архіву історії.", link: "https://en.wikipedia.org" }
+    ];
   }
 };
 
-// 5. MEMES (Curated Database lookup)
-export const fetchMemes = (year) => {
-  return getCuratedItem(HISTORICAL_MEMES, year);
+// 5. MEMES (Giphy Search API - Keyless via public dev key)
+export const fetchMemes = async (year) => {
+  try {
+    const response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=${GIPHY_PUBLIC_KEY}&q=${year}+meme&limit=3&rating=g`);
+    if (!response.ok) throw new Error('Giphy Search failed');
+    const data = await response.json();
+
+    if (data.data && data.data.length > 0) {
+      return data.data.slice(0, 2).map((item, idx) => ({
+        title: item.title ? item.title.replace(' GIF', '') : `Епічний мем ${year} року`,
+        desc: `Популярна вірусна гіфка з архівів інтернету ${year} року.`,
+        image: item.images?.original?.url || item.images?.downsized_medium?.url || 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500'
+      }));
+    }
+    throw new Error('No Giphy memes found');
+  } catch (error) {
+    console.error('Giphy API error, using static fallback:', error);
+    return [
+      { title: `Classic Meme of ${year}`, desc: "Viral humor from the vaults of Reddit and Tumblr.", image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500" }
+    ];
+  }
 };
 
-// 6. YOUTUBE TRENDS (Curated Database lookup)
-export const fetchYoutube = (year) => {
-  return getCuratedItem(HISTORICAL_YOUTUBE, year);
+// 6. YOUTUBE TRENDS (Invidious Search API - Free, Keyless YouTube Mirror)
+export const fetchYoutube = async (year) => {
+  const invidiousInstances = [
+    'https://yewtu.be',
+    'https://invidious.flokinet.to',
+    'https://invidious.projectsegfau.lt',
+    'https://iv.melmac.space'
+  ];
+
+  // Attempt connection to instances sequentially (redundant fallbacks for high availability)
+  for (const instance of invidiousInstances) {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3000); // 3s timeout per instance
+
+      const response = await fetch(`${instance}/api/v1/search?q=${year}+viral+video&type=video`, {
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+
+      if (!response.ok) continue;
+      const data = await response.json();
+
+      if (Array.isArray(data) && data.length > 0) {
+        return data.slice(0, 2).map(video => {
+          const views = video.viewCount 
+            ? (video.viewCount >= 1e6 
+                ? `${(video.viewCount / 1e6).toFixed(1)}M` 
+                : `${(video.viewCount / 1e3).toFixed(0)}K`)
+            : 'N/A';
+          return {
+            title: video.title,
+            channel: video.author,
+            views: views,
+            desc: video.description || `Відеоролик, що розлетівся мережею у ${year} році.`,
+            link: `https://www.youtube.com/watch?v=${video.videoId}`
+          };
+        });
+      }
+    } catch (err) {
+      console.warn(`Invidious instance ${instance} failed. Trying next...`);
+    }
+  }
+
+  // Final hardcoded YouTube search link fallback
+  return [
+    {
+      title: `Popular YouTube Videos from ${year}`,
+      channel: "Web Archives",
+      views: "Multi-Million",
+      desc: `Вірусні хіти, огляди та відеоблоги, що формували культуру YouTube у ${year} році.`,
+      link: `https://www.youtube.com/results?search_query=${year}+viral+video`
+    }
+  ];
 };
 
 // -------------------------------------------------------------
@@ -303,17 +280,15 @@ export const fetchYoutube = (year) => {
 export const fetchAllTimeMachineData = async (dateString) => {
   const year = new Date(dateString).getFullYear();
 
-  // Run async network queries concurrently where possible
-  const [ratesData, songsData, moviesData, newsData] = await Promise.all([
+  // Run all async network queries concurrently
+  const [ratesData, songsData, moviesData, newsData, memesData, youtubeData] = await Promise.all([
     fetchRates(dateString),
     fetchSongs(year),
-    fetchMovies(dateString, year),
-    fetchNews(dateString, year)
+    fetchMovies(year, dateString),
+    fetchNews(dateString, year),
+    fetchMemes(year),
+    fetchYoutube(year)
   ]);
-
-  // Curated datasets loaded instantly
-  const memesData = fetchMemes(year);
-  const youtubeData = fetchYoutube(year);
 
   return {
     rates: ratesData,

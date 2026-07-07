@@ -804,14 +804,23 @@ input {
 
 .movie-item {
   display: flex;
+  flex-direction: column;
   background-color: #161616;
   border-width: 2px;
   overflow: hidden;
 }
 
+.movie-poster-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #0b0b0b;
+  border-bottom: 2px solid var(--border-color);
+}
+
 .movie-poster {
-  width: 90px;
-  height: 120px;
+  width: 70px;
+  height: 90px;
   object-fit: cover;
   border-top: none;
   border-left: none;
@@ -820,29 +829,29 @@ input {
 }
 
 .movie-details {
-  padding: 10px 12px;
+  padding: 12px;
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   overflow: hidden;
 }
 
 .movie-header-info {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 8px;
 }
 
 .movie-title {
   font-weight: bold;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   line-height: 1.2;
 }
 
 .movie-rating {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--accent-orange);
   background-color: #2a1105;
   padding: 2px 6px;
@@ -851,13 +860,22 @@ input {
 }
 
 .movie-overview {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: var(--text-secondary);
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
   line-height: 1.3;
+}
+
+.movie-video-wrap {
+  margin-top: 6px;
+  width: 100%;
+}
+
+.movie-video {
+  width: 100%;
+  max-height: 150px;
+  object-fit: cover;
+  background-color: #000;
+  display: block;
 }
 
 /* Songs Widget */

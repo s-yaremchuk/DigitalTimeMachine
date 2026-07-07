@@ -1,9 +1,10 @@
 import React, { useRef } from 'react';
-import { Newspaper, Coins, Film, Music, Tv, Smile, ArrowLeft, Volume2 } from 'lucide-react';
+import { Newspaper, Coins, Film, Music, Tv, Smile, ArrowLeft, Volume2, Video } from 'lucide-react';
 import BrutalistCard from './BrutalistCard';
 
 export default function Dashboard({ date, data, onBack }) {
   const audioRefs = useRef({});
+  const videoRefs = useRef({});
 
   const formatDate = (dateStr) => {
     const d = new Date(dateStr);
@@ -17,12 +18,15 @@ export default function Dashboard({ date, data, onBack }) {
   const handlePlayPreview = (songId, previewUrl) => {
     if (!previewUrl) return;
     
-    // Pause all other audio
+    // Pause all other audio/video
     Object.values(audioRefs.current).forEach(audio => {
       if (audio && audio !== audioRefs.current[songId]) {
         audio.pause();
         audio.currentTime = 0;
       }
+    });
+    Object.values(videoRefs.current).forEach(video => {
+      if (video) video.pause();
     });
 
     const audio = audioRefs.current[songId];
@@ -50,7 +54,7 @@ export default function Dashboard({ date, data, onBack }) {
           DESTINATION: <span className="highlight-text">{formatDate(date)}</span>
         </div>
         <div className="nav-coordinates font-mono-data">
-          TIME-WARP SECURE // LOCK ON
+          CHRONOS CONNECTION: 100% SECURE
         </div>
       </div>
 
@@ -59,7 +63,7 @@ export default function Dashboard({ date, data, onBack }) {
         
         {/* WIDGET 1: NEWS */}
         <div className="grid-span-4">
-          <BrutalistCard title="Топ Новини // Headline News" icon={<Newspaper size={18} />} accent="green">
+          <BrutalistCard title="Архів Подій // Historical Events" icon={<Newspaper size={18} />} accent="green">
             <div className="news-list">
               {news && news.length > 0 ? (
                 news.map((item, idx) => (
@@ -70,13 +74,13 @@ export default function Dashboard({ date, data, onBack }) {
                     rel="noopener noreferrer" 
                     className="news-item brutalist-border"
                   >
-                    <div className="news-date font-mono-data">{item.date || "EVENT"}</div>
+                    <div className="news-date font-mono-data">{item.date || "HISTORICAL"}</div>
                     <div className="news-headline">{item.title}</div>
                     <div className="news-desc">{item.desc}</div>
                   </a>
                 ))
               ) : (
-                <div className="empty-message">Немає новин на цей день.</div>
+                <div className="empty-message font-mono-data">NO ARCHIVE RECORDS FOUND.</div>
               )}
             </div>
           </BrutalistCard>
@@ -99,11 +103,11 @@ export default function Dashboard({ date, data, onBack }) {
                     </div>
                   ))
                 ) : (
-                  <div className="empty-message">Немає курсів на цей день.</div>
+                  <div className="empty-message font-mono-data">EXCHANGE SERVER OFFLINE.</div>
                 )}
               </div>
               <div className="rates-footer font-mono-data">
-                BASE: USD / SOURCE: FRANKFURTER API
+                BASE: USD // SOURCE: FRANKFURTER API
               </div>
             </div>
           </BrutalistCard>
@@ -116,18 +120,38 @@ export default function Dashboard({ date, data, onBack }) {
               {movies && movies.length > 0 ? (
                 movies.slice(0, 2).map((movie, idx) => (
                   <div key={idx} className="movie-item brutalist-border">
-                    <img src={movie.poster} alt={movie.title} className="movie-poster brutalist-border" />
-                    <div className="movie-details">
+                    <div className="movie-poster-wrap">
+                      <img src={movie.poster} alt={movie.title} className="movie-poster" />
                       <div className="movie-header-info">
                         <span className="movie-title">{movie.title}</span>
-                        <span className="movie-rating font-mono-data">★ {movie.rating}</span>
+                        <span className="movie-rating font-mono-data">{movie.rating}</span>
                       </div>
+                    </div>
+                    <div className="movie-details">
                       <p className="movie-overview">{movie.overview}</p>
+                      {movie.previewUrl && (
+                        <div className="movie-video-wrap">
+                          <video 
+                            ref={el => videoRefs.current[idx] = el}
+                            src={movie.previewUrl} 
+                            controls 
+                            className="movie-video brutalist-border"
+                            preload="none"
+                            poster={movie.poster}
+                            onPlay={() => {
+                              // Pause all audio previews when playing video
+                              Object.values(audioRefs.current).forEach(audio => {
+                                if (audio) audio.pause();
+                              });
+                            }}
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))
               ) : (
-                <div className="empty-message">Немає фільмів.</div>
+                <div className="empty-message font-mono-data">NO FILM ARCHIVES AVAILABLE.</div>
               )}
             </div>
           </BrutalistCard>
@@ -161,7 +185,7 @@ export default function Dashboard({ date, data, onBack }) {
                   </div>
                 ))
               ) : (
-                <div className="empty-message">Немає пісень.</div>
+                <div className="empty-message font-mono-data">AUDIO SERVER OFFLINE.</div>
               )}
             </div>
           </BrutalistCard>
@@ -169,7 +193,7 @@ export default function Dashboard({ date, data, onBack }) {
 
         {/* WIDGET 5: MEMES */}
         <div className="grid-span-4">
-          <BrutalistCard title="Інтернет Меми // Viral Memes" icon={<Smile size={18} />} accent="cyan">
+          <BrutalistCard title="Вірусні Гіфки // Trending Memes" icon={<Smile size={18} />} accent="cyan">
             <div className="meme-display">
               {memes && memes.length > 0 ? (
                 memes.slice(0, 1).map((meme, idx) => (
@@ -184,7 +208,7 @@ export default function Dashboard({ date, data, onBack }) {
                   </div>
                 ))
               ) : (
-                <div className="empty-message">Немає мемів для цього періоду.</div>
+                <div className="empty-message font-mono-data">MEME REPOSITORY UNREACHABLE.</div>
               )}
             </div>
           </BrutalistCard>
@@ -192,11 +216,11 @@ export default function Dashboard({ date, data, onBack }) {
 
         {/* WIDGET 6: YOUTUBE TRENDS */}
         <div className="grid-span-4">
-          <BrutalistCard title="YouTube Тренди // YouTube Trends" icon={<Tv size={18} />} accent="orange">
+          <BrutalistCard title="Популярні Відео // YouTube Trends" icon={<Tv size={18} />} accent="orange">
             <div className="youtube-display">
               {youtube && youtube.length > 0 ? (
-                youtube.slice(0, 1).map((video, idx) => (
-                  <div key={idx} className="yt-content">
+                youtube.slice(0, 2).map((video, idx) => (
+                  <div key={idx} className="yt-content brutalist-border p-3 bg-[#161616] mb-3 last:mb-0">
                     <div className="yt-header-title">{video.title}</div>
                     <div className="yt-meta font-mono-data">
                       <span>CHANNEL: {video.channel}</span>
@@ -214,7 +238,7 @@ export default function Dashboard({ date, data, onBack }) {
                   </div>
                 ))
               ) : (
-                <div className="empty-message">Немає відео.</div>
+                <div className="empty-message font-mono-data">STREAMING NODE OFFLINE.</div>
               )}
             </div>
           </BrutalistCard>

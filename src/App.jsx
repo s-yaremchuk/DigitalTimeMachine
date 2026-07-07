@@ -4,6 +4,7 @@ import Dashboard from './components/Dashboard';
 import { fetchAllTimeMachineData } from './services/api';
 import { Radio } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import CustomCursor from './components/CustomCursor';
 
 export default function App() {
   const [selectedDate, setSelectedDate] = useState('');
@@ -34,6 +35,7 @@ export default function App() {
 
   return (
     <div className="screen-container">
+      <CustomCursor />
 
       {/* Main Newspaper Header Banner */}
       <header className="main-header">

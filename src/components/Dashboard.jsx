@@ -1,35 +1,78 @@
-import React, { useRef } from 'react';
-import { ArrowLeft, Volume2 } from 'lucide-react';
+import React, { useRef, useState, useEffect } from 'react';
+import { ArrowLeft, Volume2, VolumeX, Radio } from 'lucide-react';
 import NewspaperArticle from './NewspaperArticle';
+import PageStains from './PageStains';
+import { printingPressSound } from '../services/PrintingPressSound';
 import { motion } from 'framer-motion';
 
-// Container variants for stagger animation
+// Container variants for staggered entrance
 const containerVariants = {
-  hidden: { opacity: 0 },
+  hidden: { opacity: 1 },
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.1
+      staggerChildren: 0.15,
+      delayChildren: 0.05
     }
   }
 };
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 15 },
+// Ink Drying effect: starts blurred & hidden, transitions to sharp and fully visible
+const inkFocusVariants = {
+  hidden: { 
+    opacity: 0, 
+    filter: 'blur(5px)',
+    y: 12
+  },
   show: { 
     opacity: 1, 
-    y: 0, 
+    filter: 'blur(0px)',
+    y: 0,
     transition: { 
-      type: 'spring', 
-      stiffness: 100, 
-      damping: 15 
+      type: 'easeOut',
+      duration: 0.45
     } 
+  }
+};
+
+// Jitter/Vibration effect for big headlines (simulates mechanical press vibration)
+const headlineJitterVariants = {
+  hidden: { 
+    opacity: 0, 
+    filter: 'blur(6px)',
+    y: 15
+  },
+  show: {
+    opacity: 1,
+    filter: 'blur(0px)',
+    y: [15, 0, -2, 2, -1, 1, -0.5, 0],
+    transition: {
+      y: {
+        type: 'keyframes',
+        duration: 0.6,
+        times: [0, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+        ease: 'easeInOut'
+      },
+      opacity: { duration: 0.35 },
+      filter: { duration: 0.35 }
+    }
   }
 };
 
 export default function Dashboard({ date, data, onBack }) {
   const audioRefs = useRef({});
+  const [isMuted, setIsMuted] = useState(() => {
+    const saved = localStorage.getItem('dtm_sound_muted');
+    return saved !== null ? JSON.parse(saved) : true;
+  });
+
+  // Handle printing press sound toggle
+  useEffect(() => {
+    printingPressSound.setMute(isMuted);
+    return () => {
+      printingPressSound.stop();
+    };
+  }, [isMuted]);
 
   const formatDate = (dateStr) => {
     const d = new Date(dateStr);
@@ -64,8 +107,10 @@ export default function Dashboard({ date, data, onBack }) {
   const { news, rates, movies, songs, memes, youtube } = data;
 
   return (
-    <div className="dashboard-container">
-      
+    <div className="dashboard-container" style={{ position: 'relative' }}>
+      {/* Unique Coffee/Ink stains based on the date */}
+      <PageStains date={date} />
+
       {/* Dashboard Top Navigation bar (Sub-Masthead) */}
       <div className="dashboard-nav">
         <motion.button 
@@ -77,11 +122,30 @@ export default function Dashboard({ date, data, onBack }) {
           <ArrowLeft size={16} />
           <span>НАЗАД ДО АРХІВУ</span>
         </motion.button>
+        
         <div className="nav-title font-serif">
           ВИПУСК: {formatDate(date)}
         </div>
-        <div className="nav-coordinates font-sans-meta">
-          АРХІВНА ХРОНІКА
+        
+        <div className="dashboard-nav-actions">
+          {/* Printing Press Sound Toggle */}
+          <button
+            onClick={() => {
+              setIsMuted(prev => {
+                const next = !prev;
+                localStorage.setItem('dtm_sound_muted', JSON.stringify(next));
+                return next;
+              });
+            }}
+            className="sound-toggle-btn font-sans-meta"
+            title={isMuted ? "Увімкнути звук верстата" : "Вимкнути звук верстата"}
+          >
+            {isMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
+          </button>
+
+          <div className="nav-coordinates font-sans-meta">
+            АРХІВНА ХРОНІКА
+          </div>
         </div>
       </div>
 
@@ -96,17 +160,21 @@ export default function Dashboard({ date, data, onBack }) {
       >
         
         {/* WIDGET 1: NEWS (Spans 2 columns, multi-column text flow) */}
-        <motion.div variants={itemVariants} className="grid-span-2 article-border-right">
+        <motion.div variants={inkFocusVariants} className="grid-span-2 article-border-right">
           <NewspaperArticle rubric="ГОЛОВНІ ПОДІЇ">
             <div className="news-list multi-column-text drop-cap">
               {news && news.length > 0 ? (
                 news.map((item, idx) => (
                   <div key={idx} className="news-item">
-                    <h3 className="news-headline font-serif-title">
+                    {/* Applying jitter to the news headlines on load */}
+                    <motion.h3 
+                      variants={headlineJitterVariants} 
+                      className="news-headline font-serif-title"
+                    >
                       <a href={item.link || "#"} target="_blank" rel="noopener noreferrer">
                         {item.title}
                       </a>
-                    </h3>
+                    </motion.h3>
                     <div className="news-date font-sans-meta">— {item.date || "ІСТОРИЧНЕ ДЖЕРЕЛО"}</div>
                     <p className="news-desc font-serif-body">{item.desc}</p>
                   </div>
@@ -119,7 +187,7 @@ export default function Dashboard({ date, data, onBack }) {
         </motion.div>
 
         {/* WIDGET 3: MOVIES (Spans 1 column) */}
-        <motion.div variants={itemVariants} className="grid-span-1 article-border-right">
+        <motion.div variants={inkFocusVariants} className="grid-span-1 article-border-right">
           <NewspaperArticle rubric="КІНЕМАТОГРАФ">
             <div className="movies-list">
               {movies && movies.length > 0 ? (
@@ -128,7 +196,12 @@ export default function Dashboard({ date, data, onBack }) {
                     <div className="movie-poster-wrap">
                       <img src={movie.poster} alt={movie.title} className="movie-poster" />
                       <div className="movie-header-info">
-                        <h4 className="movie-title font-serif-title">{movie.title}</h4>
+                        <motion.h4 
+                          variants={headlineJitterVariants}
+                          className="movie-title font-serif-title"
+                        >
+                          {movie.title}
+                        </motion.h4>
                         <span className="movie-rating font-sans-meta">★ {movie.rating}</span>
                       </div>
                     </div>
@@ -143,7 +216,7 @@ export default function Dashboard({ date, data, onBack }) {
         </motion.div>
 
         {/* WIDGET 4: MUSIC (Spans 1 column) */}
-        <motion.div variants={itemVariants} className="grid-span-1">
+        <motion.div variants={inkFocusVariants} className="grid-span-1">
           <NewspaperArticle rubric="МУЗИКА">
             <div className="songs-list">
               {songs && songs.length > 0 ? (
@@ -152,7 +225,12 @@ export default function Dashboard({ date, data, onBack }) {
                     <div className="song-left">
                       <img src={song.artwork} alt={song.title} className="song-artwork" />
                       <div className="song-meta">
-                        <h4 className="song-title font-serif-title">{song.title}</h4>
+                        <motion.h4 
+                          variants={headlineJitterVariants}
+                          className="song-title font-serif-title"
+                        >
+                          {song.title}
+                        </motion.h4>
                         <span className="song-artist font-sans-meta">{song.artist}</span>
                       </div>
                     </div>
@@ -186,13 +264,18 @@ export default function Dashboard({ date, data, onBack }) {
         <div className="grid-rule-horizontal"></div>
 
         {/* WIDGET 6: YOUTUBE TRENDS (Spans 2 columns, photo layout) */}
-        <motion.div variants={itemVariants} className="grid-span-2 article-border-right">
+        <motion.div variants={inkFocusVariants} className="grid-span-2 article-border-right">
           <NewspaperArticle rubric="ВІДЕОАРХІВ">
             <div className="youtube-display">
               {youtube && youtube.length > 0 ? (
                 youtube.slice(0, 1).map((video, idx) => (
                   <div key={idx} className="yt-content">
-                    <h3 className="yt-header-title font-serif-title">{video.title}</h3>
+                    <motion.h3 
+                      variants={headlineJitterVariants}
+                      className="yt-header-title font-serif-title"
+                    >
+                      {video.title}
+                    </motion.h3>
                     
                     {video.id ? (
                       <div className="yt-embed-wrap">
@@ -221,13 +304,18 @@ export default function Dashboard({ date, data, onBack }) {
         </motion.div>
 
         {/* WIDGET 5: MEMES (Spans 1 column) */}
-        <motion.div variants={itemVariants} className="grid-span-1 article-border-right">
+        <motion.div variants={inkFocusVariants} className="grid-span-1 article-border-right">
           <NewspaperArticle rubric="КУЛЬТУРА">
             <div className="meme-text-list">
               {memes && memes.length > 0 ? (
                 memes.slice(0, 3).map((meme, idx) => (
                   <div key={idx} className="meme-text-item">
-                    <h4 className="meme-text-title font-serif-title">{meme.title}</h4>
+                    <motion.h4 
+                      variants={headlineJitterVariants}
+                      className="meme-text-title font-serif-title"
+                    >
+                      {meme.title}
+                    </motion.h4>
                     <p className="meme-text-desc font-serif-body">{meme.desc}</p>
                   </div>
                 ))
@@ -239,7 +327,7 @@ export default function Dashboard({ date, data, onBack }) {
         </motion.div>
 
         {/* WIDGET 2: RATES (Spans 1 column) */}
-        <motion.div variants={itemVariants} className="grid-span-1">
+        <motion.div variants={inkFocusVariants} className="grid-span-1">
           <NewspaperArticle rubric="ЕКОНОМІКА">
             <div className="rates-container flex-col-stretch">
               <div className="rates-grid">

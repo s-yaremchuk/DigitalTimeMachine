@@ -92,6 +92,7 @@ export default function Dashboard({ date, data, onBack }) {
   const audioRefs = useRef({});
   const [videoIndex, setVideoIndex] = useState(0);
   const playerRef = useRef(null);
+  const ytPlaceholderRef = useRef(null);
 
   const formatDate = (dateStr) => {
     const d = new Date(dateStr);
@@ -143,7 +144,7 @@ export default function Dashboard({ date, data, onBack }) {
         }
       }
 
-      playerRef.current = new window.YT.Player('yt-player-placeholder', {
+      playerRef.current = new window.YT.Player(ytPlaceholderRef.current, {
         videoId: currentVideo.id,
         playerVars: {
           autoplay: 0,
@@ -372,8 +373,8 @@ export default function Dashboard({ date, data, onBack }) {
                       </motion.h3>
                       
                       {video.id ? (
-                        <div className="yt-embed-wrap" key={videoIndex}>
-                          <div id="yt-player-placeholder"></div>
+                        <div className="yt-embed-wrap" key={video.id}>
+                          <div ref={ytPlaceholderRef}></div>
                         </div>
                       ) : (
                         <div className="yt-no-video font-sans-meta">ВІДЕО НЕ ЗНАЙДЕНО.</div>

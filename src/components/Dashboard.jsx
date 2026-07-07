@@ -118,7 +118,7 @@ export default function Dashboard({ date, data, onBack }) {
           <BrutalistCard title="Популярні Фільми // Popular Movies" icon={<Film size={18} />} accent="orange">
             <div className="movies-list">
               {movies && movies.length > 0 ? (
-                movies.slice(0, 2).map((movie, idx) => (
+                movies.slice(0, 4).map((movie, idx) => (
                   <div key={idx} className="movie-item brutalist-border">
                     <div className="movie-poster-wrap">
                       <img src={movie.poster} alt={movie.title} className="movie-poster" />

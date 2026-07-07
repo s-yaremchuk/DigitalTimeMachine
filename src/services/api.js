@@ -17,113 +17,148 @@ export const saveApiKeys = (keys) => {
 
 // -----------------------------------------------------------------------------
 // CURATED HISTORICAL DATABASES (Movies, Memes, YouTube)
-// -------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 const HISTORICAL_MOVIES = {
   1970: [
     { title: "The Godfather (1972)", rating: "9.2", overview: "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.", poster: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500" },
-    { title: "Star Wars (1977)", rating: "8.6", overview: "Luke Skywalker joins forces with a Jedi Knight, a cocky pilot, a Wookiee and two droids to save the galaxy from the Empire.", poster: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=500" }
+    { title: "Star Wars (1977)", rating: "8.6", overview: "Luke Skywalker joins forces with a Jedi Knight, a cocky pilot, a Wookiee and two droids to save the galaxy from the Empire.", poster: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=500" },
+    { title: "Jaws (1975)", rating: "8.1", overview: "When a giant great white shark begins to menace the island community of Amity, a police chief, a marine scientist and a grizzled fisherman set out to stop it.", poster: "https://images.unsplash.com/photo-1509281373149-e957c6296406?w=500" },
+    { title: "Taxi Driver (1976)", rating: "8.2", overview: "A mentally unstable veteran works as a nighttime taxi driver in New York City, where the perceived decadence feeds his urge for violent action.", poster: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=500" }
   ],
   1980: [
     { title: "Back to the Future (1985)", rating: "8.5", overview: "Marty McFly, a 17-year-old high school student, is accidentally sent thirty years into the past in a time-traveling DeLorean.", poster: "https://images.unsplash.com/photo-1594909122845-11baa439b7bf?w=500" },
-    { title: "The Shining (1980)", rating: "8.4", overview: "A family heads to an isolated hotel for the winter where a sinister presence influences the father into violence.", poster: "https://images.unsplash.com/photo-1509281373149-e957c6296406?w=500" }
+    { title: "The Shining (1980)", rating: "8.4", overview: "A family heads to an isolated hotel for the winter where a sinister presence influences the father into violence.", poster: "https://images.unsplash.com/photo-1509281373149-e957c6296406?w=500" },
+    { title: "Blade Runner (1982)", rating: "8.1", overview: "A blade runner must pursue and terminate four replicants who stole a ship in space and have returned to Earth to find their creator.", poster: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=500" },
+    { title: "E.T. the Extra-Terrestrial (1982)", rating: "7.9", overview: "A troubled child summons the courage to help a friendly alien escape Earth and return to his home-world.", poster: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500" }
   ],
   1990: [
     { title: "Jurassic Park (1993)", rating: "8.2", overview: "A pragmatic paleontologist visiting an almost complete theme park is tasked with protecting a couple of kids after a power failure.", poster: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=500" },
-    { title: "The Matrix (1999)", rating: "8.7", overview: "When a beautiful stranger leads computer hacker Neo to a forbidding underworld, he discovers the shocking truth.", poster: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500" }
+    { title: "The Matrix (1999)", rating: "8.7", overview: "When a beautiful stranger leads computer hacker Neo to a forbidding underworld, he discovers the shocking truth.", poster: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500" },
+    { title: "Titanic (1997)", rating: "7.9", overview: "A seventeen-year-old aristocrat falls in love with a kind but poor artist aboard the luxurious, ill-fated R.M.S. Titanic.", poster: "https://images.unsplash.com/photo-1500077398580-7140026a1d8f?w=500" },
+    { title: "Pulp Fiction (1994)", rating: "8.9", overview: "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.", poster: "https://images.unsplash.com/photo-1594909122845-11baa439b7bf?w=500" }
   ],
   2000: [
     { title: "Gladiator (2000)", rating: "8.5", overview: "A former Roman General sets out to exact vengeance against the corrupt emperor who murdered his family and sent him into slavery.", poster: "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=500" },
-    { title: "The Dark Knight (2008)", rating: "9.0", overview: "When the menace known as the Joker wreaks havoc on Gotham, Batman must accept one of the greatest psychological tests.", poster: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=500" }
+    { title: "The Dark Knight (2008)", rating: "9.0", overview: "When the menace known as the Joker wreaks havoc on Gotham, Batman must accept one of the greatest psychological tests.", poster: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=500" },
+    { title: "Avatar (2009)", rating: "7.9", overview: "A paraplegic Marine dispatched to the moon Pandora becomes torn between following his orders and protecting the world.", poster: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500" },
+    { title: "LOTR: Fellowship of the Ring (2001)", rating: "8.9", overview: "A meek Hobbit and eight companions set out on a journey to destroy the powerful One Ring and save Middle-earth.", poster: "https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=500" }
   ],
   2010: [
     { title: "Inception (2010)", rating: "8.8", overview: "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea.", poster: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=500" },
-    { title: "Interstellar (2014)", rating: "8.7", overview: "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.", poster: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500" }
+    { title: "Interstellar (2014)", rating: "8.7", overview: "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.", poster: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500" },
+    { title: "The Avengers (2012)", rating: "8.0", overview: "Earth's mightiest heroes must come together and learn to fight as a team to stop the mischievous Loki and his alien army.", poster: "https://images.unsplash.com/photo-1569003339405-ea396a5a8a90?w=500" },
+    { title: "The Social Network (2010)", rating: "7.8", overview: "As Harvard student Mark Zuckerberg creates the social networking site that would become Facebook, he is sued by the co-founders.", poster: "https://images.unsplash.com/photo-1562577309-4932fdd64cd1?w=500" }
   ],
   2015: [
-    { title: "Mad Max: Fury Road (2015)", rating: "8.1", overview: "In a post-apocalyptic wasteland, a woman rebels against a tyrannical ruler in search for her homeland.", poster: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=500" }
+    { title: "Mad Max: Fury Road (2015)", rating: "8.1", overview: "In a post-apocalyptic wasteland, a woman rebels against a tyrannical ruler in search for her homeland.", poster: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=500" },
+    { title: "The Martian (2015)", rating: "8.0", overview: "An astronaut becomes stranded on Mars after his crew assumes him dead, and must rely on his ingenuity to find a way to signal Earth.", poster: "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?w=500" },
+    { title: "Inside Out (2015)", rating: "8.1", overview: "After a young girl is uprooted from her Midwest life, her core emotions conflict on how best to navigate a new city.", poster: "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=500" },
+    { title: "Star Wars: The Force Awakens (2015)", rating: "7.8", overview: "As a new threat to the galaxy rises, Rey, a desert scavenger, and Finn, a runaway stormtrooper, must search for the missing Luke Skywalker.", poster: "https://images.unsplash.com/photo-1593085512500-5d55148d6f0d?w=500" }
   ],
   2016: [
     { title: "Deadpool (2016)", rating: "8.0", overview: "A former Special Forces operative turned mercenary is subjected to a rogue experiment that leaves him with accelerated healing powers.", poster: "https://images.unsplash.com/photo-1608889175123-8ec330b86f84?w=500" },
-    { title: "La La Land (2016)", rating: "8.0", overview: "While navigating their careers in Los Angeles, a pianist and an actress fall in love while attempting to reconcile their aspirations.", poster: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500" }
+    { title: "La La Land (2016)", rating: "8.0", overview: "While navigating their careers in Los Angeles, a jazz pianist and an aspiring actress fall in love while attempting to reconcile their aspirations.", poster: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500" },
+    { title: "Captain America: Civil War (2016)", rating: "7.8", overview: "Political pressure mounts to install a system of accountability when the actions of the Avengers lead to collateral damage.", poster: "https://images.unsplash.com/photo-1569003339405-ea396a5a8a90?w=500" },
+    { title: "Zootopia (2016)", rating: "8.0", overview: "In a city of anthropomorphic animals, a rookie bunny cop and a cynical con artist fox must work together to uncover a conspiracy.", poster: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500" }
   ],
   2017: [
-    { title: "Blade Runner 2049 (2017)", rating: "8.0", overview: "A new blade runner, LAPD Officer K, unearths a long-buried secret that has the potential to plunge what's left of society into chaos.", poster: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=500" }
+    { title: "Blade Runner 2049 (2017)", rating: "8.0", overview: "A new blade runner, LAPD Officer K, unearths a long-buried secret that has the potential to plunge what's left of society into chaos.", poster: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=500" },
+    { title: "Dunkirk (2017)", rating: "7.8", overview: "Allied soldiers from Belgium, the British Commonwealth and Empire, and France are surrounded by the German Army and evacuated.", poster: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=500" },
+    { title: "Logan (2017)", rating: "8.1", overview: "In a future where mutants are nearly extinct, a weary Logan cares for an ailing Professor X in a hideout on the Mexican border.", poster: "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?w=500" },
+    { title: "Get Out (2017)", rating: "7.8", overview: "A young African-American visits his white girlfriend's parents for the weekend, where his simmering uneasiness reaches a boiling point.", poster: "https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=500" }
   ],
   2018: [
-    { title: "Spider-Man: Into the Spider-Verse (2018)", rating: "8.4", overview: "Teen Miles Morales becomes the Spider-Man of his universe, and must join with five spider-powered individuals from other dimensions.", poster: "https://images.unsplash.com/photo-1635805737707-575885ab0820?w=500" }
+    { title: "Into the Spider-Verse (2018)", rating: "8.4", overview: "Teen Miles Morales becomes the Spider-Man of his universe, and must join with five spider-powered individuals from other dimensions.", poster: "https://images.unsplash.com/photo-1635805737707-575885ab0820?w=500" },
+    { title: "Avengers: Infinity War (2018)", rating: "8.4", overview: "The Avengers and their allies must be willing to sacrifice all in an attempt to defeat the powerful Thanos before he destroys the universe.", poster: "https://images.unsplash.com/photo-1569003339405-ea396a5a8a90?w=500" },
+    { title: "Black Panther (2018)", rating: "7.3", overview: "T'Challa, heir to the hidden kingdom of Wakanda, must step forward to lead his people into a new era and confront a challenger.", poster: "https://images.unsplash.com/photo-1635805737707-575885ab0820?w=500" },
+    { title: "Bohemian Rhapsody (2018)", rating: "7.9", overview: "The story of the legendary British rock band Queen and their lead singer Freddie Mercury, leading up to their famous Live Aid performance.", poster: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500" }
   ],
   2019: [
-    { title: "Parasite (2019)", rating: "8.5", overview: "Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.", poster: "https://images.unsplash.com/photo-1594909122845-11baa439b7bf?w=500" }
+    { title: "Parasite (2019)", rating: "8.5", overview: "Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.", poster: "https://images.unsplash.com/photo-1594909122845-11baa439b7bf?w=500" },
+    { title: "Joker (2019)", rating: "8.4", overview: "During the 1980s, a failed stand-up comedian is driven insane and turns to a life of crime and chaos in Gotham City.", poster: "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?w=500" },
+    { title: "Avengers: Endgame (2019)", rating: "8.4", overview: "After the devastating events of Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more.", poster: "https://images.unsplash.com/photo-1569003339405-ea396a5a8a90?w=500" },
+    { title: "1917 (2019)", rating: "8.2", overview: "April 6, 1917. As a regiment assembles to assert an attack deep in enemy territory, two soldiers are assigned to deliver a warning message.", poster: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=500" }
   ],
   2020: [
-    { title: "Tenet (2020)", rating: "7.3", overview: "Armed with only one word, Tenet, and fighting for the survival of the entire world, a Protagonist journeys through a twilight world.", poster: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500" }
+    { title: "Tenet (2020)", rating: "7.3", overview: "Armed with only one word, Tenet, and fighting for the survival of the entire world, a Protagonist journeys through a twilight world.", poster: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500" },
+    { title: "Soul (2020)", rating: "8.0", overview: "After a gig performing jazz music goes wrong, a middle school music teacher finds his soul projected into the Great Before.", poster: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500" },
+    { title: "Another Round (2020)", rating: "7.7", overview: "Four high school teachers consume alcohol on a daily basis to see how it affects their social and professional lives.", poster: "https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=500" },
+    { title: "The Trial of Chicago 7 (2020)", rating: "7.7", overview: "The story of 7 people on trial arising from various charges surrounding the uprising at the 1968 Democratic National Convention.", poster: "https://images.unsplash.com/photo-1505664194779-8bebcb95c557?w=500" }
   ],
   2021: [
-    { title: "Dune (2021)", rating: "8.0", overview: "Paul Atreides, a brilliant and gifted young man born into a great destiny, must travel to the most dangerous planet in the universe.", poster: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500" }
+    { title: "Dune (2021)", rating: "8.0", overview: "Paul Atreides, a brilliant and gifted young man born into a great destiny, must travel to the most dangerous planet in the universe.", poster: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500" },
+    { title: "Spider-Man: No Way Home (2021)", rating: "8.2", overview: "With Spider-Man's identity now revealed, Peter asks Doctor Strange for help. When a spell goes wrong, dangerous foes from other worlds appear.", poster: "https://images.unsplash.com/photo-1635805737707-575885ab0820?w=500" },
+    { title: "No Time to Die (2021)", rating: "7.3", overview: "James Bond has left active service. His peace is short-lived when Felix Leiter from the CIA turns up asking for help.", poster: "https://images.unsplash.com/photo-1509281373149-e957c6296406?w=500" },
+    { title: "The Power of the Dog (2021)", rating: "6.8", overview: "A domineering but charismatic rancher responds with mocking cruelty when his brother brings home a new wife and her son.", poster: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500" }
   ],
   2022: [
-    { title: "Everything Everywhere All at Once (2022)", rating: "8.0", overview: "A middle-aged Chinese immigrant is swept up into an insane adventure in which she alone can save existence.", poster: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500" }
+    { title: "EEAAO (2022)", rating: "8.0", overview: "A middle-aged Chinese immigrant is swept up into an insane adventure in which she alone can save existence by exploring alternate universes.", poster: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500" },
+    { title: "Top Gun: Maverick (2022)", rating: "8.3", overview: "After thirty years, Maverick is still pushing the envelope as a top naval aviator, training a detachment of graduates for a special mission.", poster: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=500" },
+    { title: "The Batman (2022)", rating: "7.8", overview: "Batman ventures into Gotham City's underworld when a sadistic killer leaves behind a trail of cryptic clues.", poster: "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?w=500" },
+    { title: "Avatar: Way of Water (2022)", rating: "7.6", overview: "Jake Sully lives with his newfound family on Pandora. Once a familiar threat returns to finish what was started, Jake must work with the Na'vi.", poster: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500" }
   ],
   2023: [
     { title: "Oppenheimer (2023)", rating: "8.4", overview: "The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb.", poster: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=500" },
-    { title: "Barbie (2023)", rating: "7.2", overview: "Barbie and Ken are having the time of their lives in the colorful and seemingly perfect world of Barbie Land.", poster: "https://images.unsplash.com/photo-1594744803329-e58b31de215f?w=500" }
+    { title: "Barbie (2023)", rating: "7.2", overview: "Barbie and Ken are having the time of their lives in the colorful and seemingly perfect world of Barbie Land.", poster: "https://images.unsplash.com/photo-1594744803329-e58b31de215f?w=500" },
+    { title: "Across the Spider-Verse (2023)", rating: "8.6", overview: "Miles Morales catapults across the Multiverse, where he encounters a team of Spider-People charged with protecting its very existence.", poster: "https://images.unsplash.com/photo-1635805737707-575885ab0820?w=500" },
+    { title: "Killers of the Flower Moon (2023)", rating: "7.6", overview: "Members of the Osage tribe in northeastern Oklahoma are murdered under mysterious circumstances in the 1920s, sparking a major F.B.I. investigation.", poster: "https://images.unsplash.com/photo-1509281373149-e957c6296406?w=500" }
   ],
   2024: [
-    { title: "Dune: Part Two (2024)", rating: "8.6", overview: "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.", poster: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500" }
-  ],
-  2025: [
-    { title: "Avatar: Fire and Ash (2025)", rating: "8.0", overview: "Jake Sully and Neytiri encounter a new volcanic clan of Na'vi on Pandora that represents a darker side of Na'vi culture.", poster: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500" }
+    { title: "Dune: Part Two (2024)", rating: "8.6", overview: "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.", poster: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500" },
+    { title: "Inside Out 2 (2024)", rating: "7.7", overview: "Joy, Sadness, Anger, Fear and Disgust, who've been running a successful operation, don't know how to feel when Anxiety shows up.", poster: "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=500" },
+    { title: "Furiosa (2024)", rating: "7.6", overview: "The origin story of renegade warrior Furiosa before her encounter and alliance with Mad Max.", poster: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=500" },
+    { title: "Civil War (2024)", rating: "7.1", overview: "A journey across a dystopian future America, following a team of military-embedded journalists as they race to reach DC before rebel factions descend.", poster: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=500" }
   ]
 };
 
 const HISTORICAL_MEMES = {
   1998: [
-    { title: "Dancing Baby (1998)", desc: "One of the oldest viral 3D animations, rendered as a loop.", image: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnZodHZ3dzBxdmdhNGdtNmljbjFudHBidjQyc2R4dngyd2lpeTdzNSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKSjRrfIPjei1fG/giphy.gif" }
+    { title: "Dancing Baby (1998)", desc: "One of the oldest viral 3D animations, rendered as a loop.", image: "https://i.giphy.com/3o7TKSjRrfIPjei1fG.gif" }
   ],
   2000: [
-    { title: "All Your Base Are Belong To Us (2000)", desc: "Classic early internet gaming flash translation error meme.", image: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHlkN3R0eWFhdzEwNXZjM2x0OHY4cWRpOW9pcDB4eG1mMnF5Z3I2NiZlcD12MV_pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l3vQYm0jWewxgqV8s/giphy.gif" }
+    { title: "All Your Base Are Belong To Us (2000)", desc: "Classic early internet gaming flash translation error meme.", image: "https://i.giphy.com/l3vQYm0jWewxgqV8s.gif" }
   ],
   2005: [
-    { title: "Chuck Norris Facts (2005)", desc: "Satirical factoids about the legendary martial artist.", image: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWZ5a3Q3NHpxaHBjZHFuNmhrNXZzOHUxdjByaHprMGFvMXk0b2d6ayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/BIuuwHRNKs15C/giphy.gif" }
+    { title: "Chuck Norris Facts (2005)", desc: "Satirical factoids about the legendary martial artist.", image: "https://i.giphy.com/BIuuwHRNKs15C.gif" }
   ],
   2007: [
-    { title: "Rickroll (2007)", desc: "Rick Astley's 'Never Gonna Give You Up' bait-and-switch viral link.", image: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbDVqbm13OHd1dm41MXcwa3VtdjNlZ3U3eXoyc2Z6NW01OWk2N3N0NCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Ju7l5y9osyymQ/giphy.gif" }
+    { title: "Rickroll (2007)", desc: "Rick Astley's 'Never Gonna Give You Up' bait-and-switch viral link.", image: "https://i.giphy.com/Ju7l5y9osyymQ.gif" }
   ],
   2010: [
-    { title: "Double Rainbow (2010)", desc: "What does it mean? A man's emotional response to a double rainbow.", image: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExODlhNDY2OGY3YzYwOGZlMWI1NThjY2I5MmY0Yzc5ZDVlMTJhMGY2YyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/hrGoC4C09Rc2c/giphy.gif" }
+    { title: "Double Rainbow (2010)", desc: "What does it mean? A man's emotional response to a double rainbow.", image: "https://i.giphy.com/hrGoC4C09Rc2c.gif" }
   ],
   2011: [
-    { title: "Nyan Cat (2011)", desc: "Pop-Tart cat flying through space leaving a rainbow trail.", image: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTFpdTNsbnQydnE0a3ozMWV1OHV5eGRiZ2VsaXZtNnVydDZrdHhrMGF0MXY5MCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/sIIhZliB2McAo/giphy.gif" },
-    { title: "Trollface (2011)", desc: "The defining face of internet trolling and rage comics.", image: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMnBhZDNscThlOWY2OXlhOXp4MHAzdWJod282cXZzNDg5OHJvcmFweCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/GDp7LycxkT3CE/giphy.gif" }
+    { title: "Nyan Cat (2011)", desc: "Pop-Tart cat flying through space leaving a rainbow trail.", image: "https://i.giphy.com/sIIhZliB2McAo.gif" },
+    { title: "Trollface (2011)", desc: "The defining face of internet trolling and rage comics.", image: "https://i.giphy.com/GDp7LycxkT3CE.gif" }
   ],
   2012: [
-    { title: "Gangnam Style (2012)", desc: "PSY's dance breaks YouTube's view counter.", image: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYWhvYXcyejZ6azk2ajVibDB4OHc5NGZ2OWMydjI5OW4ydjBicnlvciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/134DVXcD94s3YI/giphy.gif" }
+    { title: "Gangnam Style (2012)", desc: "PSY's dance breaks YouTube's view counter.", image: "https://i.giphy.com/134DVXcD94s3YI.gif" }
   ],
   2013: [
-    { title: "Doge (2013)", desc: "Much wow, so noble, very doge. The iconic Shiba Inu.", image: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWs5aHhzZ2VhaWJpZHk4dTVnOHFud3JvZmZpaG0wbXN0NzR6ZHNjNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/oBQZfQYZA8APc7dBag/giphy.gif" }
+    { title: "Doge (2013)", desc: "Much wow, so noble, very doge. The iconic Shiba Inu.", image: "https://i.giphy.com/oBQZfQYZA8APc7dBag.gif" }
   ],
   2015: [
-    { title: "The Dress (2015)", desc: "Is it White & Gold or Blue & Black? The debate that divided the internet.", image: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmNtbzVndTcwNzRtbnd4MTFjYTBiaWR6MXpxdmJ0NmlpaGdwdWJjYiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/8vQZ3p4L5dcoE/giphy.gif" }
+    { title: "The Dress (2015)", desc: "Is it White & Gold or Blue & Black? The debate that divided the internet.", image: "https://i.giphy.com/8vQZ3p4L5dcoE.gif" }
   ],
   2016: [
-    { title: "Harambe (2016)", desc: "A tribute to the gorilla whose memory lived on in millions of memes.", image: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ3hrb3d5bWZpcmsxb3gydHdtNWppdHR6Nm5qamJpMDRqZmxvMnA0ayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/26TIAY8yL371K6s36/giphy.gif" },
-    { title: "Pen Pineapple Apple Pen (2016)", desc: "PicoTaro's short, catchy performance.", image: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3hmdXppN2tzdnYwZHplazh6YnphOGNodDlpZm4wdnBsaWZ2cmZqdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/vYkkabxSqOUGk/giphy.gif" }
+    { title: "Harambe (2016)", desc: "A tribute to the gorilla whose memory lived on in millions of memes.", image: "https://i.giphy.com/26TIAY8yL371K6s36.gif" },
+    { title: "Pen Pineapple Apple Pen (2016)", desc: "PicoTaro's short, catchy performance.", image: "https://i.giphy.com/vYkkabxSqOUGk.gif" }
   ],
   2017: [
-    { title: "Distracted Boyfriend (2017)", desc: "Stock photo of a guy looking at another girl while his girlfriend looks mad.", image: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNGtsZjNmZXhhcm90ajRjMG0wcmV0OHAwZmdidnp5NWZhcWFrc3l4NiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7527pa7qs9kCG78A/giphy.gif" }
+    { title: "Distracted Boyfriend (2017)", desc: "Stock photo of a guy looking at another girl while his girlfriend looks mad.", image: "https://i.giphy.com/3o7527pa7qs9kCG78A.gif" }
   ],
   2019: [
-    { title: "Stonks (2019)", desc: "Meme Man showing absolute financial genius in front of rising charts.", image: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYWZyd2trbjMxMTJrM3k0bmtrZHppcGQ4bm85MDltZHptNDJsaTRvMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YnkMcHg0EGnWJHJHIK/giphy.gif" }
+    { title: "Stonks (2019)", desc: "Meme Man showing absolute financial genius in front of rising charts.", image: "https://i.giphy.com/YnkMcHg0EGnWJHJHIK.gif" }
   ],
   2020: [
-    { title: "Coffin Dance (2020)", desc: "Ghanaian pallbearers dancing joyfully while carrying a coffin.", image: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExczU3a3hpejVlbm1xMmtsczQyeXl5cmcyeDJvNDZ4OHpoamwzdzhtNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/j6uK9aoDSWZ5q3mgW6/giphy.gif" }
+    { title: "Coffin Dance (2020)", desc: "Ghanaian pallbearers dancing joyfully while carrying a coffin.", image: "https://i.giphy.com/j6uK9aoDSWZ5q3mgW6.gif" }
   ],
   2023: [
-    { title: "Barbenheimer (2023)", desc: "The ultimate double feature cultural event of Barbie and Oppenheimer.", image: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExODFseXRyYTVoNDY0YTRzMms5ZHBxOHo2bHBjM3RvdzF2Nzd1MGUweSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/j3h1C3O5E0QpVEF3d6/giphy.gif" }
+    { title: "Barbenheimer (2023)", desc: "The ultimate double feature cultural event of Barbie and Oppenheimer.", image: "https://i.giphy.com/j3h1C3O5E0QpVEF3d6.gif" }
   ],
   2024: [
-    { title: "Chill Guy (2024)", desc: "Just a chill guy who doesn't care about anything.", image: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdWJ2ZzNwdHh4OGJ4cXRwOHhzdzB5b3lybGlzbTJ4ODg2MHN2Z3E0dyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Z9K5O3MXcUXwBc7Q14/giphy.gif" }
+    { title: "Chill Guy (2024)", desc: "Just a chill guy who doesn't care about anything.", image: "https://i.giphy.com/Z9K5O3MXcUXwBc7Q14.gif" }
   ]
 };
 

@@ -34,8 +34,6 @@ export default function App() {
 
   return (
     <div className="screen-container">
-      {/* Texture grain filter */}
-      <div className="noise-overlay" />
 
       {/* Main Newspaper Header Banner */}
       <header className="main-header">

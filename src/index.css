@@ -30,41 +30,40 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Subtle Vignette for aging paper effect */
-body::after {
+/* Highly Realistic Crumpled Paper Texture */
+body::before {
   content: "";
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   pointer-events: none;
-  z-index: 9998;
-  background: radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 0.04) 100%);
-}
-
-/* Paper Grain & Crumple Texture with subtle animation */
-.noise-overlay {
-  position: fixed;
-  top: -10%;
-  left: -10%;
-  width: 120%;
-  height: 120%;
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 0.35; /* Significantly increased opacity */
-  mix-blend-mode: multiply; /* Blends nicely with the cream background */
-  /* Added preserveAspectRatio='none' and feColorMatrix to ensure it stretches over the screen and renders grayscale */
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.01' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  z-index: -1; /* Keeps it behind text for perfect WCAG contrast */
+  mix-blend-mode: multiply; /* Authentic ink/paper blending */
+  
+  background-image: 
+    /* 1. Fine SVG Grain (Tactility) */
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E"),
+    
+    /* 2. Vignette */
+    radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.05) 100%),
+    
+    /* 3. Crease 1: Diagonal Top-Left to Bottom-Right */
+    linear-gradient(135deg, transparent 38%, rgba(0, 0, 0, 0.05) 40%, rgba(255, 255, 255, 0.03) 41%, transparent 43%),
+    
+    /* 4. Crease 2: Slight Horizontal */
+    linear-gradient(15deg, transparent 62%, rgba(0, 0, 0, 0.04) 64%, rgba(255, 255, 255, 0.02) 65%, transparent 67%),
+    
+    /* 5. Crease 3: Slight Vertical */
+    linear-gradient(280deg, transparent 25%, rgba(0, 0, 0, 0.04) 27%, rgba(255, 255, 255, 0.02) 28%, transparent 30%),
+    
+    /* 6. Diffuse shadows and highlights from large uneven folds */
+    radial-gradient(ellipse at 30% 30%, rgba(255, 255, 255, 0.04) 0%, transparent 45%),
+    radial-gradient(ellipse at 75% 70%, rgba(0, 0, 0, 0.03) 0%, transparent 45%);
+    
   background-size: 100% 100%;
-  animation: noiseFlicker 6s steps(3) infinite;
-}
-
-@keyframes noiseFlicker {
-  0%, 100% { transform: translate(0, 0); }
-  25% { transform: translate(-1%, 1%); }
-  50% { transform: translate(1%, -1%); }
-  75% { transform: translate(1%, 1%); }
+  background-repeat: no-repeat;
 }
 
 .screen-container {

@@ -97,7 +97,7 @@ export default function Dashboard({ date, data, onBack }) {
         
         {/* WIDGET 1: NEWS (Spans 2 columns, multi-column text flow) */}
         <motion.div variants={itemVariants} className="grid-span-2 article-border-right">
-          <NewspaperArticle rubric="ГОЛОВНІ ПОДІЇ // В СВІТІ ТА СУСПІЛЬСТВІ">
+          <NewspaperArticle rubric="ГОЛОВНІ ПОДІЇ">
             <div className="news-list multi-column-text drop-cap">
               {news && news.length > 0 ? (
                 news.map((item, idx) => (
@@ -120,7 +120,7 @@ export default function Dashboard({ date, data, onBack }) {
 
         {/* WIDGET 3: MOVIES (Spans 1 column) */}
         <motion.div variants={itemVariants} className="grid-span-1 article-border-right">
-          <NewspaperArticle rubric="КІНЕМАТОГРАФ // ПОПУЛЯРНІ СТРІЧКИ">
+          <NewspaperArticle rubric="КІНЕМАТОГРАФ">
             <div className="movies-list">
               {movies && movies.length > 0 ? (
                 movies.slice(0, 4).map((movie, idx) => (
@@ -144,7 +144,7 @@ export default function Dashboard({ date, data, onBack }) {
 
         {/* WIDGET 4: MUSIC (Spans 1 column) */}
         <motion.div variants={itemVariants} className="grid-span-1">
-          <NewspaperArticle rubric="МУЗИКА // ХІТ-ПАРАД">
+          <NewspaperArticle rubric="МУЗИКА">
             <div className="songs-list">
               {songs && songs.length > 0 ? (
                 songs.map((song) => (
@@ -152,7 +152,7 @@ export default function Dashboard({ date, data, onBack }) {
                     <div className="song-left">
                       <img src={song.artwork} alt={song.title} className="song-artwork" />
                       <div className="song-meta">
-                        <span className="song-title font-serif-title">{song.title}</span>
+                        <h4 className="song-title font-serif-title">{song.title}</h4>
                         <span className="song-artist font-sans-meta">{song.artist}</span>
                       </div>
                     </div>
@@ -187,7 +187,7 @@ export default function Dashboard({ date, data, onBack }) {
 
         {/* WIDGET 6: YOUTUBE TRENDS (Spans 2 columns, photo layout) */}
         <motion.div variants={itemVariants} className="grid-span-2 article-border-right">
-          <NewspaperArticle rubric="ВІДЕОАРХІВ // YOUTUBE ТРЕНДИ">
+          <NewspaperArticle rubric="ВІДЕОАРХІВ">
             <div className="youtube-display">
               {youtube && youtube.length > 0 ? (
                 youtube.slice(0, 1).map((video, idx) => (
@@ -222,7 +222,7 @@ export default function Dashboard({ date, data, onBack }) {
 
         {/* WIDGET 5: MEMES (Spans 1 column) */}
         <motion.div variants={itemVariants} className="grid-span-1 article-border-right">
-          <NewspaperArticle rubric="КУЛЬТУРА // ПОПУЛЯРНІ МЕМИ">
+          <NewspaperArticle rubric="КУЛЬТУРА">
             <div className="meme-text-list">
               {memes && memes.length > 0 ? (
                 memes.map((meme, idx) => (
@@ -240,28 +240,37 @@ export default function Dashboard({ date, data, onBack }) {
 
         {/* WIDGET 2: RATES (Spans 1 column) */}
         <motion.div variants={itemVariants} className="grid-span-1">
-          <NewspaperArticle rubric="ЕКОНОМІКА // КУРСИ ВАЛЮТ">
-            <div className="rates-grid">
-              <p className="rates-lead font-serif-body mb-2">Офіційний фінансовий звіт за обрану дату. Курси вказані щодо долара США.</p>
-              <div className="rate-row">
-                <span className="rate-pair font-sans-meta">USD / EUR</span>
-                <span className="rate-value font-serif-body">{rates.rates?.EUR?.toFixed(4) || 'N/A'}</span>
+          <NewspaperArticle rubric="ЕКОНОМІКА">
+            <div className="rates-container flex-col-stretch">
+              <div className="rates-grid">
+                <p className="rates-lead font-serif-body mb-3">Офіційний фінансовий звіт за обрану дату. Курси вказані щодо долара США.</p>
+                <div className="rate-row">
+                  <span className="rate-pair font-sans-meta">USD / EUR</span>
+                  <span className="rate-value font-serif-body">{rates.rates?.EUR?.toFixed(4) || 'N/A'}</span>
+                </div>
+                <div className="rate-row">
+                  <span className="rate-pair font-sans-meta">USD / GBP</span>
+                  <span className="rate-value font-serif-body">{rates.rates?.GBP?.toFixed(4) || 'N/A'}</span>
+                </div>
+                <div className="rate-row">
+                  <span className="rate-pair font-sans-meta">USD / JPY</span>
+                  <span className="rate-value font-serif-body">{rates.rates?.JPY?.toFixed(2) || 'N/A'}</span>
+                </div>
+                <div className="rate-row">
+                  <span className="rate-pair font-sans-meta">USD / CAD</span>
+                  <span className="rate-value font-serif-body">{rates.rates?.CAD?.toFixed(4) || 'N/A'}</span>
+                </div>
+                <div className="rate-row">
+                  <span className="rate-pair font-sans-meta">USD / CHF</span>
+                  <span className="rate-value font-serif-body">{rates.rates?.CHF?.toFixed(4) || 'N/A'}</span>
+                </div>
               </div>
-              <div className="rate-row">
-                <span className="rate-pair font-sans-meta">USD / GBP</span>
-                <span className="rate-value font-serif-body">{rates.rates?.GBP?.toFixed(4) || 'N/A'}</span>
-              </div>
-              <div className="rate-row">
-                <span className="rate-pair font-sans-meta">USD / JPY</span>
-                <span className="rate-value font-serif-body">{rates.rates?.JPY?.toFixed(2) || 'N/A'}</span>
-              </div>
-              <div className="rate-row">
-                <span className="rate-pair font-sans-meta">USD / CAD</span>
-                <span className="rate-value font-serif-body">{rates.rates?.CAD?.toFixed(4) || 'N/A'}</span>
-              </div>
-              <div className="rate-row">
-                <span className="rate-pair font-sans-meta">USD / CHF</span>
-                <span className="rate-value font-serif-body">{rates.rates?.CHF?.toFixed(4) || 'N/A'}</span>
+              
+              {/* Decorative ending element to fill vertical space */}
+              <div className="decorative-ending">
+                <div className="ornamental-line"></div>
+                <span className="font-sans-meta">КІНЕЦЬ ЗВІТУ // FIN</span>
+                <div className="ornamental-line"></div>
               </div>
             </div>
           </NewspaperArticle>

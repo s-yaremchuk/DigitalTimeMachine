@@ -221,13 +221,11 @@ body::before {
   column-rule: 1px solid var(--border-color);
 }
 
-/* Fixed Drop Cap Effect */
+/* Raised Cap Effect (Text aligns to the bottom of the big letter) */
 .drop-cap .news-item:first-of-type p.news-desc::first-letter {
-  float: left;
-  font-size: 3.5rem;
-  line-height: 1;
-  padding: 0;
-  margin: 0 6px 0 0;
+  font-size: 3.2rem; /* Slightly smaller so it doesn't push the line too much */
+  line-height: 0.8; /* Keeps the line box tight to prevent massive gaps above */
+  margin-right: 4px;
   font-family: var(--font-serif);
   font-weight: 900;
   color: var(--text-primary);

@@ -613,18 +613,6 @@ export const fetchMovies = async (year) => {
   return moviesWithPosters;
 };
 
-// Helper to strip HTML tags from Wikipedia snippets
-const cleanSnippet = (html) => {
-  if (!html) return '';
-  return html
-    .replace(/<[^>]*>/g, '') // remove HTML tags
-    .replace(/&quot;/g, '"')
-    .replace(/&amp;/g, '&')
-    .replace(/&#39;/g, "'")
-    .replace(/\s+/g, ' ')
-    .trim();
-};
-
 // 4. TOP HISTORICAL EVENTS (Wikimedia "On This Day" API - Free, Keyless)
 export const fetchNews = async (dateString, targetYear) => {
   try {
@@ -643,17 +631,18 @@ export const fetchNews = async (dateString, targetYear) => {
       const exactEvents = [
         ...(data.events || []).filter(e => e.year === targetYear).map(e => ({
           title: e.pages && e.pages[0] ? e.pages[0].titles.normalized : "ПОДІЯ ДНЯ",
-          desc: e.text,
+          // Combine event text with first page extract for rich context
+          desc: e.text + (e.pages && e.pages[0] && e.pages[0].extract ? " " + e.pages[0].extract : ""),
           link: e.pages && e.pages[0] ? e.pages[0].content_urls.desktop.page : `https://en.wikipedia.org/wiki/${month}_${day}`
         })),
         ...(data.births || []).filter(e => e.year === targetYear).map(e => ({
           title: `Народився: ${e.pages && e.pages[0] ? e.pages[0].titles.normalized : "Постать в історії"}`,
-          desc: `У цей день народилася видатна постать: ${e.text}`,
+          desc: `У цей день народилася видатна постать: ${e.text}.` + (e.pages && e.pages[0] && e.pages[0].extract ? " " + e.pages[0].extract : ""),
           link: e.pages && e.pages[0] ? e.pages[0].content_urls.desktop.page : `https://en.wikipedia.org/wiki/${month}_${day}`
         })),
         ...(data.deaths || []).filter(e => e.year === targetYear).map(e => ({
           title: `Помер: ${e.pages && e.pages[0] ? e.pages[0].titles.normalized : "Постать в історії"}`,
-          desc: `У цей день пішла з життя видатна постать: ${e.text}`,
+          desc: `У цей день пішла з життя видатна постать: ${e.text}.` + (e.pages && e.pages[0] && e.pages[0].extract ? " " + e.pages[0].extract : ""),
           link: e.pages && e.pages[0] ? e.pages[0].content_urls.desktop.page : `https://en.wikipedia.org/wiki/${month}_${day}`
         }))
       ];
@@ -662,31 +651,33 @@ export const fetchNews = async (dateString, targetYear) => {
         return exactEvents.map(e => ({
           ...e,
           year: targetYear,
-          date: `${day} ${monthName}. ${targetYear} р.`
-        })).slice(0, 7);
+          date: `${day} ${monthName}. ${targetYear} р.`,
+          // Cap description length to keep paragraphs elegant
+          desc: e.desc.length > 340 ? e.desc.slice(0, 340) + "..." : e.desc
+        })).slice(0, 4);
       }
     }
     
-    // 2. Fallback: Search Wikipedia articles containing the exact year for major year events
+    // 2. Fallback: Search Wikipedia articles with extracts for the exact year
     const searchQuery = `${targetYear}`;
-    const searchRes = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(searchQuery)}&format=json&origin=*&srlimit=15`);
+    const searchRes = await fetch(`https://en.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=${encodeURIComponent(searchQuery)}&prop=extracts&exintro=1&explaintext=1&exsentences=3&format=json&origin=*&gsrlimit=10`);
     
     if (searchRes.ok) {
       const searchData = await searchRes.json();
-      if (searchData.query && searchData.query.search && searchData.query.search.length > 0) {
-        // Filter out search results that are just lists or general page titles
-        const validResults = searchData.query.search
+      if (searchData.query && searchData.query.pages) {
+        const pages = Object.values(searchData.query.pages).sort((a, b) => (a.index || 0) - (b.index || 0));
+        const validResults = pages
           .filter(item => !item.title.toLowerCase().includes('list of') && item.title !== `${targetYear}`)
           .map(item => ({
             title: item.title,
             year: targetYear,
             date: `${day} ${monthName}. ${targetYear} р.`,
-            desc: cleanSnippet(item.snippet) + "...",
+            desc: item.extract && item.extract.length > 20 ? item.extract : "Історична хроніка цієї визначної епохи.",
             link: `https://en.wikipedia.org/wiki/${encodeURIComponent(item.title)}`
           }));
 
         if (validResults.length > 0) {
-          return validResults.slice(0, 7);
+          return validResults.slice(0, 4);
         }
       }
     }

@@ -473,47 +473,76 @@ const cleanTracks = (tracks) => {
   });
 };
 
+const DECADE_ARTISTS = {
+  1950: ['Elvis Presley', 'Chuck Berry', 'Little Richard', 'Bill Haley', 'Frank Sinatra', 'Dean Martin', 'Ray Charles', 'Johnny Cash', 'Buddy Holly', 'Fats Domino'],
+  1960: ['The Beatles', 'The Rolling Stones', 'The Beach Boys', 'Aretha Franklin', 'Bob Dylan', 'Marvin Gaye', 'The Supremes', 'Jimi Hendrix', 'The Doors', 'Simon & Garfunkel'],
+  1970: ['Queen', 'ABBA', 'Bee Gees', 'Led Zeppelin', 'Pink Floyd', 'Stevie Wonder', 'Elton John', 'David Bowie', 'Fleetwood Mac', 'Donna Summer'],
+  1980: ['Michael Jackson', 'Madonna', 'Prince', 'Whitney Houston', 'Bruce Springsteen', 'U2', 'Bon Jovi', 'Phil Collins', 'George Michael', 'a-ha', 'Cyndi Lauper', 'Guns N\' Roses'],
+  1990: ['Nirvana', 'Britney Spears', 'Mariah Carey', 'Backstreet Boys', 'Tupac', 'Celine Dion', 'Oasis', 'R.E.M.', 'Red Hot Chili Peppers', 'Whitney Houston'],
+  2000: ['Eminem', 'Britney Spears', 'Beyonce', 'Linkin Park', 'Coldplay', 'Rihanna', 'Outkast', 'Justin Timberlake', 'Shakira', 'Alicia Keys'],
+  2010: ['Adele', 'Bruno Mars', 'Ed Sheeran', 'Taylor Swift', 'Drake', 'Katy Perry', 'Rihanna', 'Justin Bieber', 'Maroon 5', 'Coldplay'],
+  2020: ['The Weeknd', 'Dua Lipa', 'Billie Eilish', 'Harry Styles', 'Olivia Rodrigo', 'Taylor Swift', 'Miley Cyrus', 'Sabrina Carpenter', 'Benson Boone', 'Teddy Swims']
+};
+
 export const fetchSongs = async (year) => {
-  const queryiTunes = async (term) => {
-    try {
-      const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(term)}&media=music&entity=song&limit=35`);
-      if (res.ok) {
-        const data = await res.json();
-        if (data.results && data.results.length > 0) {
-          return cleanTracks(data.results);
+  const decade = Math.floor(year / 10) * 10;
+  const artists = DECADE_ARTISTS[decade] || DECADE_ARTISTS[2020];
+  
+  // Deterministically select 5 artists based on the year to ensure year-by-year variety
+  const selectedArtists = [];
+  const tempArtists = [...artists];
+  for (let i = 0; i < 5; i++) {
+    const index = (year + i * 13) % tempArtists.length;
+    selectedArtists.push(tempArtists.splice(index, 1)[0]);
+  }
+
+  // Fetch a track for each selected artist, querying with the year to get hits of that era
+  const songs = await Promise.all(
+    selectedArtists.map(async (artist, idx) => {
+      try {
+        const query = `${artist} ${year}`;
+        const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&media=music&entity=song&limit=5`);
+        if (res.ok) {
+          const data = await res.json();
+          let results = data.results || [];
+          
+          results = cleanTracks(results);
+
+          if (results.length === 0) {
+            const fallbackQuery = `${artist} ${decade}s`;
+            const fbRes = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(fallbackQuery)}&media=music&entity=song&limit=5`);
+            if (fbRes.ok) {
+              const fbData = await fbRes.json();
+              results = cleanTracks(fbData.results || []);
+            }
+          }
+
+          if (results.length > 0) {
+            const track = results[0];
+            return {
+              id: track.trackId || `${year}-song-${idx}`,
+              title: track.trackName,
+              artist: track.artistName,
+              album: track.collectionName || "Top Hits",
+              artwork: track.artworkUrl100?.replace('100x100bb', '300x300bb') || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500',
+              previewUrl: track.previewUrl
+            };
+          }
         }
+      } catch (e) {
+        console.warn(`Failed to fetch dynamic song for artist ${artist} in ${year}:`, e);
       }
-    } catch (e) {
-      console.warn(`Failed to query iTunes for term "${term}":`, e);
-    }
-    return [];
-  };
+      return null;
+    })
+  );
 
-  // 1. Try Billboard Hot 100 query if year is after Billboard chart inception (1958)
-  let tracks = [];
-  if (year >= 1958) {
-    tracks = await queryiTunes(`Billboard Hot 100 ${year}`);
+  const validSongs = songs.filter(Boolean);
+
+  if (validSongs.length >= 3) {
+    return validSongs.slice(0, 5);
   }
 
-  // 2. If no tracks found or too few, try "[year] hits" search
-  if (tracks.length < 4) {
-    const hitsTracks = await queryiTunes(`${year} hits`);
-    tracks = hitsTracks.length > 0 ? hitsTracks : tracks;
-  }
-
-  // 3. If we found enough tracks, format and return them
-  if (tracks.length >= 4) {
-    return tracks.slice(0, 6).map((track, index) => ({
-      id: track.trackId || `${year}-song-${index}`,
-      title: track.trackName,
-      artist: track.artistName,
-      album: track.collectionName || "Top Hits",
-      artwork: track.artworkUrl100?.replace('100x100bb', '300x300bb') || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500',
-      previewUrl: track.previewUrl
-    }));
-  }
-
-  // 4. Ultimate fallback: Use the high-quality curated hits database if API fails or returns no results
+  // Ultimate fallback
   const songsList = getCuratedSongsList(year);
   
   const songsWithMedia = await Promise.all(
@@ -634,13 +663,13 @@ export const fetchNews = async (dateString, targetYear) => {
           ...e,
           year: targetYear,
           date: `${day} ${monthName}. ${targetYear} р.`
-        })).slice(0, 4);
+        })).slice(0, 7);
       }
     }
     
     // 2. Fallback: Search Wikipedia articles containing the exact year for major year events
     const searchQuery = `${targetYear}`;
-    const searchRes = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(searchQuery)}&format=json&origin=*&srlimit=8`);
+    const searchRes = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(searchQuery)}&format=json&origin=*&srlimit=15`);
     
     if (searchRes.ok) {
       const searchData = await searchRes.json();
@@ -657,7 +686,7 @@ export const fetchNews = async (dateString, targetYear) => {
           }));
 
         if (validResults.length > 0) {
-          return validResults.slice(0, 4);
+          return validResults.slice(0, 7);
         }
       }
     }

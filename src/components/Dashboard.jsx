@@ -145,12 +145,6 @@ export default function Dashboard({ date, data, onBack }) {
       }
 
       playerRef.current = new window.YT.Player(ytPlaceholderRef.current, {
-        videoId: currentVideo.id,
-        playerVars: {
-          autoplay: 0,
-          rel: 0,
-          modestbranding: 1
-        },
         events: {
           'onError': (event) => {
             console.warn(`YouTube player error ${event.data} for video: ${currentVideo.id}`);
@@ -374,7 +368,15 @@ export default function Dashboard({ date, data, onBack }) {
                       
                       {video.id ? (
                         <div className="yt-embed-wrap" key={video.id}>
-                          <div ref={ytPlaceholderRef}></div>
+                          <iframe
+                            ref={ytPlaceholderRef}
+                            title={video.title}
+                            src={`https://www.youtube.com/embed/${video.id}?enablejsapi=1&rel=0&modestbranding=1`}
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            className="yt-iframe"
+                          ></iframe>
                         </div>
                       ) : (
                         <div className="yt-no-video font-sans-meta">ВІДЕО НЕ ЗНАЙДЕНО.</div>
